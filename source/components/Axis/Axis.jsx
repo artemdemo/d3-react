@@ -29,7 +29,7 @@ export class Axis extends Component {
         switch (xScale) {
             case 'linear':
                 x = getScaleLinear($$width);
-                x.domain([0, d3_max(internalData, item => item[1])]);
+                x.domain([d3_max(internalData, item => item[1]), 0]);
                 break;
             case 'band':
             default:

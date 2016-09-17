@@ -54,7 +54,7 @@ export class Chart extends Component {
                     {children}
                 </g>
             </svg>
-        )
+        );
     }
 }
 
