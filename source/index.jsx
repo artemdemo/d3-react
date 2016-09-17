@@ -10,6 +10,7 @@ import { store, history } from './configs';
 import { AppView } from './views/AppView';
 import { MainView } from './views/MainView';
 import { ColumnsView } from './views/ColumnsView';
+import { BarsView } from './views/BarsView';
 
 
 render(
@@ -18,6 +19,7 @@ render(
             <Route path='/' component={AppView} >
                 <IndexRoute component={MainView} />
                 <Route path='columns' component={ColumnsView} />
+                <Route path='bars' component={BarsView} />
             </Route>
         </Router>
     </Provider>,

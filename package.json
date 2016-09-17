@@ -6,8 +6,10 @@
   "scripts": {
     "start": "npm run server",
     "server": "webpack-dev-server",
+    "lite-server": "lite-server",
     "build": "webpack --progress --colors",
     "watch": "webpack --progress --colors --watch",
+    "pack": "uglifyjs build/js/bundle.js -m --source-map build/js/bundle.js.map -o build/js/bundle1.min.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Artem Demo",
@@ -43,8 +45,12 @@
     "redux": "^3.6.0",
     "redux-thunk": "^2.1.0",
     "style-loader": "^0.13.1",
+    "uglify-js": "^2.7.3",
     "url-loader": "^0.5.7",
     "webpack": "^1.13.2",
     "webpack-dev-server": "^1.15.1"
+  },
+  "devDependencies": {
+    "lite-server": "^2.2.2"
   }
 }

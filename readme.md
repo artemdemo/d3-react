@@ -1,5 +1,7 @@
 # react with d3
 
+d3 based charts as react components
+
 ## Data structure
 
 I'm using similar data structure to Google charts, for example:
