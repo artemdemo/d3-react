@@ -14,12 +14,18 @@ export class BarsView extends Component {
             ['2014', 400],
             ['2015', 1170],
             ['2016', 660],
-            ['2017', 1030]
+            ['2017', 1030],
         ];
         return (
-            <Chart data={bars}>
-                <Axis />
+            <Chart data={bars}
+                   className='bars-chart'
+                   width='100%'
+                   height='500'>
                 <Bars />
+                <Axis xTitle={bars[0][1]}
+                      yTitle={bars[0][0]}
+                      xScale='linear'
+                      yScale='band' />
             </Chart>
         );
     }

@@ -10,6 +10,9 @@ export class AppView extends Component {
                     <li>
                         <Link to='/columns'>Columns</Link>
                     </li>
+                    <li>
+                        <Link to='/bars'>Bars</Link>
+                    </li>
                 </ul>
 
                 {this.props.children}

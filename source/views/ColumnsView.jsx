@@ -14,14 +14,15 @@ export class ColumnsView extends Component {
             ['2014', 400],
             ['2015', 1170],
             ['2016', 660],
-            ['2017', 1030]
+            ['2017', 1030],
         ];
         return (
             <Chart data={columns}
                    className='columns-chart'
                    width='100%'
                    height='500'>
-                <Axis />
+                <Axis xTitle={columns[0][0]}
+                      yTitle={columns[0][1]} />
                 <Columns />
             </Chart>
         );
