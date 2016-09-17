@@ -59,7 +59,7 @@ export class Bars extends Component {
             .attr('width', x.bandwidth())
             .attr('height', d => height - y(d[1]))
             .on('mouseover', (dataItem, index, dataArray) => {
-                console.log(args);
+                
             })
             .on('mouseout', () => {});
     }

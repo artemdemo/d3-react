@@ -3,6 +3,10 @@ import { select as d3_select } from 'd3-selection';
 
 
 export class Chart extends Component {
+    componentDidMount() {
+
+    }
+
     render() {
         return (
             <div className='bars-chart'>
