@@ -58,42 +58,6 @@ export class Axis extends Component {
             height: $$height,
             width: $$width,
         });
-
-/*
-<<<<<<< HEAD
-        d3_select(this.xGroup)
-            .call(d3_axisBottom(x));
-
-        d3_select(this.yGroup)
-            .call(d3_axisLeft(y).ticks(10));
-
-        this.setState({
-            height: $$height,
-        });
-=======
-        $$rootGroup.append('g')
-            .call(d3_axisBottom(x))
-            .append('text')
-            .attr('class', 'axis__title')
-            .attr('transform', `translate(${$$width / 2}, 0)`)
-            .attr('y', 20)
-            .attr('dy', '0.71em')
-            .attr('text-anchor', 'end')
-            .text(xTitle);
-
-        $$rootGroup.append('g')
-            .attr('class', 'axis axis_y')
-            .call(d3_axisLeft(y).ticks(10))
-            .append('text')
-            .attr('class', 'axis__title')
-            .attr('transform', 'rotate(-90)')
-            .attr('x', 15)
-            .attr('y', -25)
-            .attr('dy', '0.71em')
-            .attr('text-anchor', 'end')
-            .text(yTitle);
->>>>>>> e0b6b20... added bars chart
-*/
     }
 
     render() {
@@ -136,7 +100,6 @@ Axis.propTypes = {
     xScale: React.PropTypes.string,
     yScale: React.PropTypes.string,
     $$data: React.PropTypes.array,
-    $$rootGroup: React.PropTypes.object,
     $$width: React.PropTypes.number,
     $$height: React.PropTypes.number,
 };
