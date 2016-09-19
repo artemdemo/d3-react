@@ -14,9 +14,10 @@ export class Chart extends Component {
 
     componentDidMount() {
         const svg = d3_select(this.refs.chartSVG);
+        const svgDimensions = this.refs.chartSVG.getBoundingClientRect();
         const margin = {top: 20, right: 20, bottom: 30, left: 40};
-        const width = +svg.attr('width') - margin.left - margin.right;
-        const height = +svg.attr('height') - margin.top - margin.bottom;
+        const width = svgDimensions.width - margin.left - margin.right;
+        const height = svgDimensions.height - margin.top - margin.bottom;
 
         const rootGroup = svg.append('g')
             .attr('transform', `translate(${margin.left}, ${margin.top})`);
@@ -29,6 +30,7 @@ export class Chart extends Component {
     }
 
     render() {
+        const { width = '100%', height, className } = this.props;
         let children = null;
 
         if (this.state.rootGroup && this.state.width && this.state.height) {
@@ -46,11 +48,19 @@ export class Chart extends Component {
         }
 
         return (
-            <div className='bars-chart'>
-                <svg ref='chartSVG' width='960' height='500'>
-                    {children}
-                </svg>
-            </div>
+            <svg ref='chartSVG'
+                 className={className}
+                 width={width}
+                 height={height} >
+                {children}
+            </svg>
         )
     }
 }
+
+Chart.propTypes = {
+    data: React.PropTypes.any.isRequired,
+    className: React.PropTypes.string,
+    width: React.PropTypes.string,
+    height: React.PropTypes.string,
+};
