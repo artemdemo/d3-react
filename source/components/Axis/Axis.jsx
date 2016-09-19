@@ -78,7 +78,6 @@ export class Axis extends Component {
             .attr('transform', `translate(${$$width / 2}, 0)`)
             .attr('y', 20)
             .attr('dy', '0.71em')
-            .attr('fill', '#000')
             .attr('text-anchor', 'end')
             .text(xTitle);
 
@@ -91,7 +90,6 @@ export class Axis extends Component {
             .attr('x', 15)
             .attr('y', -25)
             .attr('dy', '0.71em')
-            .attr('fill', '#000')
             .attr('text-anchor', 'end')
             .text(yTitle);
 >>>>>>> e0b6b20... added bars chart

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { max as d3_max } from 'd3-array';
 import { select as d3_select } from 'd3-selection';
 import { getScaleBand, getScaleLinear } from '../../services/axis';
+import { ToolTip } from '../ToolTip/ToolTip';
 
 /**
  * Columns chart
@@ -12,6 +13,13 @@ import { getScaleBand, getScaleLinear } from '../../services/axis';
 import './Columns.less';
 
 export class Columns extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            tooltipParent: null,
+        };
+    }
+
     componentDidMount() {
         const { $$data, $$height, $$width } = this.props;
 
@@ -33,9 +41,15 @@ export class Columns extends Component {
             .attr('width', x.bandwidth())
             .attr('height', d => $$height - y(d[1]))
             .on('mouseover', (dataItem, index, dataArray) => {
-
+                this.setState({
+                    tooltipParent: dataArray[index],
+                });
             })
-            .on('mouseout', () => {});
+            .on('mouseout', () => {
+                this.setState({
+                    tooltipParent: null,
+                });
+            });
     }
 
     render() {
