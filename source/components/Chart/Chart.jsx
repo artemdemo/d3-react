@@ -1,29 +1,28 @@
 import React, { Component } from 'react';
-import { select as d3_select } from 'd3-selection';
 
 export class Chart extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            x: null,
-            y: null,
-            rootGroup: null,
-        }
+            width: 0,
+            height: 0,
+        };
+
+        this.margin = {
+            top: 20,
+            right: 20,
+            bottom: 30,
+            left: 40,
+        };
     }
 
     componentDidMount() {
-        const svg = d3_select(this.refs.chartSVG);
-        const svgDimensions = this.refs.chartSVG.getBoundingClientRect();
-        const margin = {top: 20, right: 20, bottom: 30, left: 40};
-        const width = svgDimensions.width - margin.left - margin.right;
-        const height = svgDimensions.height - margin.top - margin.bottom;
-
-        const rootGroup = svg.append('g')
-            .attr('transform', `translate(${margin.left}, ${margin.top})`);
+        const svgDimensions = this.chartSVG.getBoundingClientRect();
+        const width = svgDimensions.width - this.margin.left - this.margin.right;
+        const height = svgDimensions.height - this.margin.top - this.margin.bottom;
 
         this.setState({
-            rootGroup,
             width,
             height,
         });
@@ -33,14 +32,13 @@ export class Chart extends Component {
         const { width = '100%', height, className } = this.props;
         let children = null;
 
-        if (this.state.rootGroup && this.state.width && this.state.height) {
+        if (this.state.width && this.state.height) {
             const { data } = this.props;
             children = React.Children.map(
                 this.props.children,
                 child => {
                     return React.cloneElement(child, {
                         $$data: data,
-                        $$rootGroup: this.state.rootGroup,
                         $$width: this.state.width,
                         $$height: this.state.height,
                     });
@@ -48,11 +46,13 @@ export class Chart extends Component {
         }
 
         return (
-            <svg ref='chartSVG'
+            <svg ref={(el) => this.chartSVG = el}
                  className={className}
                  width={width}
                  height={height} >
-                {children}
+                <g transform={`translate(${this.margin.left}, ${this.margin.top})`}>
+                    {children}
+                </g>
             </svg>
         )
     }

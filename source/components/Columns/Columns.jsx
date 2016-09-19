@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { max as d3_max } from 'd3-array';
+import { select as d3_select } from 'd3-selection';
 import { getScaleBand, getScaleLinear } from '../../services/axis';
 
 /**
@@ -12,7 +13,7 @@ import './Columns.less';
 
 export class Columns extends Component {
     componentDidMount() {
-        const { $$data, $$rootGroup, $$height, $$width } = this.props;
+        const { $$data, $$height, $$width } = this.props;
 
         // Use data without title row
         const internalData = $$data.filter((item, index) => index !== 0);
@@ -23,7 +24,7 @@ export class Columns extends Component {
         x.domain(internalData.map(item => item[0]));
         y.domain([0, d3_max(internalData, item => item[1])]);
 
-        $$rootGroup.selectAll('.column')
+        d3_select(this.columsGroup).selectAll('.column')
             .data(internalData)
             .enter().append('rect')
             .attr('class', 'column')
@@ -38,12 +39,14 @@ export class Columns extends Component {
     }
 
     render() {
-        return null;
+        return (
+            <g ref={(el) => this.columsGroup = el} />
+        );
     }
 }
 
 Columns.propTypes = {
     data: React.PropTypes.array,
-    $$rootGroup: React.PropTypes.object,
     $$height: React.PropTypes.number,
+    $$width: React.PropTypes.number,
 };
