@@ -17,7 +17,10 @@ export class ColumnsView extends Component {
             ['2017', 1030]
         ];
         return (
-            <Chart data={columns} className='columns-chart' width='100%' height='500'>
+            <Chart data={columns}
+                   className='columns-chart'
+                   width='100%'
+                   height='500'>
                 <Axis />
                 <Columns />
             </Chart>
