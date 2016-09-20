@@ -12,12 +12,12 @@ export class Chart extends Component {
             height: 0,
         };
 
-        this.margin = {
+        this.margin = Object.assign({
             top: 20,
             right: 20,
             bottom: 30,
             left: 40,
-        };
+        }, props.margin);
 
         this.windowResizehandler = throttle(() => {
             this.updateChartDimensions();
@@ -80,6 +80,12 @@ export class Chart extends Component {
 
 Chart.propTypes = {
     data: React.PropTypes.any.isRequired,
+    margin: React.PropTypes.shape({
+        top: React.PropTypes.number,
+        right: React.PropTypes.number,
+        bottom: React.PropTypes.number,
+        left: React.PropTypes.number,
+    }),
     className: React.PropTypes.string,
     width: React.PropTypes.string,
     height: React.PropTypes.string,
