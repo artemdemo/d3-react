@@ -44,8 +44,8 @@ export class Axis extends Component {
                 const dataParsed = data.map(item => {
                     return [
                         parseTime(item[0]),
-                        item[1]
-                    ]
+                        item[1],
+                    ];
                 });
                 x = getScaleTime($$width);
                 x.domain(d3_extent(dataParsed, item => item[0]));

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { line as d3_line } from 'd3-shape';
 import { max as d3_max, extent as d3_extent } from 'd3-array';
-import { timeParse as d3_timeParse } from 'd3-time-format';
 import { getScaleLinear, getScaleTime } from '../../services/axis';
 
 /**
@@ -19,39 +18,36 @@ export class LineTime extends Component {
 
         this.state = {
             pathFunc: null,
-        }
+        };
     }
 
     componentDidMount() {
         const { $$data } = this.props;
         this.internalData = $$data.filter((item, index) => index !== 0);
-        const { x, y } = this.createAxisScale(this.props, this.internalData);
 
         this.setState({
-            pathFunc: d3_line()
-                .x(d => x(d[0]))
-                .y(d => y(d[1])),
+            pathFunc: this.createLinePath(this.props, this.internalData),
         });
     }
 
-    createAxisScale(props, data = this.internalData) {
-        const { $$height, $$width, format } = props;
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+            pathFunc: this.createLinePath(nextProps, this.internalData),
+        });
+    }
+
+    createLinePath(props, data = this.internalData) {
+        const { $$height, $$width } = props;
 
         const x = getScaleTime($$width);
         const y = getScaleLinear($$height);
 
-        const parseTime = d3_timeParse(format);
-        const dataParsed = data.map(item => {
-            return [
-                parseTime(item[0]),
-                item[1]
-            ]
-        });
-
-        x.domain(d3_extent(dataParsed, item => item[0]));
+        x.domain(d3_extent(data, item => item[0]));
         y.domain([0, d3_max(data, item => item[1])]);
 
-        return { x, y };
+        return d3_line()
+            .x(d => x(d[0]))
+            .y(d => y(d[1]));
     }
 
     render() {
@@ -67,7 +63,3 @@ export class LineTime extends Component {
         );
     }
 }
-
-LineTime.propTypes = {
-    format: React.PropTypes.string.isRequired,
-};

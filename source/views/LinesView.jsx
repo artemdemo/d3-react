@@ -21,7 +21,7 @@ export class LinesView extends Component {
                    className='lines-chart'
                    width='100%'
                    height='500'>
-                <LineTime format='%Y' />
+                <LineTime />
                 <Axis xTitle={line[0][0]}
                       yTitle={line[0][1]}
                       xScale='time' />
