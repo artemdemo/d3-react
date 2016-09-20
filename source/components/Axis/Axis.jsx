@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { axisBottom as d3_axisBottom, axisLeft as d3_axisLeft } from 'd3-axis';
-import { max as d3_max } from 'd3-array';
+import { max as d3_max, extent as d3_extent } from 'd3-array';
 import { select as d3_select } from 'd3-selection';
-import { getScaleBand, getScaleLinear } from '../../services/axis';
+import { timeParse as d3_timeParse } from 'd3-time-format';
+import { getScaleBand, getScaleLinear, getScaleTime } from '../../services/axis';
 
 /**
  * Creating axis
@@ -37,6 +38,17 @@ export class Axis extends Component {
             case 'linear':
                 x = getScaleLinear($$width);
                 x.domain([d3_max(data, item => item[1]), 0]);
+                break;
+            case 'time':
+                const parseTime = d3_timeParse('%Y');
+                const dataParsed = data.map(item => {
+                    return [
+                        parseTime(item[0]),
+                        item[1]
+                    ]
+                });
+                x = getScaleTime($$width);
+                x.domain(d3_extent(dataParsed, item => item[0]));
                 break;
             case 'band':
             default:

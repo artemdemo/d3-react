@@ -11,6 +11,7 @@ import { AppView } from './views/AppView';
 import { MainView } from './views/MainView';
 import { ColumnsView } from './views/ColumnsView';
 import { BarsView } from './views/BarsView';
+import { LinesView } from './views/LinesView';
 
 
 render(
@@ -20,6 +21,7 @@ render(
                 <IndexRoute component={MainView} />
                 <Route path='columns' component={ColumnsView} />
                 <Route path='bars' component={BarsView} />
+                <Route path='lines' component={LinesView} />
             </Route>
         </Router>
     </Provider>,

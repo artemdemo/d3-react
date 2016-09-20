@@ -5,7 +5,9 @@ export class AppView extends Component {
     render() {
         return (
             <div className='container'>
-                Charts
+                <p>
+                    Single charts
+                </p>
                 <ul>
                     <li>
                         <Link to='/columns'>Columns</Link>
@@ -13,7 +15,13 @@ export class AppView extends Component {
                     <li>
                         <Link to='/bars'>Bars</Link>
                     </li>
+                    <li>
+                        <Link to='/lines'>Lines</Link>
+                    </li>
                 </ul>
+                <p>
+                    Combined charts
+                </p>
 
                 {this.props.children}
             </div>
