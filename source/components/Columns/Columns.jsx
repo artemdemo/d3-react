@@ -22,16 +22,12 @@ export class Columns extends Component {
     }
 
     componentDidMount() {
-        const { $$data, $$height, $$width } = this.props;
+        const { $$data, $$height } = this.props;
 
         // Use data without title row
         this.internalData = $$data.filter((item, index) => index !== 0);
 
-        const x = getScaleBand($$width);
-        const y = getScaleLinear($$height);
-
-        x.domain(this.internalData.map(item => item[0]));
-        y.domain([0, d3_max(this.internalData, item => item[1])]);
+        const { x, y } = this.createAxisScale(this.props, this.internalData);
 
         d3_select(this.columsGroup).selectAll('.column')
             .data(this.internalData)
@@ -54,13 +50,8 @@ export class Columns extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        const { $$height, $$width } = nextProps;
-
-        const x = getScaleBand($$width);
-        const y = getScaleLinear($$height);
-
-        x.domain(this.internalData.map(item => item[0]));
-        y.domain([0, d3_max(this.internalData, item => item[1])]);
+        const { $$height } = nextProps;
+        const { x, y } = this.createAxisScale(nextProps);
 
         d3_select(this.columsGroup).selectAll('.column')
             .data(this.internalData)
@@ -68,6 +59,18 @@ export class Columns extends Component {
             .attr('y', d => y(d[1]))
             .attr('width', x.bandwidth())
             .attr('height', d => $$height - y(d[1]));
+    }
+
+    createAxisScale(props, data = this.internalData) {
+        const { $$height, $$width } = props;
+
+        const x = getScaleBand($$width);
+        const y = getScaleLinear($$height);
+
+        x.domain(data.map(item => item[0]));
+        y.domain([0, d3_max(data, item => item[1])]);
+
+        return { x, y };
     }
 
     render() {

@@ -13,19 +13,15 @@ import './Bars.less';
 
 export class Bars extends Component {
     componentDidMount() {
-        const { $$data, $$height, $$width } = this.props;
+        const { $$data, $$width } = this.props;
 
         // Use data without title row
-        const internalData = $$data.filter((item, index) => index !== 0);
+        this.internalData = $$data.filter((item, index) => index !== 0);
 
-        const x = getScaleLinear($$width);
-        const y = getScaleBand($$height);
-
-        x.domain([0, d3_max(internalData, item => item[1])]);
-        y.domain(internalData.map(item => item[0]));
+        const { x, y } = this.createAxisScale(this.props, this.internalData);
 
         d3_select(this.barsGroup).selectAll('.bar')
-            .data(internalData)
+            .data(this.internalData)
             .enter().append('rect')
             .attr('class', 'bar')
             // .attr('x', d => x(d[1])) // this will put align bars on the right
@@ -36,6 +32,28 @@ export class Bars extends Component {
 
             })
             .on('mouseout', () => {});
+    }
+
+    componentWillReceiveProps(nextProps) {
+        const { $$width } = nextProps;
+        const { x, y } = this.createAxisScale(nextProps);
+
+        d3_select(this.barsGroup).selectAll('.bar')
+            .data(this.internalData)
+            .attr('y', d => y(d[0]))
+            .attr('height', y.bandwidth())
+            .attr('width', d => $$width - x(d[1]));
+    }
+
+    createAxisScale(props, data = this.internalData) {
+        const { $$height, $$width } = props;
+        const x = getScaleLinear($$width);
+        const y = getScaleBand($$height);
+
+        x.domain([0, d3_max(data, item => item[1])]);
+        y.domain(data.map(item => item[0]));
+
+        return { x, y };
     }
 
     render() {
