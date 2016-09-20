@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
+import { throttle } from '../../services/utils';
 
 export class Chart extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
+            containerWidth: 0,
+            containerHeight: 0,
             width: 0,
             height: 0,
         };
@@ -15,14 +18,29 @@ export class Chart extends Component {
             bottom: 30,
             left: 40,
         };
+
+        this.windowResizehandler = throttle(() => {
+            this.updateChartDimensions();
+        }, 20);
     }
 
     componentDidMount() {
+        this.updateChartDimensions();
+        window.addEventListener('resize', this.windowResizehandler);
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.windowResizehandler)
+    }
+
+    updateChartDimensions() {
         const svgDimensions = this.chartSVG.getBoundingClientRect();
         const width = svgDimensions.width - this.margin.left - this.margin.right;
         const height = svgDimensions.height - this.margin.top - this.margin.bottom;
 
         this.setState({
+            containerWidth: svgDimensions.width,
+            containerHeight: svgDimensions.height,
             width,
             height,
         });
@@ -48,6 +66,8 @@ export class Chart extends Component {
         return (
             <svg ref={(el) => this.chartSVG = el}
                  className={className}
+                 preserveAspectRatio='xMidYMid'
+                 viewBox={`0, 0, ${this.state.containerWidth}, ${this.state.containerHeight}`}
                  width={width}
                  height={height} >
                 <g transform={`translate(${this.margin.left}, ${this.margin.top})`}>

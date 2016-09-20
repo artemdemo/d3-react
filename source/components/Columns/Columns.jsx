@@ -15,6 +15,7 @@ import './Columns.less';
 export class Columns extends Component {
     constructor(props) {
         super(props);
+
         this.state = {
             tooltipParent: null,
         };
@@ -24,16 +25,16 @@ export class Columns extends Component {
         const { $$data, $$height, $$width } = this.props;
 
         // Use data without title row
-        const internalData = $$data.filter((item, index) => index !== 0);
+        this.internalData = $$data.filter((item, index) => index !== 0);
 
         const x = getScaleBand($$width);
         const y = getScaleLinear($$height);
 
-        x.domain(internalData.map(item => item[0]));
-        y.domain([0, d3_max(internalData, item => item[1])]);
+        x.domain(this.internalData.map(item => item[0]));
+        y.domain([0, d3_max(this.internalData, item => item[1])]);
 
         d3_select(this.columsGroup).selectAll('.column')
-            .data(internalData)
+            .data(this.internalData)
             .enter().append('rect')
             .attr('class', 'column')
             .attr('x', d => x(d[0]))
@@ -50,6 +51,23 @@ export class Columns extends Component {
                     tooltipParent: null,
                 });
             });
+    }
+
+    componentWillReceiveProps(nextProps) {
+        const { $$height, $$width } = nextProps;
+
+        const x = getScaleBand($$width);
+        const y = getScaleLinear($$height);
+
+        x.domain(this.internalData.map(item => item[0]));
+        y.domain([0, d3_max(this.internalData, item => item[1])]);
+
+        d3_select(this.columsGroup).selectAll('.column')
+            .data(this.internalData)
+            .attr('x', d => x(d[0]))
+            .attr('y', d => y(d[1]))
+            .attr('width', x.bandwidth())
+            .attr('height', d => $$height - y(d[1]));
     }
 
     render() {

@@ -4,6 +4,8 @@ import { Chart } from '../components/Chart/Chart';
 import { Axis } from '../components/Axis/Axis';
 import { Columns } from '../components/Columns/Columns';
 
+import './ColumnsView.less';
+
 export class ColumnsView extends Component {
     render() {
         const columns = [
@@ -17,14 +19,16 @@ export class ColumnsView extends Component {
             ['2017', 1030],
         ];
         return (
-            <Chart data={columns}
-                   className='columns-chart'
-                   width='100%'
-                   height='500'>
-                <Axis xTitle={columns[0][0]}
-                      yTitle={columns[0][1]} />
-                <Columns />
-            </Chart>
+            <div className='columns-chart-container'>
+                <Chart data={columns}
+                       className='columns-chart'
+                       width='100%'
+                       height='100%'>
+                    <Axis xTitle={columns[0][0]}
+                          yTitle={columns[0][1]} />
+                    <Columns />
+                </Chart>
+            </div>
         );
     }
 }
