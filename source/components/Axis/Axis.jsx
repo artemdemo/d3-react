@@ -11,60 +11,65 @@ import './Axis.less';
 
 export class Axis extends Component {
     componentDidMount() {
-        const { $$data, $$height, $$width } = this.props;
-        const { xScale = 'band', yScale = 'linear' } = this.props;
-        let x;
-        let y;
+        const { $$data } = this.props;
 
         this.internalData = $$data.filter((item, index) => index !== 0);
+
+        this.createXAxis(this.props, this.internalData);
+        this.createYAxis(this.props, this.internalData);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this.createXAxis(nextProps);
+        this.createYAxis(nextProps);
+    }
+
+    /**
+     * Create or update X axis
+     * @param props
+     * @param data
+     */
+    createXAxis(props, data = this.internalData) {
+        const { $$width, xScale = 'band' } = props;
+        let x;
 
         switch (xScale) {
             case 'linear':
                 x = getScaleLinear($$width);
-                x.domain([d3_max(this.internalData, item => item[1]), 0]);
+                x.domain([d3_max(data, item => item[1]), 0]);
                 break;
             case 'band':
             default:
                 x = getScaleBand($$width);
-                x.domain(this.internalData.map(item => item[0]));
+                x.domain(data.map(item => item[0]));
         }
+
+        d3_select(this.xGroup)
+            .call(d3_axisBottom(x));
+    }
+
+    /**
+     * Create or update Y axis
+     * @param props
+     * @param data
+     */
+    createYAxis(props, data = this.internalData) {
+        const { $$height, yScale = 'linear' } = props;
+        let y;
 
         switch (yScale) {
             case 'band':
                 y = getScaleBand($$height);
-                y.domain(this.internalData.map(item => item[0]));
+                y.domain(data.map(item => item[0]));
                 break;
             case 'linear':
             default:
                 y = getScaleLinear($$height);
-                y.domain([0, d3_max(this.internalData, item => item[1])]);
+                y.domain([0, d3_max(data, item => item[1])]);
         }
-
-        d3_select(this.xGroup)
-            .call(d3_axisBottom(x));
 
         d3_select(this.yGroup)
             .call(d3_axisLeft(y).ticks(10));
-    }
-
-    componentWillReceiveProps(nextProps) {
-        const { $$width } = nextProps;
-        const { xScale = 'band' } = this.props;
-        let x;
-
-        switch (xScale) {
-            case 'linear':
-                x = getScaleLinear($$width);
-                x.domain([d3_max(this.internalData, item => item[1]), 0]);
-                break;
-            case 'band':
-            default:
-                x = getScaleBand($$width);
-                x.domain(this.internalData.map(item => item[0]));
-        }
-
-        d3_select(this.xGroup)
-            .call(d3_axisBottom(x));
     }
 
     render() {
