@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { line as d3_line } from 'd3-shape';
+import { line as d3_line, curveStep as d3_curveStep } from 'd3-shape';
 import { max as d3_max, extent as d3_extent } from 'd3-array';
 import { getScaleLinear, getScaleTime } from '../../services/axis';
 
@@ -37,7 +37,7 @@ export class LineTime extends Component {
     }
 
     createLinePath(props, data = this.internalData) {
-        const { $$height, $$width } = props;
+        const { $$height, $$width, curve } = props;
 
         const x = getScaleTime($$width);
         const y = getScaleLinear($$height);
@@ -45,9 +45,16 @@ export class LineTime extends Component {
         x.domain(d3_extent(data, item => item[0]));
         y.domain([0, d3_max(data, item => item[1])]);
 
-        return d3_line()
+        let linePath = d3_line()
             .x(d => x(d[0]))
             .y(d => y(d[1]));
+
+        switch (curve) {
+            case 'step':
+                linePath.curve(d3_curveStep);
+        }
+
+        return linePath;
     }
 
     render() {

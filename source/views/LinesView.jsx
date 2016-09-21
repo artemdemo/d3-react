@@ -17,15 +17,32 @@ export class LinesView extends Component {
             ['2017', 1030],
         ];
         return (
-            <Chart data={line}
-                   className='lines-chart'
-                   width='100%'
-                   height='500'>
-                <LineTime />
-                <Axis xTitle={line[0][0]}
-                      yTitle={line[0][1]}
-                      xScale='time' />
-            </Chart>
+            <div>
+                <p>
+                    <strong>Simple line</strong>
+                </p>
+                <Chart data={line}
+                       className='lines-chart'
+                       width='100%'
+                       height='500'>
+                    <LineTime />
+                    <Axis xTitle={line[0][0]}
+                          yTitle={line[0][1]}
+                          xScale='time' />
+                </Chart>
+                <p>
+                    <strong>Steps</strong>
+                </p>
+                <Chart data={line}
+                       className='lines-chart'
+                       width='100%'
+                       height='500'>
+                    <LineTime curve='step' />
+                    <Axis xTitle={line[0][0]}
+                          yTitle={line[0][1]}
+                          xScale='time' />
+                </Chart>
+            </div>
         );
     }
 }
