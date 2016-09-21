@@ -8,7 +8,7 @@ import { GridX } from '../components/Grid/GridX';
 
 export class LinesAreasView extends Component {
     render() {
-        const line = [
+        const mainData = [
             ['Year', 'Sales'],
             ['2000', 5500],
             ['2001', 6000],
@@ -29,17 +29,25 @@ export class LinesAreasView extends Component {
             ['2016', 6600],
             ['2017', 10300],
         ];
+
         return (
             <div>
-                <Chart data={line}
+                <Chart data={mainData}
                        className='lines-chart'
                        width='100%'
-                       height='400'>
+                       height='400'
+                       margin={{
+                           top: 20,
+                           right: 40,
+                           bottom: 30,
+                           left: 20,
+                       }}>
                     <GridX scale='time' />
-                    <LineTime area />
+                    <LineTime curve='step' area />
                     <AxisX title={line[0][0]}
                            scale='time' />
-                    <AxisY title={line[0][1]} />
+                    <AxisY title={line[0][1]}
+                           position='right' />
                 </Chart>
             </div>
         );
