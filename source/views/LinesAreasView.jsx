@@ -24,7 +24,7 @@ export class LinesAreasView extends Component {
                        className='lines-chart'
                        width='100%'
                        height='400'>
-                    <GridX />
+                    <GridX scale='time' />
                     <LineTime />
                     <AxisX title={line[0][0]}
                            scale='time' />

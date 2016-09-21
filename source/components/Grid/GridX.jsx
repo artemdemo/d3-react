@@ -18,10 +18,10 @@ export class GridX extends Component {
         const { $$data } = this.props;
         this.internalData = $$data.filter((item, index) => index !== 0);
 
-        const { $$width, $$height, xScale = 'band', timeFormat = '%Y' } = this.props;
+        const { $$width, $$height, scale = 'band', timeFormat = '%Y' } = this.props;
         let x;
 
-        switch (xScale) {
+        switch (scale) {
             case 'linear':
                 x = getScaleLinear($$width);
                 x.domain([d3_max(this.internalData, item => item[1]), 0]);

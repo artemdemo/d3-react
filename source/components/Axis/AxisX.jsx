@@ -25,16 +25,16 @@ export class AxisX extends Component {
      * @param data
      */
     createXAxis(props, data = this.internalData) {
-        const { $$width, xScale = 'band' } = props;
+        const { $$width, scale = 'band', timeFormat = '%Y' } = props;
         let x;
 
-        switch (xScale) {
+        switch (scale) {
             case 'linear':
                 x = getScaleLinear($$width);
                 x.domain([d3_max(data, item => item[1]), 0]);
                 break;
             case 'time':
-                const parseTime = d3_timeParse('%Y');
+                const parseTime = d3_timeParse(timeFormat);
                 const dataParsed = data.map(item => {
                     return [
                         parseTime(item[0]),
@@ -78,4 +78,5 @@ AxisX.propTypes = {
     data: React.PropTypes.array,
     title: React.PropTypes.string,
     scale: React.PropTypes.string,
+    timeFormat: React.PropTypes.string,
 };

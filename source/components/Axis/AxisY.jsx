@@ -24,10 +24,10 @@ export class AxisY extends Component {
      * @param data
      */
     createYAxis(props, data = this.internalData) {
-        const { $$height, yScale = 'linear' } = props;
+        const { $$height, scale = 'linear' } = props;
         let y;
 
-        switch (yScale) {
+        switch (scale) {
             case 'band':
                 y = getScaleBand($$height);
                 y.domain(data.map(item => item[0]));
