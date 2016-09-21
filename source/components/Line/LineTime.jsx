@@ -8,6 +8,12 @@ import { getScaleLinear, getScaleTime } from '../../services/axis';
  *
  * @tutorial https://bl.ocks.org/mbostock/02d893e3486c70c4475f
  * @tutorial https://bl.ocks.org/mbostock/3884955
+ *
+ * Steps line chart
+ * @tutorial http://bl.ocks.org/shimizu/f7ef798894427a99efe5e173e003260d
+ *
+ * Different curve lines
+ * @tutorial https://bl.ocks.org/d3noob/ced1b9b18bd8192d2c898884033b5529
  */
 
 import './Line.less';
