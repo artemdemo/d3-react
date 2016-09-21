@@ -46,6 +46,19 @@ export class LinesView extends Component {
                            scale='time' />
                     <AxisY title={line[0][1]} />
                 </Chart>
+
+                <p>
+                    <strong>Line with area</strong>
+                </p>
+                <Chart data={line}
+                       className='lines-chart'
+                       width='100%'
+                       height='400'>
+                    <LineTime area />
+                    <AxisX title={line[0][0]}
+                           scale='time' />
+                    <AxisY title={line[0][1]} />
+                </Chart>
             </div>
         );
     }

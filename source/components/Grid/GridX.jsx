@@ -64,7 +64,4 @@ GridX.propTypes = {
     data: React.PropTypes.array,
     scale: React.PropTypes.string,
     timeFormat: React.PropTypes.string,
-    $$data: React.PropTypes.array,
-    $$width: React.PropTypes.number,
-    $$height: React.PropTypes.number,
 };

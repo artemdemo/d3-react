@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { line as d3_line, curveStep as d3_curveStep } from 'd3-shape';
+import { line as d3_line, area as d3_area, curveStep as d3_curveStep } from 'd3-shape';
 import { max as d3_max, extent as d3_extent } from 'd3-array';
 import { getScaleLinear, getScaleTime } from '../../services/axis';
 
@@ -14,6 +14,9 @@ import { getScaleLinear, getScaleTime } from '../../services/axis';
  *
  * Different curve lines
  * @tutorial https://bl.ocks.org/d3noob/ced1b9b18bd8192d2c898884033b5529
+ *
+ * Line with area
+ * @tutorial https://bl.ocks.org/d3noob/119a138ef9bd1d8f0a8d57ea72355252
  */
 
 import './Line.less';
@@ -24,6 +27,7 @@ export class LineTime extends Component {
 
         this.state = {
             pathFunc: null,
+            areaFunc: null,
         };
     }
 
@@ -31,19 +35,15 @@ export class LineTime extends Component {
         const { $$data } = this.props;
         this.internalData = $$data.filter((item, index) => index !== 0);
 
-        this.setState({
-            pathFunc: this.createLinePath(this.props, this.internalData),
-        });
+        this.updatePaths(this.props, this.internalData);
     }
 
     componentWillReceiveProps(nextProps) {
-        this.setState({
-            pathFunc: this.createLinePath(nextProps, this.internalData),
-        });
+        this.updatePaths(nextProps, this.internalData);
     }
 
-    createLinePath(props, data = this.internalData) {
-        const { $$height, $$width, curve } = props;
+    updatePaths(props, data = this.internalData) {
+        const { $$height, $$width, curve, area } = props;
 
         const x = getScaleTime($$width);
         const y = getScaleLinear($$height);
@@ -51,16 +51,42 @@ export class LineTime extends Component {
         x.domain(d3_extent(data, item => item[0]));
         y.domain([0, d3_max(data, item => item[1])]);
 
-        let linePath = d3_line()
+        let pathFunc = d3_line()
             .x(d => x(d[0]))
             .y(d => y(d[1]));
 
-        switch (curve) {
-            case 'step':
-                linePath.curve(d3_curveStep);
+        let areaFunc = null;
+
+        if (area === true) {
+            areaFunc = d3_area()
+                .x(d => x(d[0]))
+                .y0($$height)
+                .y1(d => y(d[1]));
         }
 
-        return linePath;
+        switch (curve) {
+            case 'step':
+                pathFunc.curve(d3_curveStep);
+                if (areaFunc) {
+                    areaFunc.curve(d3_curveStep);
+                }
+        }
+
+        this.setState({
+            pathFunc,
+            areaFunc
+        });
+    }
+
+    renderArea() {
+        const { className = 'line-chart', area = false } = this.props;
+        if (area === true) {
+            return (
+                <path className={`${className}__area`}
+                      d={this.state.areaFunc(this.internalData)} />
+            );
+        }
+        return null;
     }
 
     render() {
@@ -71,8 +97,17 @@ export class LineTime extends Component {
         }
 
         return (
-            <path className={className}
-                  d={this.state.pathFunc(this.internalData)} />
+            <g className={className}>
+                {this.renderArea()}
+                <path className={`${className}__line-path`}
+                      d={this.state.pathFunc(this.internalData)} />
+            </g>
         );
     }
 }
+
+LineTime.propTypes = {
+    data: React.PropTypes.array,
+    className: React.PropTypes.string,
+    area: React.PropTypes.bool,
+};
