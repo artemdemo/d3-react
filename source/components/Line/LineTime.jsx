@@ -21,6 +21,8 @@ import { getScaleLinear, getScaleTime } from '../../services/axis';
 
 import './Line.less';
 
+const BASE_CLASS_NAME = 'line-chart';
+
 export class LineTime extends Component {
     constructor(props) {
         super(props);
@@ -44,13 +46,19 @@ export class LineTime extends Component {
     }
 
     updatePaths(props, data = this.internalData) {
-        const { $$height, $$width, curve, area } = props;
+        const {
+            $$height,
+            $$width,
+            curve,
+            area,
+            maxDomain = d3_max(data, item => item[1]),
+        } = props;
 
         const x = getScaleTime($$width);
         const y = getScaleLinear($$height);
 
         x.domain(d3_extent(data, item => item[0]));
-        y.domain([0, d3_max(data, item => item[1])]);
+        y.domain([0, maxDomain]);
 
         let pathFunc = d3_line()
             .x(d => x(d[0]))
@@ -80,7 +88,7 @@ export class LineTime extends Component {
     }
 
     renderArea() {
-        const { className = 'line-chart', area = false } = this.props;
+        const { className = BASE_CLASS_NAME, area = false } = this.props;
         if (area === true) {
             return (
                 <path className={`${className}__area`}
@@ -90,8 +98,19 @@ export class LineTime extends Component {
         return null;
     }
 
+    renderLine() {
+        const { className = BASE_CLASS_NAME, line = true } = this.props;
+        if (line === true) {
+            return (
+                <path className={`${className}__line-path`}
+                      d={this.state.pathFunc(this.internalData)} />
+            );
+        }
+        return null;
+    }
+
     render() {
-        const { className = 'line-chart' } = this.props;
+        const { className = BASE_CLASS_NAME } = this.props;
 
         if (!this.state.pathFunc) {
             return null;
@@ -100,8 +119,7 @@ export class LineTime extends Component {
         return (
             <g className={className}>
                 {this.renderArea()}
-                <path className={`${className}__line-path`}
-                      d={this.state.pathFunc(this.internalData)} />
+                {this.renderLine()}
             </g>
         );
     }
@@ -111,4 +129,6 @@ LineTime.propTypes = {
     data: React.PropTypes.array,
     className: React.PropTypes.string,
     area: React.PropTypes.bool,
+    line: React.PropTypes.bool,
+    maxDomain: React.PropTypes.number,
 };

@@ -1,11 +1,32 @@
 .line-chart-books__line-path {
     fill: none;
-    stroke: #2a7931;
-    stroke-width: 1.5px;
+    stroke: none;
 }
 
 .line-chart-books__area {
-    fill: #57ff89;
+    fill: #2bb42a;
     stroke: none;
-    opacity: 0.5;
+    opacity: 1;
+}
+
+.line-chart-laptops__line-path {
+    fill: none;
+    stroke: none;
+}
+
+.line-chart-laptops__area {
+    fill: #e0cf42;
+    stroke: none;
+    opacity: 1;
+}
+
+@axis-color: #a1591e;
+
+.chart-axis-short-domain {
+    path, line {
+        stroke: @axis-color;
+    }
+    text {
+        fill: @axis-color;
+    }
 }

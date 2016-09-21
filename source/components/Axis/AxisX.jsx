@@ -56,11 +56,11 @@ export class AxisX extends Component {
 
     render() {
         const { $$height = 0, $$width = 0 } = this.props;
-        const { title = '' } = this.props;
+        const { title = '', className = 'chart-axis chart-axis_x' } = this.props;
 
         return (
             <g ref={(el) => this.xGroup = el}
-               className='chart-axis chart-axis_x'
+               className={className}
                transform={`translate(0, ${$$height})`}>
                 <text transform={`translate(${$$width / 2}, 0)`}
                       className='chart-axis__title'
@@ -77,6 +77,7 @@ export class AxisX extends Component {
 AxisX.propTypes = {
     data: React.PropTypes.array,
     title: React.PropTypes.string,
+    className: React.PropTypes.string,
     scale: React.PropTypes.string,
     timeFormat: React.PropTypes.string,
 };

@@ -25,7 +25,12 @@ export class AxisY extends Component {
      * @param data
      */
     createYAxis(props, data = this.internalData) {
-        const { $$height, scale = 'linear', position = 'left' } = props;
+        const {
+            $$height,
+            scale = 'linear',
+            position = 'left',
+            maxDomain = d3_max(data, item => item[1]),
+        } = props;
         let y;
         let axisPosition;
 
@@ -37,7 +42,7 @@ export class AxisY extends Component {
             case 'linear':
             default:
                 y = getScaleLinear($$height);
-                y.domain([0, d3_max(data, item => item[1])]);
+                y.domain([0, maxDomain]);
         }
 
         switch (position) {
@@ -54,7 +59,7 @@ export class AxisY extends Component {
     }
 
     render() {
-        const { title = '', position = 'left', $$width } = this.props;
+        const { title = '', position = 'left', className = 'chart-axis chart-axis_y', $$width } = this.props;
         let groupTransform;
         let textY;
 
@@ -71,7 +76,7 @@ export class AxisY extends Component {
 
         return (
             <g ref={(el) => this.yGroup = el}
-               className='chart-axis chart-axis_y'
+               className={className}
                transform={groupTransform}>
                 <text transform='rotate(-90)'
                       className='chart-axis__title'
@@ -88,6 +93,9 @@ export class AxisY extends Component {
 AxisY.propTypes = {
     data: React.PropTypes.array,
     title: React.PropTypes.string,
+    className : React.PropTypes.string,
     scale: React.PropTypes.string,
     position: React.PropTypes.string,
+    maxDomain: React.PropTypes.number,
+    minDomain: React.PropTypes.number,
 };

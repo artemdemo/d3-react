@@ -11,30 +11,35 @@ import './LinesAreasView.less';
 export class LinesAreasView extends Component {
     render() {
         const mainData = [
-            ['Year', 'Sales', 'Books'],
-            ['2000', 5500, 100],
-            ['2001', 6000, 10],
-            ['2002', 5070, 300],
-            ['2003', 7000, 400],
-            ['2004', 10900, 0],
-            ['2005', 9080, 0],
-            ['2006', 8650, 300],
-            ['2007', 6100, 210],
-            ['2008', 7800, 50],
-            ['2009', 5200, 0],
-            ['2010', 7800, 0],
-            ['2011', 6300, 0],
-            ['2012', 6900, 200],
-            ['2013', 5100, 300],
-            ['2014', 4800, 500],
-            ['2015', 7700, 100],
-            ['2016', 6600, 180],
-            ['2017', 10300, 250],
+            ['Year', 'Sales', 'Books', 'Laptops'],
+            ['2000', 5500, 100, 150],
+            ['2001', 6000, 10, 0],
+            ['2002', 5070, 300, 0],
+            ['2003', 7000, 400, 200],
+            ['2004', 10900, 0, 300],
+            ['2005', 9080, 0, 170],
+            ['2006', 8650, 300, 100],
+            ['2007', 6100, 210, 200],
+            ['2008', 7800, 50, 150],
+            ['2009', 5200, 0, 170],
+            ['2010', 7800, 0, 250],
+            ['2011', 6300, 0, 400],
+            ['2012', 6900, 200, 0],
+            ['2013', 5100, 300, 50],
+            ['2014', 4800, 500, 200],
+            ['2015', 7700, 100, 470],
+            ['2016', 6600, 180, 100],
+            ['2017', 10300, 250, 300],
         ];
 
         const booksData = mainData.map(item => [
             item[0],
             item[2],
+        ]);
+
+        const laptopsData = mainData.map(item => [
+            item[0],
+            item[3],
         ]);
 
         return (
@@ -51,11 +56,25 @@ export class LinesAreasView extends Component {
                        }}>
                     <GridX scale='time' />
                     <LineTime curve='step' area />
-                    <LineTime className='line-chart-books' data={booksData} curve='step' area />
+                    <LineTime className='line-chart-laptops'
+                              data={laptopsData}
+                              curve='step'
+                              maxDomain={2500}
+                              line={false}
+                              area />
+                    <LineTime className='line-chart-books'
+                              data={booksData}
+                              curve='step'
+                              maxDomain={2500}
+                              line={false}
+                              area />
                     <AxisX title={mainData[0][0]}
                            scale='time' />
                     <AxisY position='right' />
-                    <AxisY position='left' data={booksData} />
+                    <AxisY position='left'
+                           data={booksData}
+                           className='chart-axis-short-domain'
+                           maxDomain={2500} />
                 </Chart>
             </div>
         );
