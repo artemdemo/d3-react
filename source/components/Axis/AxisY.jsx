@@ -8,8 +8,9 @@ import './Axis.less';
 
 export class AxisY extends Component {
     componentDidMount() {
-        const { $$data } = this.props;
-        this.internalData = $$data.filter((item, index) => index !== 0);
+        const { $$data, data } = this.props;
+        const selectedData = data || $$data;
+        this.internalData = selectedData.filter((item, index) => index !== 0);
 
         this.createYAxis(this.props, this.internalData);
     }

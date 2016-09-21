@@ -15,8 +15,9 @@ import './Grid.less';
 
 export class GridX extends Component {
     componentDidMount() {
-        const { $$data } = this.props;
-        this.internalData = $$data.filter((item, index) => index !== 0);
+        const { $$data, data } = this.props;
+        const selectedData = data || $$data;
+        this.internalData = selectedData.filter((item, index) => index !== 0);
 
         const { $$width, $$height, scale = 'band', timeFormat = '%Y' } = this.props;
         let x;
