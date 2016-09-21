@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 
 import { Chart } from '../components/Chart/Chart';
-import { Axis } from '../components/Axis/Axis';
+import { AxisX } from '../components/Axis/AxisX';
+import { AxisY } from '../components/Axis/AxisY';
 import { LineTime } from '../components/Line/LineTime';
 import { GridX } from '../components/Grid/GridX';
 
@@ -25,12 +26,12 @@ export class LinesView extends Component {
                 <Chart data={line}
                        className='lines-chart'
                        width='100%'
-                       height='500'>
+                       height='400'>
                     <GridX />
                     <LineTime />
-                    <Axis xTitle={line[0][0]}
-                          yTitle={line[0][1]}
-                          xScale='time' />
+                    <AxisX title={line[0][0]}
+                           scale='time' />
+                    <AxisY title={line[0][1]} />
                 </Chart>
 
                 <p>
@@ -39,11 +40,11 @@ export class LinesView extends Component {
                 <Chart data={line}
                        className='lines-chart'
                        width='100%'
-                       height='500'>
+                       height='400'>
                     <LineTime curve='step' />
-                    <Axis xTitle={line[0][0]}
-                          yTitle={line[0][1]}
-                          xScale='time' />
+                    <AxisX title={line[0][0]}
+                           scale='time' />
+                    <AxisY title={line[0][1]} />
                 </Chart>
             </div>
         );

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 
 import { Chart } from '../components/Chart/Chart';
-import { Axis } from '../components/Axis/Axis';
+import { AxisX } from '../components/Axis/AxisX';
+import { AxisY } from '../components/Axis/AxisY';
 import { Columns } from '../components/Columns/Columns';
 
 import './ColumnsView.less';
@@ -24,8 +25,8 @@ export class ColumnsView extends Component {
                        className='columns-chart'
                        width='100%'
                        height='100%'>
-                    <Axis xTitle={columns[0][0]}
-                          yTitle={columns[0][1]} />
+                    <AxisX title={columns[0][0]} />
+                    <AxisY title={columns[0][1]} />
                     <Columns />
                 </Chart>
             </div>

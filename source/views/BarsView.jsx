@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 
 import { Chart } from '../components/Chart/Chart';
-import { Axis } from '../components/Axis/Axis';
+import { AxisX } from '../components/Axis/AxisX';
+import { AxisY } from '../components/Axis/AxisY';
 import { Bars } from '../components/Bars/Bars';
 
 export class BarsView extends Component {
@@ -22,10 +23,8 @@ export class BarsView extends Component {
                    width='100%'
                    height='500'>
                 <Bars />
-                <Axis xTitle={bars[0][1]}
-                      yTitle={bars[0][0]}
-                      xScale='linear'
-                      yScale='band' />
+                <AxisX title={bars[0][0]} scale='linear' />
+                <AxisY title={bars[0][1]} scale='band' />
             </Chart>
         );
     }
