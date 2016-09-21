@@ -22,6 +22,11 @@ export class AppView extends Component {
                 <p>
                     Combined charts
                 </p>
+                <ul>
+                    <li>
+                        <Link to='/lines-areas'>Lines with Areas</Link>
+                    </li>
+                </ul>
 
                 {this.props.children}
             </div>

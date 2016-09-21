@@ -12,6 +12,7 @@ import { MainView } from './views/MainView';
 import { ColumnsView } from './views/ColumnsView';
 import { BarsView } from './views/BarsView';
 import { LinesView } from './views/LinesView';
+import { LinesAreasView } from './views/LinesAreasView';
 
 
 render(
@@ -22,6 +23,7 @@ render(
                 <Route path='columns' component={ColumnsView} />
                 <Route path='bars' component={BarsView} />
                 <Route path='lines' component={LinesView} />
+                <Route path='lines-areas' component={LinesAreasView} />
             </Route>
         </Router>
     </Provider>,
