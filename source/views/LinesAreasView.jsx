@@ -5,6 +5,7 @@ import { AxisX } from '../components/Axis/AxisX';
 import { AxisY } from '../components/Axis/AxisY';
 import { LineTime } from '../components/Line/LineTime';
 import { GridX } from '../components/Grid/GridX';
+import { GridY } from '../components/Grid/GridY';
 
 import './LinesAreasView.less';
 
@@ -54,7 +55,8 @@ export class LinesAreasView extends Component {
                            bottom: 30,
                            left: 40,
                        }}>
-                    <GridX scale='time' />
+                    <GridX scale='time' ticks={10} />
+                    <GridY scale='linear' ticks={10} maxDomain={2500} />
                     <LineTime curve='step' area />
                     <LineTime className='line-chart-laptops'
                               data={laptopsData}
