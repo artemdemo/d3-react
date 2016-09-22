@@ -47,11 +47,11 @@ export class ColumnsView extends Component {
 
                 <div className='columns-chart-container'>
                     <Chart data={groupedColumns}
-                           className='columns-chart'
+                           className='grouped-columns-chart'
                            width='100%'
                            height='100%'>
-                        <AxisX title={columns[0][0]} />
-                        <AxisY title={columns[0][1]} />
+                        <AxisX title={groupedColumns[0][0]} />
+                        <AxisY title={groupedColumns[0][1]} />
                         <GroupedColumns />
                     </Chart>
                 </div>

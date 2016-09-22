@@ -17,18 +17,20 @@ import './Columns.less';
 
 export class GroupedColumns extends Component {
     componentDidMount() {
-        const { $$data, $$height } = this.props;
-        this.columnTitles = $$data.shift();
-        this.columnTitles.shift();
+        const { $$data, data, $$height } = this.props;
+        const selectedData = data || $$data;
+
+        this.columnTitles = selectedData[0];
+        this.columnTitles = this.columnTitles.slice(1);
 
         this.rowTitles = [];
 
-        this.internalData = $$data
+        this.internalData = selectedData.slice(1)
             .map(columns => {
                 const result = [];
-                const rowTitle = columns.shift();
+                const rowTitle = columns[0];
                 this.rowTitles.push(rowTitle);
-                columns.forEach((value, index) => result.push({
+                columns.slice(1).forEach((value, index) => result.push({
                     name: this.columnTitles[index],
                     value,
                 }));
@@ -85,7 +87,7 @@ export class GroupedColumns extends Component {
         const xGroups = getScaleBand($$width);
         xGroups.domain(this.rowTitles);
 
-        const xGroupItems = getScaleBand(xGroups.bandwidth(), {innerPadding: 0.05});
+        const xGroupItems = getScaleBand(xGroups.bandwidth(), {innerPadding: 0});
         xGroupItems.domain(this.columnTitles);
 
         const y = getScaleLinear($$height);
