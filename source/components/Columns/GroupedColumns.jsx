@@ -3,7 +3,6 @@ import { max as d3_max } from 'd3-array';
 import { select as d3_select } from 'd3-selection';
 import { getScaleBand, getScaleLinear, getClassesScale } from '../../services/scales';
 
-
 /**
  * Grouped columns chart
  *
@@ -44,7 +43,7 @@ export class GroupedColumns extends Component {
 
         const { xGroups, xGroupItems, y } = this.createAxisScale(this.props, this.internalData);
 
-        d3_select(this.columsGroup)
+        d3_select(this.columnsGroup)
             .selectAll('.columns-group')
             .data(this.internalData)
             .enter().append('g')
@@ -67,7 +66,7 @@ export class GroupedColumns extends Component {
         const { $$height } = nextProps;
         const { xGroups, xGroupItems, y } = this.createAxisScale(nextProps);
 
-        d3_select(this.columsGroup)
+        d3_select(this.columnsGroup)
             .selectAll('.columns-group')
             .data(this.internalData)
             .attr('transform', d => `translate(${xGroups(d.rowTitle)}, 0)`)
@@ -98,7 +97,7 @@ export class GroupedColumns extends Component {
 
     render() {
         return (
-            <g ref={(el) => this.columsGroup = el} />
+            <g ref={(el) => this.columnsGroup = el} />
         );
     }
 }
