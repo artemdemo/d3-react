@@ -20,15 +20,20 @@ export class Legend extends Component {
     }
 
     render() {
-        const { $$height } = this.props;
+        const { $$height, itemWidth = 50, marginTop = 0 } = this.props;
         return (
             <g className='chart-legend'
-               transform={`translate(0, ${$$height + 30})`}>
+               transform={`translate(0, ${$$height + marginTop})`}>
                 {this.state.titles.map((title, index) => (
-                    <text transform={`translate(${50 * index}, 0)`}
+                    <text transform={`translate(${itemWidth * index}, 0)`}
                           key={`title-${index}`}>{title}</text>
                 ))}
             </g>
         );
     }
 }
+
+Legend.propTypes = {
+    itemWidth: React.PropTypes.number,
+    marginTop: React.PropTypes.number,
+};

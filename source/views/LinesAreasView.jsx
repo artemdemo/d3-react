@@ -53,7 +53,7 @@ export class LinesAreasView extends Component {
                        margin={{
                            top: 20,
                            right: 40,
-                           bottom: 40,
+                           bottom: 50,
                            left: 40,
                        }}>
                     <GridX scale='time' ticks={10} />
@@ -78,7 +78,7 @@ export class LinesAreasView extends Component {
                            data={booksData}
                            className='chart-axis-short-domain'
                            maxDomain={2500} />
-                    <Legend />
+                    <Legend itemWidth={50} marginTop={40} />
                 </Chart>
             </div>
         );
