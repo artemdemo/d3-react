@@ -1,5 +1,6 @@
 import {
     scaleBand as d3_scaleBand,
+    scaleOrdinal as d3_scaleOrdinal,
     scaleLinear as d3_scaleLinear,
     scaleTime as d3_scaleTime,
 } from 'd3-scale';
@@ -31,9 +32,22 @@ export const getScaleLinear = (height) => {
 
 /**
  * Create a time based linear scale
- * @param width {width}
+ * @param width {number}
  * @returns {*}
  */
 export const getScaleTime = (width) => {
     return d3_scaleTime().range([0, width]);
+};
+
+/**
+ * Create ordinal scale of classes
+ * @param baseClass {string}
+ * @param domain {array} array of items
+ * @returns {*}
+ */
+export const getClassesScale = (baseClass, domain) => {
+    const alphabet = 'abcdefghijklmnopqrstuvwxyz'.split('').map(letter => `${baseClass}_${letter}`);
+    return d3_scaleOrdinal()
+        .domain(domain)
+        .range(alphabet.slice(0, domain.length));
 };

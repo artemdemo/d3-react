@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { line as d3_line, area as d3_area, curveStep as d3_curveStep } from 'd3-shape';
 import { max as d3_max, extent as d3_extent } from 'd3-array';
-import { getScaleLinear, getScaleTime } from '../../services/axis';
+import { getScaleLinear, getScaleTime } from '../../services/scales';
 
 /**
  * Line chart

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { axisLeft as d3_axisLeft, axisRight as d3_axisRight } from 'd3-axis';
 import { max as d3_max } from 'd3-array';
 import { select as d3_select } from 'd3-selection';
-import { getScaleBand, getScaleLinear } from '../../services/axis';
+import { getScaleBand, getScaleLinear } from '../../services/scales';
 
 import './Axis.less';
 

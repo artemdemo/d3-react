@@ -3,7 +3,7 @@ import { axisBottom as d3_axisBottom } from 'd3-axis';
 import { max as d3_max, extent as d3_extent } from 'd3-array';
 import { select as d3_select } from 'd3-selection';
 import { timeParse as d3_timeParse } from 'd3-time-format';
-import { getScaleBand, getScaleLinear, getScaleTime } from '../../services/axis';
+import { getScaleBand, getScaleLinear, getScaleTime } from '../../services/scales';
 
 import './Axis.less';
 

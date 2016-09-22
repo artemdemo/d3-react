@@ -18,6 +18,12 @@ const data = [
 ];
 ```
 
+## Examples
+
+* Zoom
+  http://bl.ocks.org/mbostock/431a331294d2b5ddd33f947cf4c81319
+  
+
 ## Charts for inspiration
 
 http://www.anychart.com/products/anychart/gallery/
