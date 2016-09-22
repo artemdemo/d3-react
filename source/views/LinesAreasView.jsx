@@ -6,6 +6,7 @@ import { AxisY } from '../components/Axis/AxisY';
 import { LineTime } from '../components/Line/LineTime';
 import { GridX } from '../components/Grid/GridX';
 import { GridY } from '../components/Grid/GridY';
+import { Legend } from '../components/Legend/Legend';
 
 import './LinesAreasView.less';
 
@@ -52,7 +53,7 @@ export class LinesAreasView extends Component {
                        margin={{
                            top: 20,
                            right: 40,
-                           bottom: 30,
+                           bottom: 40,
                            left: 40,
                        }}>
                     <GridX scale='time' ticks={10} />
@@ -77,6 +78,7 @@ export class LinesAreasView extends Component {
                            data={booksData}
                            className='chart-axis-short-domain'
                            maxDomain={2500} />
+                    <Legend />
                 </Chart>
             </div>
         );
