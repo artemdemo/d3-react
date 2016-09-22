@@ -18,11 +18,16 @@ const data = [
 ];
 ```
 
+## ToDo
+
+* Tooltip (like C3)
+* Legend
+
 ## Examples
 
 * Zoom
   http://bl.ocks.org/mbostock/431a331294d2b5ddd33f947cf4c81319
-  
+
 
 ## Charts for inspiration
 
