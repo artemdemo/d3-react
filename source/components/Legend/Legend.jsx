@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { linefyName } from '../../services/utils';
+import { LegendItem } from './LegendItem';
 
 import './Legend.less';
 
@@ -8,7 +10,7 @@ export class Legend extends Component {
 
         this.state = {
             titles: [],
-        }
+        };
     }
 
     componentDidMount() {
@@ -20,13 +22,16 @@ export class Legend extends Component {
     }
 
     render() {
-        const { $$height, itemWidth = 50, marginTop = 0 } = this.props;
+        const { $$height, itemWidth = 50, marginTop = 0, className = 'chart-legend' } = this.props;
         return (
-            <g className='chart-legend'
+            <g className={className}
                transform={`translate(0, ${$$height + marginTop})`}>
                 {this.state.titles.map((title, index) => (
-                    <text transform={`translate(${itemWidth * index}, 0)`}
-                          key={`title-${index}`}>{title}</text>
+                    <LegendItem text={title}
+                                className={className}
+                                indexName={linefyName(title)}
+                                transform={`translate(${itemWidth * index}, 0)`}
+                                key={`title-${index}`} />
                 ))}
             </g>
         );
@@ -36,4 +41,5 @@ export class Legend extends Component {
 Legend.propTypes = {
     itemWidth: React.PropTypes.number,
     marginTop: React.PropTypes.number,
+    className: React.PropTypes.string,
 };

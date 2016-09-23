@@ -4,13 +4,14 @@ import {
     scaleLinear as d3_scaleLinear,
     scaleTime as d3_scaleTime,
 } from 'd3-scale';
+import { createAlphabetList } from './utils';
 
 /**
  * Create an ordinal band scale
- * @param width {number}
- * @param options {object}
- * @param options.innerPadding {number}
- * @param options.outerPadding {number}
+ * @param width {Number}
+ * @param options {Object}
+ * @param options.innerPadding {Number}
+ * @param options.outerPadding {Number}
  * @return {*}
  */
 export const getScaleBand = (width, options = {}) => {
@@ -23,7 +24,7 @@ export const getScaleBand = (width, options = {}) => {
 
 /**
  * Create a quantitative linear scale
- * @param height {number}
+ * @param height {Number}
  * @return {*}
  */
 export const getScaleLinear = (height) => {
@@ -32,7 +33,7 @@ export const getScaleLinear = (height) => {
 
 /**
  * Create a time based linear scale
- * @param width {number}
+ * @param width {Number}
  * @returns {*}
  */
 export const getScaleTime = (width) => {
@@ -41,13 +42,12 @@ export const getScaleTime = (width) => {
 
 /**
  * Create ordinal scale of classes
- * @param baseClass {string}
- * @param domain {array} array of items
+ * @param baseClass {String}
+ * @param domain {Array} array of items
  * @returns {*}
  */
 export const getClassesScale = (baseClass, domain) => {
-    const alphabet = 'abcdefghijklmnopqrstuvwxyz'.split('').map(letter => `${baseClass}_${letter}`);
     return d3_scaleOrdinal()
         .domain(domain)
-        .range(alphabet.slice(0, domain.length));
+        .range(createAlphabetList(baseClass, domain.length));
 };

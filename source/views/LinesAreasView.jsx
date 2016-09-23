@@ -99,7 +99,7 @@ export class LinesAreasView extends Component {
                            data={booksData}
                            className='chart-axis-short-domain'
                            maxDomain={maxDomain} />
-                    <Legend itemWidth={50} marginTop={40} />
+                    <Legend itemWidth={50} marginTop={30} />
                 </Chart>
             </div>
         );

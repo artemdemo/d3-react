@@ -17,3 +17,27 @@ export function throttle(fn, threshhold = 250, scope) {
         }
     };
 }
+
+
+/**
+ * Create list of classes based on alphabet
+ * @param baseClass
+ * @param length {Number}
+ * @return {Array}
+ */
+export function createAlphabetList(baseClass, length = 0) {
+    const alphabet = 'abcdefghijklmnopqrstuvwxyz'.split('').map(letter => `${baseClass}_${letter}`);
+    return length > 0 ? alphabet.slice(0, length) : alphabet;
+}
+
+/**
+ * Remove prohibited characters from the string - make it useful for class name in html.
+ * Also convert spaces to underscore.
+ * @param name {String}
+ * @return {String}
+ * @example
+ * linefyName('Name of the Class') -> name_of_the_class
+ */
+export function linefyName(name) {
+    return name.toLowerCase().trim().replace(/[^a-z1-9\s]+/g, '').replace(/\s+/g, '_');
+}
