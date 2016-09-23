@@ -30,7 +30,7 @@ export class GridY extends Component {
         const {
             $$width,
             $$height,
-            scale = 'band',
+            scale = 'linear',
             timeFormat = '%Y',
             ticks = 10,
             maxDomain = d3_max(data, item => item[1])

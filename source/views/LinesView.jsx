@@ -5,6 +5,7 @@ import { AxisX } from '../d3-chart/components/Axis/AxisX';
 import { AxisY } from '../d3-chart/components/Axis/AxisY';
 import { LineTime } from '../d3-chart/components/Line/LineTime';
 import { GridX } from '../d3-chart/components/Grid/GridX';
+import { GridY } from '../d3-chart/components/Grid/GridY';
 
 export class LinesView extends Component {
     render() {
@@ -41,6 +42,7 @@ export class LinesView extends Component {
                        className='lines-chart'
                        width='100%'
                        height='400'>
+                    <GridY scale='linear' ticks={5} />
                     <LineTime curve='step' />
                     <AxisX title={line[0][0]}
                            scale='time' />

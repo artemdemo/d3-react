@@ -20,8 +20,11 @@ const data = [
 
 ## ToDo
 
+* Dots chart
+* Donut chart
+* Percentage bar chart
+* Grouped bars chart
 * Tooltip (like C3)
-* Legend
 
 ## Examples
 
