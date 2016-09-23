@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { max as d3_max } from 'd3-array';
 import { select as d3_select } from 'd3-selection';
+import { linefyName } from '../../services/utils';
 import { getScaleBand, getScaleLinear, getClassesScale } from '../../services/scales';
 
 /**
@@ -39,7 +40,7 @@ export class GroupedColumns extends Component {
                 };
             });
 
-        this.groupClassesScale = getClassesScale('column', this.columnTitles);
+        this.groupClassesScale = getClassesScale(this.columnTitles.map(item => `column_${linefyName(item)}`));
 
         const { xGroups, xGroupItems, y } = this.createAxisScale(this.props, this.internalData);
 

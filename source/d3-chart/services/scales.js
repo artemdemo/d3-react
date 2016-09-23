@@ -4,7 +4,6 @@ import {
     scaleLinear as d3_scaleLinear,
     scaleTime as d3_scaleTime,
 } from 'd3-scale';
-import { createAlphabetList } from './utils';
 
 /**
  * Create an ordinal band scale
@@ -42,12 +41,11 @@ export const getScaleTime = (width) => {
 
 /**
  * Create ordinal scale of classes
- * @param baseClass {String}
  * @param domain {Array} array of items
  * @returns {*}
  */
-export const getClassesScale = (baseClass, domain) => {
+export const getClassesScale = (domain) => {
     return d3_scaleOrdinal()
         .domain(domain)
-        .range(createAlphabetList(baseClass, domain.length));
+        .range(domain);
 };
