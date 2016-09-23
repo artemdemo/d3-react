@@ -12,10 +12,6 @@ import { getScaleBand, getScaleLinear } from '../../services/scales';
 import './Columns.less';
 
 export class Columns extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     componentDidMount() {
         const { $$data, $$height } = this.props;
 
@@ -24,7 +20,7 @@ export class Columns extends Component {
 
         const { x, y } = this.createAxisScale(this.props, this.internalData);
 
-        d3_select(this.columsGroup).selectAll('.column')
+        d3_select(this.columnsGroup).selectAll('.column')
             .data(this.internalData)
             .enter().append('rect')
             .attr('class', 'column')
@@ -38,7 +34,7 @@ export class Columns extends Component {
         const { $$height } = nextProps;
         const { x, y } = this.createAxisScale(nextProps);
 
-        d3_select(this.columsGroup).selectAll('.column')
+        d3_select(this.columnsGroup).selectAll('.column')
             .data(this.internalData)
             .attr('x', d => x(d[0]))
             .attr('y', d => y(d[1]))
@@ -60,7 +56,7 @@ export class Columns extends Component {
 
     render() {
         return (
-            <g ref={(el) => this.columsGroup = el} />
+            <g ref={(el) => this.columnsGroup = el} />
         );
     }
 }
