@@ -18,6 +18,9 @@ export class AppView extends Component {
                     <li>
                         <Link to='/lines'>Lines</Link>
                     </li>
+                    <li>
+                        <Link to='/legend'>Legend</Link>
+                    </li>
                 </ul>
                 <p>
                     Combined charts
