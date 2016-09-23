@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { marginShape } from '../../propTypes';
 import { linefyName } from '../../services/utils';
 import { LegendItem } from './LegendItem';
 
@@ -75,12 +76,7 @@ export class Legend extends Component {
 Legend.propTypes = {
     itemWidth: React.PropTypes.number,
     itemHeight: React.PropTypes.number,
-    margin: React.PropTypes.shape({
-        top: React.PropTypes.number,
-        right: React.PropTypes.number,
-        bottom: React.PropTypes.number,
-        left: React.PropTypes.number,
-    }),
+    margin: marginShape,
     className: React.PropTypes.string,
     orientation: React.PropTypes.oneOf(['horizontal', 'vertical']),
 };

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { marginShape } from '../../propTypes';
 import { throttle } from '../../services/utils';
 
 export class Chart extends Component {
@@ -80,12 +81,7 @@ export class Chart extends Component {
 
 Chart.propTypes = {
     data: React.PropTypes.any.isRequired,
-    margin: React.PropTypes.shape({
-        top: React.PropTypes.number,
-        right: React.PropTypes.number,
-        bottom: React.PropTypes.number,
-        left: React.PropTypes.number,
-    }),
+    margin: marginShape,
     className: React.PropTypes.string,
     width: React.PropTypes.string,
     height: React.PropTypes.string,
