@@ -5,6 +5,7 @@ import { AxisX } from '../d3-chart/components/Axis/AxisX';
 import { AxisY } from '../d3-chart/components/Axis/AxisY';
 import { Columns } from '../d3-chart/components/Columns/Columns';
 import { GroupedColumns } from '../d3-chart/components/Columns/GroupedColumns';
+import { Legend } from '../d3-chart/components/Legend/Legend';
 
 import './ColumnsView.less';
 
@@ -52,6 +53,10 @@ export class ColumnsView extends Component {
                            height='100%'>
                         <AxisX title={groupedColumns[0][0]} />
                         <AxisY title={groupedColumns[0][1]} />
+                        <Legend itemWidth={60}
+                                margin={{left: 30, top: 10}}
+                                orientation='vertical'
+                                className='chart-legend-columns' />
                         <GroupedColumns />
                     </Chart>
                 </div>

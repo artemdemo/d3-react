@@ -36,11 +36,20 @@ export class LegendView extends Component {
                         <AxisX title={mainData[0][0]} />
                         <AxisY title={mainData[0][1]} />
                         <Legend itemWidth={60}
+                                className='chart-legend-example'
                                 margin={{top: 10, left: 30 }}
-                                orientation='vertical'
-                                className='chart-legend-columns' />
+                                orientation='vertical' />
                         <Legend itemWidth={60}
-                                margin={{bottom: -30}}
+                                className='chart-legend-example'
+                                margin={{top: 10, right: 30 }}
+                                orientation='horizontal' />
+                        <Legend itemWidth={60}
+                                className='chart-legend-example'
+                                margin={{bottom: 1, right: 30 }}
+                                orientation='vertical' />
+                        <Legend itemWidth={60}
+                                className='chart-legend-example'
+                                margin={{bottom: -50}}
                                 orientation='horizontal' />
                     </Chart>
                 </div>
