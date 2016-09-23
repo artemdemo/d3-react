@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 
-import { Chart } from '../components/Chart/Chart';
-import { AxisX } from '../components/Axis/AxisX';
-import { AxisY } from '../components/Axis/AxisY';
-import { Bars } from '../components/Bars/Bars';
+import { Chart } from '../d3-chart/components/Chart/Chart';
+import { AxisX } from '../d3-chart/components/Axis/AxisX';
+import { AxisY } from '../d3-chart/components/Axis/AxisY';
+import { Bars } from '../d3-chart/components/Bars/Bars';
 
 export class BarsView extends Component {
     render() {

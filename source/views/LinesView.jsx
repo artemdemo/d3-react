@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 
-import { Chart } from '../components/Chart/Chart';
-import { AxisX } from '../components/Axis/AxisX';
-import { AxisY } from '../components/Axis/AxisY';
-import { LineTime } from '../components/Line/LineTime';
-import { GridX } from '../components/Grid/GridX';
+import { Chart } from '../d3-chart/components/Chart/Chart';
+import { AxisX } from '../d3-chart/components/Axis/AxisX';
+import { AxisY } from '../d3-chart/components/Axis/AxisY';
+import { LineTime } from '../d3-chart/components/Line/LineTime';
+import { GridX } from '../d3-chart/components/Grid/GridX';
 
 export class LinesView extends Component {
     render() {
