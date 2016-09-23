@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import _ from 'underscore';
 
 import { Chart } from '../components/Chart/Chart';
 import { AxisX } from '../components/Axis/AxisX';
@@ -44,6 +45,24 @@ export class LinesAreasView extends Component {
             item[3],
         ]);
 
+        const salesList = [];
+        const booksList = [];
+        const laptopsList = [];
+
+        mainData.forEach((row, index) => {
+            if (index !== 0) {
+                salesList.push(row[1]);
+                booksList.push(row[2]);
+                laptopsList.push(row[3]);
+            }
+        });
+
+        const maxDomain = _.max([
+            _.min(salesList),
+            _.max(booksList),
+            _.max(laptopsList),
+        ]);
+
         return (
             <div>
                 <Chart data={mainData}
@@ -57,18 +76,20 @@ export class LinesAreasView extends Component {
                            left: 40,
                        }}>
                     <GridX scale='time' ticks={10} />
-                    <GridY scale='linear' ticks={10} maxDomain={2500} />
+                    <GridY scale='linear'
+                           ticks={10}
+                           maxDomain={maxDomain} />
                     <LineTime curve='step' area />
                     <LineTime className='line-chart-laptops'
                               data={laptopsData}
                               curve='step'
-                              maxDomain={2500}
+                              maxDomain={maxDomain}
                               line={false}
                               area />
                     <LineTime className='line-chart-books'
                               data={booksData}
                               curve='step'
-                              maxDomain={2500}
+                              maxDomain={maxDomain}
                               line={false}
                               area />
                     <AxisX title={mainData[0][0]}
@@ -77,7 +98,7 @@ export class LinesAreasView extends Component {
                     <AxisY position='left'
                            data={booksData}
                            className='chart-axis-short-domain'
-                           maxDomain={2500} />
+                           maxDomain={maxDomain} />
                     <Legend itemWidth={50} marginTop={40} />
                 </Chart>
             </div>
