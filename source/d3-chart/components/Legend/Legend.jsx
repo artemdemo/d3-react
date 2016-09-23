@@ -22,13 +22,28 @@ export class Legend extends Component {
     }
 
     render() {
-        const { $$height, itemWidth = 50, marginTop = 0, className = 'chart-legend' } = this.props;
+        const { $$height, $$width, itemWidth = 50, margin, className = '', orientation = 'vertical' } = this.props;
+        const updatedMargin = Object.assign({
+            top: 0,
+            right: 0,
+            bottom: 0,
+            left: 0,
+        }, margin);
+        const marginTop = updatedMargin.bottom !== 0 ? $$height - updatedMargin.bottom : updatedMargin.top;
+
+        let marginLeft;
+        if (updatedMargin.right > 0) {
+            marginLeft = $$width - updatedMargin.right;
+            marginLeft -= orientation === 'horizontal' ? itemWidth * this.state.titles.length : itemWidth;
+        } else {
+            marginLeft = updatedMargin.left;
+        }
         return (
-            <g className={className}
-               transform={`translate(0, ${$$height + marginTop})`}>
+            <g className={`chart-legend ${className}`}
+               transform={`translate(${marginLeft}, ${marginTop})`}>
                 {this.state.titles.map((title, index) => (
                     <LegendItem text={title}
-                                className={className}
+                                className={className === '' ? 'chart-legend' : className}
                                 indexName={linefyName(title)}
                                 transform={`translate(${itemWidth * index}, 0)`}
                                 key={`title-${index}`} />
@@ -40,6 +55,12 @@ export class Legend extends Component {
 
 Legend.propTypes = {
     itemWidth: React.PropTypes.number,
-    marginTop: React.PropTypes.number,
+    margin: React.PropTypes.shape({
+        top: React.PropTypes.number,
+        right: React.PropTypes.number,
+        bottom: React.PropTypes.number,
+        left: React.PropTypes.number,
+    }),
     className: React.PropTypes.string,
+    orientation: React.PropTypes.oneOf(['horizontal', 'vertical']),
 };
