@@ -34,4 +34,6 @@ const data = [
 
 ## Charts for inspiration
 
-http://www.anychart.com/products/anychart/gallery/
+* http://www.anychart.com/products/anychart/gallery/
+* https://www.amcharts.com/demos/
+* https://www.zingchart.com/gallery/
