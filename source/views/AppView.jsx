@@ -33,7 +33,7 @@ export class AppView extends Component {
                 </p>
                 <ul>
                     <li>
-                        <Link to='/lines-areas'>Lines + Areas + Grid + Legend</Link>
+                        <Link to='combined/lines-areas'>Lines + Areas + Grid + Legend</Link>
                     </li>
                 </ul>
 
