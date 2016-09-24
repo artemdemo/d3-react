@@ -41,3 +41,13 @@ export function createAlphabetList(baseClass, length = 0) {
 export function linefyName(name) {
     return name.toLowerCase().trim().replace(/[^a-z1-9\s]+/g, '').replace(/\s+/g, '-');
 }
+
+/**
+ * Check whether given parameter is an function
+ * @param functionToCheck
+ * @return {Boolean}
+ */
+export function isFunction(functionToCheck) {
+    const getType = {};
+    return functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
+}

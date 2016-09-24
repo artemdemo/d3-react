@@ -9,7 +9,7 @@
     "lite-server": "lite-server",
     "build": "webpack --progress --colors",
     "watch": "webpack --progress --colors --watch",
-    "pack": "uglifyjs build/js/bundle.js -m --source-map build/js/bundle.js.map -o build/js/bundle1.min.js",
+    "pack": "uglifyjs build/js/bundle.js -m --source-map build/js/bundle.js.map -o build/js/bundle.min.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Artem Demo",
