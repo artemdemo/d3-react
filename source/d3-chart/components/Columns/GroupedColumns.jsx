@@ -40,7 +40,7 @@ export class GroupedColumns extends Component {
                 };
             });
 
-        this.groupClassesScale = getClassesScale(this.columnTitles.map(item => `column_${linefyName(item)}`));
+        const groupClassesScale = getClassesScale(this.columnTitles.map(item => `column_${linefyName(item)}`));
 
         const { xGroups, xGroupItems, y } = this.createAxisScale(this.props, this.internalData);
 
@@ -54,9 +54,7 @@ export class GroupedColumns extends Component {
             .selectAll('.column')
             .data(group => group.data)
             .enter().append('rect')
-            .attr('class', d => {
-                return `column ${this.groupClassesScale(d.name)}`
-            })
+            .attr('class', d => `column ${groupClassesScale(d.name)}`)
             .attr('x', d => xGroupItems(d.name))
             .attr('y', d => y(d.value))
             .attr('width', xGroupItems.bandwidth())

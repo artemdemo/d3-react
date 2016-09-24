@@ -21,15 +21,20 @@ export class AppView extends Component {
                     <li>
                         <Link to='/legend'>Legend</Link>
                     </li>
+                    <li>
+                        <Link to='/pie'>Pie</Link>
+                    </li>
                 </ul>
                 <p>
                     Combined charts
                 </p>
                 <ul>
                     <li>
-                        <Link to='/lines-areas'>Lines with Areas</Link>
+                        <Link to='/lines-areas'>Lines + Areas + Grid + Legend</Link>
                     </li>
                 </ul>
+
+                <hr />
 
                 {this.props.children}
             </div>

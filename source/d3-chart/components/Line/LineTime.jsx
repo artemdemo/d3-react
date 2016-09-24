@@ -60,7 +60,7 @@ export class LineTime extends Component {
         x.domain(d3_extent(data, item => item[0]));
         y.domain([0, maxDomain]);
 
-        let pathFunc = d3_line()
+        const pathFunc = d3_line()
             .x(d => x(d[0]))
             .y(d => y(d[1]));
 
@@ -83,7 +83,7 @@ export class LineTime extends Component {
 
         this.setState({
             pathFunc,
-            areaFunc
+            areaFunc,
         });
     }
 

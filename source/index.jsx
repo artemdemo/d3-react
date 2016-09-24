@@ -13,6 +13,7 @@ import { ColumnsView } from './views/ColumnsView';
 import { BarsView } from './views/BarsView';
 import { LinesView } from './views/LinesView';
 import { LegendView } from './views/LegendView';
+import { PieView } from './views/PieView';
 import { LinesAreasView } from './views/LinesAreasView';
 
 
@@ -25,6 +26,7 @@ render(
                 <Route path='bars' component={BarsView} />
                 <Route path='lines' component={LinesView} />
                 <Route path='legend' component={LegendView} />
+                <Route path='pie' component={PieView} />
                 <Route path='lines-areas' component={LinesAreasView} />
             </Route>
         </Router>
