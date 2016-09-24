@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { arc as d3_arc, pie as d3_pie} from 'd3-shape';
 import { min as d3_min } from 'd3-array';
 import { select as d3_select } from 'd3-selection';
+import { transition as d3_transition } from 'd3-transition';
 import { marginShape } from '../../propTypes';
 import { linefyName } from '../../services/utils';
 import { getClassesScale } from '../../services/scales';
@@ -10,12 +11,17 @@ import { getClassesScale } from '../../services/scales';
  * Pie chart
  *
  * @tutorial http://cagrimmett.com/til/2016/08/19/d3-pie-chart.html
+ *
+ * Transition of pie section
+ * @tutorial http://stackoverflow.com/questions/30816709/how-to-increase-size-of-pie-segment-on-hover-in-d3
  */
 
 export class Pie extends Component {
     constructor(props) {
         super(props);
+
         this.state = {
+            sections: [],
             marginLeft: 0,
             marginTop: 0,
         };
@@ -29,7 +35,17 @@ export class Pie extends Component {
     }
 
     createPie(props) {
-        const { $$width, $$height, $$data, data, outerRadius, innerRadius, labelPadding, margin = {} } = props;
+        const {
+            $$width,
+            $$height,
+            $$data,
+            data,
+            outerRadius,
+            innerRadius,
+            labelPadding,
+            margin = {},
+            hoverIndent = 10,
+        } = props;
         let calculatedOuterRadius =  outerRadius ? outerRadius : d3_min([$$width / 2, $$height / 2]);
         const selectedData = data || $$data;
         const internalData = selectedData.filter((item, index) => index !== 0);
@@ -73,6 +89,15 @@ export class Pie extends Component {
             .outerRadius(calculatedOuterRadius)
             .innerRadius(calculatedInnerRadius);
 
+        let arcHoverData;
+        if (hoverIndent > 0) {
+            arcHoverData = d3_arc()
+                .outerRadius(calculatedOuterRadius + hoverIndent)
+                .innerRadius(calculatedInnerRadius > hoverIndent ?
+                                calculatedInnerRadius - hoverIndent :
+                                calculatedInnerRadius);
+        }
+
         let labelArcData;
 
         if (labelPadding < calculatedOuterRadius && labelPadding > calculatedInnerRadius) {
@@ -85,18 +110,35 @@ export class Pie extends Component {
 
         this.pieGroup.innerHTML = '';
 
-        const setcionGroup = d3_select(this.pieGroup)
+        const sectionGroup = d3_select(this.pieGroup)
             .selectAll('pie-arc')
             .data(pieData)
-            .enter().append('g');
+            .enter().append('g')
+            .attr('class', 'pie-arc');
 
-        setcionGroup.attr('class', 'pie-arc')
+        const sections = sectionGroup
             .append('path')
             .attr('d', arcData)
             .attr('class', d => `pie-arc__section ${groupClassesScale(d.data[0])}`);
 
+        if (arcHoverData) {
+            sections
+                .on('mouseover', function() {
+                    d3_select(this)
+                        .transition()
+                        .duration(150)
+                        .attr('d', arcHoverData);
+                })
+                .on('mouseout', function() {
+                    d3_select(this)
+                        .transition()
+                        .duration(150)
+                        .attr('d', arcData);
+                });
+        }
+
         if (labelArcData) {
-            setcionGroup.append('text')
+            sectionGroup.append('text')
                 .attr('transform', d => `translate(${labelArcData.centroid(d)})`)
                 .text(d => d.data[0])
                 .attr('class', 'pie-arc__text');
@@ -117,6 +159,7 @@ Pie.propTypes = {
     outerRadius: React.PropTypes.number,
     innerRadius: React.PropTypes.func,
     labelPadding: React.PropTypes.number,
+    hoverIndent: React.PropTypes.number,
     margin: marginShape,
 };
 

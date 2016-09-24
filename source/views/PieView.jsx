@@ -58,6 +58,7 @@ export class PieView extends Component {
                        width='100%'
                        height='500'>
                     <Pie labelPadding={50}
+                         hoverIndent={0}
                          margin={{left: 0}} />
                 </Chart>
             </div>
