@@ -34,7 +34,7 @@ export class PieView extends Component {
                     <Legend className='pie-chart-legend'
                             margin={{right: 0}}
                             data={mainDataLabels} />
-                    <Pie margin={{right: 100}} />
+                    <Pie margin={{right: 50}} />
                 </Chart>
 
                 <Chart data={mainData}

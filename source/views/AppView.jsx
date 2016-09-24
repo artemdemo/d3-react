@@ -22,6 +22,9 @@ export class AppView extends Component {
                         <Link to='/legend'>Legend</Link>
                     </li>
                     <li>
+                        <Link to='/dots'>Dots</Link>
+                    </li>
+                    <li>
                         <Link to='/pie'>Pie</Link>
                     </li>
                 </ul>
