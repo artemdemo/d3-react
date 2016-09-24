@@ -26,34 +26,27 @@ export class Legend extends Component {
         const {
             $$height,
             $$width,
-            margin,
+            margin = {},
             itemWidth = 50,
             itemHeight = 20,
             className = '',
             orientation = 'vertical',
         } = this.props;
 
-        const updatedMargin = Object.assign({
-            top: 0,
-            right: 0,
-            bottom: 0,
-            left: 0,
-        }, margin);
-
-        let marginTop;
-        if (updatedMargin.bottom !== 0) {
-            marginTop = $$height - updatedMargin.bottom;
+        let marginTop = 0;
+        if (margin.bottom !== undefined) {
+            marginTop = $$height - margin.bottom;
             marginTop -= orientation === 'vertical' ? itemHeight * this.state.titles.length : itemHeight;
-        } else {
-            marginTop = updatedMargin.top;
+        } else if (margin.top !== undefined) {
+            marginTop = margin.top;
         }
 
-        let marginLeft;
-        if (updatedMargin.right !== 0) {
-            marginLeft = $$width - updatedMargin.right;
+        let marginLeft = 0;
+        if (margin.right !== undefined) {
+            marginLeft = $$width - margin.right;
             marginLeft -= orientation === 'horizontal' ? itemWidth * this.state.titles.length : itemWidth;
-        } else {
-            marginLeft = updatedMargin.left;
+        } else if (margin.left !== undefined) {
+            marginLeft = margin.left;
         }
 
         return (
