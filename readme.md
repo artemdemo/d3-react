@@ -22,6 +22,7 @@ const data = [
 
 * Line + Dots chart
 * Percentage bar chart
+* Large data charts
 * Chart with dynamically updating data
 * Grouped bars chart
 * Tooltip (like C3)
