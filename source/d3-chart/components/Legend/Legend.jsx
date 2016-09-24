@@ -15,10 +15,10 @@ export class Legend extends Component {
     }
 
     componentDidMount() {
-        const { $$data } = this.props;
+        const { $$data, data } = this.props;
 
         this.setState({
-            titles: $$data[0].slice(1),
+            titles: data ? data : $$data[0].slice(1),
         });
     }
 
@@ -67,6 +67,7 @@ export class Legend extends Component {
 }
 
 Legend.propTypes = {
+    data: React.PropTypes.array,
     itemWidth: React.PropTypes.number,
     itemHeight: React.PropTypes.number,
     margin: marginShape,
