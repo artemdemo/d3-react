@@ -146,6 +146,7 @@ export class GradientView extends Component {
                            className='chart-axis-short-domain'
                            maxDomain={maxDomain} />
                     <Legend itemWidth={50}
+                            className='gradient-chart-legend'
                             margin={{bottom: -50}}
                             orientation='horizontal' />
                 </Chart>
