@@ -1,4 +1,4 @@
-# react with d3
+# React with d3
 
 d3 based charts as react components
 
