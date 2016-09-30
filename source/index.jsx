@@ -16,6 +16,7 @@ import { LegendView } from './views/LegendView';
 import { DotsView } from './views/DotsView';
 import { PieView } from './views/PieView';
 import { LinesAreasView } from './views/combined/LinesAreasView';
+import { GradientView } from './views/other/GradientView';
 
 
 render(
@@ -31,6 +32,9 @@ render(
                 <Route path='pie' component={PieView} />
                 <Route path='combined'>
                     <Route path='lines-areas' component={LinesAreasView} />
+                </Route>
+                <Route path='other'>
+                    <Route path='gradient' component={GradientView} />
                 </Route>
             </Route>
         </Router>

@@ -31,6 +31,8 @@ export class LineTime extends Component {
             pathFunc: null,
             areaFunc: null,
         };
+
+        this.saltId = Math.floor(Math.random() * 10000);
     }
 
     componentDidMount() {
@@ -99,11 +101,24 @@ export class LineTime extends Component {
     }
 
     renderLine() {
-        const { className = BASE_CLASS_NAME, line = true } = this.props;
+        const { className = BASE_CLASS_NAME, line = true, glow } = this.props;
+        const glowFilter = (
+            <g>
+                <filter id={`line-time-blur-filter-${this.saltId}`} x='-2' y='-2' width='2000' height='2000'>
+                    <feGaussianBlur in='SourceGraphic' stdDeviation='5' />
+                </filter>
+                <path className={`${className}__line-path ${className}__line-path_glow`}
+                      d={this.state.pathFunc(this.internalData)}
+                      filter={`url(#line-time-blur-filter-${this.saltId})`} />
+            </g>
+        );
         if (line === true) {
             return (
-                <path className={`${className}__line-path`}
-                      d={this.state.pathFunc(this.internalData)} />
+                <g>
+                    {glow === true ? glowFilter : null}
+                    <path className={`${className}__line-path`}
+                          d={this.state.pathFunc(this.internalData)} />
+                </g>
             );
         }
         return null;
@@ -128,6 +143,10 @@ export class LineTime extends Component {
 LineTime.propTypes = {
     data: React.PropTypes.array,
     className: React.PropTypes.string,
+    glow: React.PropTypes.oneOfType([
+        React.PropTypes.bool,
+        React.PropTypes.string,
+    ]),
     area: React.PropTypes.bool,
     line: React.PropTypes.bool,
     maxDomain: React.PropTypes.number,
