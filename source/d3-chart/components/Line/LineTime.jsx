@@ -152,10 +152,7 @@ export class LineTime extends Component {
 LineTime.propTypes = {
     data: React.PropTypes.array,
     className: React.PropTypes.string,
-    glow: React.PropTypes.oneOfType([
-        React.PropTypes.bool,
-        React.PropTypes.string,
-    ]),
+    glow: React.PropTypes.bool,
     area: React.PropTypes.oneOfType([
         React.PropTypes.bool,
         React.PropTypes.shape({
