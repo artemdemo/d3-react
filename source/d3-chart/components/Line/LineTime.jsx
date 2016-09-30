@@ -68,7 +68,7 @@ export class LineTime extends Component {
 
         let areaFunc = null;
 
-        if (area === true) {
+        if (area) {
             areaFunc = d3_area()
                 .x(d => x(d[0]))
                 .y0($$height)
@@ -91,10 +91,16 @@ export class LineTime extends Component {
 
     renderArea() {
         const { className = BASE_CLASS_NAME, area = false } = this.props;
-        if (area === true) {
+        if (area) {
+            const { gradientId } = area;
+            let fill = '';
+            if (gradientId) {
+                fill = `url(#${gradientId})`;
+            }
             return (
                 <path className={`${className}__area`}
-                      d={this.state.areaFunc(this.internalData)} />
+                      d={this.state.areaFunc(this.internalData)}
+                      fill={fill} />
             );
         }
         return null;
@@ -102,11 +108,14 @@ export class LineTime extends Component {
 
     renderLine() {
         const { className = BASE_CLASS_NAME, line = true, glow } = this.props;
+        // fill: url(#main-line-gradient);
         const glowFilter = (
             <g>
-                <filter id={`line-time-blur-filter-${this.saltId}`} x='-2' y='-2' width='2000' height='2000'>
-                    <feGaussianBlur in='SourceGraphic' stdDeviation='5' />
-                </filter>
+                <defs>
+                    <filter id={`line-time-blur-filter-${this.saltId}`} x='-2' y='-2' width='2000' height='2000'>
+                        <feGaussianBlur in='SourceGraphic' stdDeviation='5' />
+                    </filter>
+                </defs>
                 <path className={`${className}__line-path ${className}__line-path_glow`}
                       d={this.state.pathFunc(this.internalData)}
                       filter={`url(#line-time-blur-filter-${this.saltId})`} />
@@ -135,6 +144,7 @@ export class LineTime extends Component {
             <g className={className}>
                 {this.renderArea()}
                 {this.renderLine()}
+                {this.props.children}
             </g>
         );
     }
@@ -147,7 +157,12 @@ LineTime.propTypes = {
         React.PropTypes.bool,
         React.PropTypes.string,
     ]),
-    area: React.PropTypes.bool,
+    area: React.PropTypes.oneOfType([
+        React.PropTypes.bool,
+        React.PropTypes.shape({
+            gradientId: React.PropTypes.string,
+        }),
+    ]),
     line: React.PropTypes.bool,
     maxDomain: React.PropTypes.number,
 };

@@ -14,7 +14,11 @@ import './GradientView.less';
 export class GradientView extends Component {
     constructor(props) {
         super(props);
-        this.backgroundColor = 'white';
+        this.backgroundColor = 'black';
+    }
+
+    componentWillMount() {
+        document.querySelector('body').style.backgroundColor = 'black';
     }
 
     componentWillUnmount() {
@@ -94,7 +98,46 @@ export class GradientView extends Component {
                     <GridY scale='linear'
                            ticks={10}
                            maxDomain={maxDomain} />
-                    <LineTime curve='step' glow />
+                    <LineTime className='gradient-line-chart'
+                              area={{gradientId: 'main-area-gradient'}}
+                              curve='step'
+                              glow>
+                        <defs>
+                            <linearGradient id='main-area-gradient' x1='0%' y1='0%' x2='0%' y2='100%'>
+                                <stop offset='0%' stopColor='#0f2e48' />
+                                <stop offset='20%' stopColor='#0f2e48' />
+                                <stop offset='100%' stopColor='#115c9b' />
+                            </linearGradient>
+                        </defs>
+                    </LineTime>
+                    <LineTime className='gradient-line-chart-laptops'
+                              data={laptopsData}
+                              curve='step'
+                              maxDomain={maxDomain}
+                              line={false}
+                              area={{gradientId: 'laptops-area-gradient'}}>
+                        <defs>
+                            <linearGradient id='laptops-area-gradient' x1='0%' y1='0%' x2='0%' y2='100%'>
+                                <stop offset='0%' stopColor='red' />
+                                <stop offset='20%' stopColor='red' />
+                                <stop offset='100%' stopColor='#e0cf42' />
+                            </linearGradient>
+                        </defs>
+                    </LineTime>
+                    <LineTime className='gradient-line-chart-books'
+                              data={booksData}
+                              curve='step'
+                              maxDomain={maxDomain}
+                              line={false}
+                              area={{gradientId: 'books-area-gradient'}} >
+                        <defs>
+                            <linearGradient id='books-area-gradient' x1='0%' y1='0%' x2='0%' y2='100%'>
+                                <stop offset='0%' stopColor='#00a8ff' />
+                                <stop offset='20%' stopColor='#00a8ff' />
+                                <stop offset='100%' stopColor='#0ea30c' />
+                            </linearGradient>
+                        </defs>
+                    </LineTime>
                     <AxisX title={mainData[0][0]}
                            scale='time' />
                     <AxisY position='right' />
