@@ -23,13 +23,13 @@ export class AppView extends Component {
                         Combined charts
                     </p>
                     <ul>
-                        <li><Link to='combined/lines-areas'>Lines + Areas + Grid + Legend</Link></li>
+                        <li><Link to='/combined/lines-areas'>Lines + Areas + Grid + Legend</Link></li>
                     </ul>
                     <p>
                         Other
                     </p>
                     <ul>
-                        <li><Link to='other/gradient'>Gradients</Link></li>
+                        <li><Link to='/other/gradient'>Gradients</Link></li>
                     </ul>
                 </div>
 
