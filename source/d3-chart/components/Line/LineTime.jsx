@@ -108,7 +108,6 @@ export class LineTime extends Component {
 
     renderLine() {
         const { className = BASE_CLASS_NAME, line = true, glow } = this.props;
-        // fill: url(#main-line-gradient);
         const glowFilter = (
             <g>
                 <defs>
