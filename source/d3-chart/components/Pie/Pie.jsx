@@ -16,6 +16,8 @@ import { getClassesScale } from '../../services/scales';
  * @tutorial http://stackoverflow.com/questions/30816709/how-to-increase-size-of-pie-segment-on-hover-in-d3
  */
 
+const DEFAULT_BASE_CLASS = 'pie-chart';
+
 export class Pie extends Component {
     constructor(props) {
         super(props);
@@ -45,8 +47,12 @@ export class Pie extends Component {
             labelPadding,
             margin = {},
             hoverIndent = 10,
+            className = DEFAULT_BASE_CLASS,
         } = props;
-        let calculatedOuterRadius =  outerRadius ? outerRadius : d3_min([$$width / 2, $$height / 2]);
+
+        // ToDo: It looks like calculatedOuterRadius can be replaced with outerRadius
+        let calculatedOuterRadius = outerRadius ? outerRadius : d3_min([$$width / 2, $$height / 2]);
+
         const selectedData = data || $$data;
         const internalData = selectedData.filter((item, index) => index !== 0);
 
@@ -106,20 +112,21 @@ export class Pie extends Component {
                 .innerRadius(calculatedOuterRadius - labelPadding);
         }
 
-        const groupClassesScale = getClassesScale(internalData.map(item => `pie-arc__section_${linefyName(item[0])}`));
+        const groupClassesScale =
+            getClassesScale(internalData.map(item => `${className}__section_${linefyName(item[0])}`));
 
         this.pieGroup.innerHTML = '';
 
         const sectionGroup = d3_select(this.pieGroup)
-            .selectAll('pie-arc')
+            .selectAll(`${className}-arc`)
             .data(pieData)
             .enter().append('g')
-            .attr('class', 'pie-arc');
+            .attr('class', `${className}-arc`);
 
         const sections = sectionGroup
             .append('path')
             .attr('d', arcData)
-            .attr('class', d => `pie-arc__section ${groupClassesScale(d.data[0])}`);
+            .attr('class', d => `${className}__section ${groupClassesScale(d.data[0])}`);
 
         if (arcHoverData) {
             sections
@@ -141,13 +148,15 @@ export class Pie extends Component {
             sectionGroup.append('text')
                 .attr('transform', d => `translate(${labelArcData.centroid(d)})`)
                 .text(d => d.data[0])
-                .attr('class', 'pie-arc__text');
+                .attr('class', `${className}__text`);
         }
     }
 
     render() {
+        const { className = DEFAULT_BASE_CLASS } = this.props;
         return (
-            <g ref={el => this.pieGroup = el}
+            <g className={className}
+               ref={el => this.pieGroup = el}
                transform={`translate(${this.state.marginLeft}, ${this.state.marginTop})`} />
         );
     }
@@ -155,7 +164,7 @@ export class Pie extends Component {
 
 Pie.propTypes = {
     data: React.PropTypes.array,
-    className: React.PropTypes.number,
+    className: React.PropTypes.string,
     outerRadius: React.PropTypes.number,
     innerRadius: React.PropTypes.func,
     labelPadding: React.PropTypes.number,

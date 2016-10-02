@@ -10,6 +10,8 @@ import { getScaleLinear, getScaleTime } from '../../services/scales';
  * @tutorial http://bl.ocks.org/rajvansia/ce6903fad978d20773c41ee34bf6735c
  */
 
+const DEFAULT_BASE_CLASS = 'dots-chart';
+
 export class Dots extends Component {
     componentDidMount() {
         this.updateChart(this.props);
@@ -20,7 +22,7 @@ export class Dots extends Component {
     }
 
     updateChart(props) {
-        const { $$data, data, timeFormat, className = 'dots-chart', dotRadius = 5 } = props;
+        const { $$data, data, timeFormat, className = DEFAULT_BASE_CLASS, dotRadius = 5 } = props;
         const selectedData = data || $$data;
         const parseTime = d3_timeParse(timeFormat);
         const convertedData = selectedData.slice(1).map(row => {
@@ -55,7 +57,7 @@ export class Dots extends Component {
     }
 
     render() {
-        const { className = 'dots-chart' } = this.props;
+        const { className = DEFAULT_BASE_CLASS } = this.props;
         return (
             <g ref={(el) => this.dotsGroup = el}
                className={className}

@@ -11,7 +11,7 @@ import { getScaleBand, getScaleLinear, getScaleTime } from '../../services/scale
  * @tutorial https://bl.ocks.org/d3noob/c506ac45617cf9ed39337f99f8511218
  */
 
-import './Grid.less';
+const DEFAULT_BASE_CLASS = 'chart-grid';
 
 export class GridY extends Component {
     componentDidMount() {
@@ -67,7 +67,7 @@ export class GridY extends Component {
     }
 
     render() {
-        const { className = 'chart-grid chart-grid_y' } = this.props;
+        const { className = DEFAULT_BASE_CLASS } = this.props;
         return (
             <g ref={(el) => this.gridGroup = el}
                className={className} />

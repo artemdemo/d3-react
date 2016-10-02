@@ -9,21 +9,21 @@ import { getScaleBand, getScaleLinear } from '../../services/scales';
  * @tutorial http://bl.ocks.org/mbostock/3885304
  */
 
-import './Columns.less';
+const DEFAULT_BASE_CLASS = 'columns-chart';
 
 export class Columns extends Component {
     componentDidMount() {
-        const { $$data, $$height } = this.props;
+        const { $$data, $$height, className = DEFAULT_BASE_CLASS } = this.props;
 
         // Use data without title row
         this.internalData = $$data.filter((item, index) => index !== 0);
 
         const { x, y } = this.createAxisScale(this.props, this.internalData);
 
-        d3_select(this.columnsGroup).selectAll('.column')
+        d3_select(this.columnsGroup).selectAll(`.${className}__column`)
             .data(this.internalData)
             .enter().append('rect')
-            .attr('class', 'column')
+            .attr('class', `${className}__column`)
             .attr('x', d => x(d[0]))
             .attr('y', d => y(d[1]))
             .attr('width', x.bandwidth())
@@ -31,10 +31,10 @@ export class Columns extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        const { $$height } = nextProps;
+        const { $$height, className = DEFAULT_BASE_CLASS } = nextProps;
         const { x, y } = this.createAxisScale(nextProps);
 
-        d3_select(this.columnsGroup).selectAll('.column')
+        d3_select(this.columnsGroup).selectAll(`.${className}__column`)
             .data(this.internalData)
             .attr('x', d => x(d[0]))
             .attr('y', d => y(d[1]))
@@ -55,8 +55,10 @@ export class Columns extends Component {
     }
 
     render() {
+        const { className = DEFAULT_BASE_CLASS } = this.props;
         return (
-            <g ref={(el) => this.columnsGroup = el} />
+            <g className={className}
+               ref={(el) => this.columnsGroup = el} />
         );
     }
 }

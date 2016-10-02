@@ -1,44 +1,116 @@
-.gradient-line-chart__line-path {
-    stroke: #7dc4ff;
-    fill: none;
-    stroke-width: 1.5px;
+@import '../../styles/colors';
+
+@axis-color-short-domain: #a1591e;
+
+.gradient-view-axis {
+    text {
+        fill: @axis-color;
+    }
+    path, line {
+        stroke: @axis-color;
+    }
+
+    &_short-domain {
+        text {
+            fill: @axis-color-short-domain;
+        }
+        path, line {
+            stroke: @axis-color-short-domain;
+        }
+    }
 }
 
-.gradient-line-chart__line-path_glow {
-    stroke-width: 5px;
+.gradient-view-grid {
+    path, line {
+        stroke: @grid-color;
+    }
 }
 
-.gradient-line-chart__area {
-    opacity: 1;
+.gradient-view-main-chart {
+    &__line-path {
+        stroke: #7dc4ff;
+        fill: none;
+        stroke-width: 1.5px;
+    }
+    &__line-path_glow {
+        stroke-width: 5px;
+    }
+    &__area {
+        opacity: 1;
+    }
 }
 
-.gradient-line-chart-books__area {
-    stroke: none;
-    opacity: 1;
+.gradient-view-laptops {
+    &__area {
+        opacity: 1;
+    }
 }
 
-.gradient-line-chart-laptops__line-path {
-    fill: none;
-    stroke: none;
+.gradient-view-books {
+    &__area {
+        opacity: 1;
+    }
 }
 
-.gradient-line-chart-laptops__area {
-    stroke: none;
-    opacity: 1;
+.gradient-view-legend {
+    text {
+        fill: @axis-color;
+        font-size: 11px;
+    }
+    &-item__rect_sales {
+        fill: @base-blue;
+    }
+    &-item__rect_books {
+        fill: #2bb42a;
+    }
+    &-item__rect_laptops {
+        fill: #e0cf42;
+    }
 }
 
-.gradient-chart-legend text {
-    fill: gray;
-}
 
-.gradient-chart-legend__rect_sales {
-    fill: steelblue;
-}
 
-.gradient-chart-legend__rect_books {
-    fill: #2bb42a;
-}
-
-.gradient-chart-legend__rect_laptops {
-    fill: #e0cf42;
-}
+//.gradient-line-chart__line-path {
+//    stroke: #7dc4ff;
+//    fill: none;
+//    stroke-width: 1.5px;
+//}
+//
+//.gradient-line-chart__line-path_glow {
+//    stroke-width: 5px;
+//}
+//
+//.gradient-line-chart__area {
+//    opacity: 1;
+//}
+//
+//.gradient-line-chart-books__area {
+//    stroke: none;
+//    opacity: 1;
+//}
+//
+//.gradient-line-chart-laptops__line-path {
+//    fill: none;
+//    stroke: none;
+//}
+//
+//.gradient-line-chart-laptops__area {
+//    stroke: none;
+//    opacity: 1;
+//}
+//
+//.gradient-chart-legend text {
+//    fill: gray;
+//}
+//
+//.gradient-chart-legend__rect_sales {
+//    fill: steelblue;
+//}
+//
+//.gradient-chart-legend__rect_books {
+//    fill: #2bb42a;
+//}
+//
+//.gradient-chart-legend__rect_laptops {
+//    fill: #e0cf42;
+//}

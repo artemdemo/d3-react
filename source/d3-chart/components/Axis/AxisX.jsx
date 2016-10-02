@@ -5,7 +5,11 @@ import { select as d3_select } from 'd3-selection';
 import { timeParse as d3_timeParse } from 'd3-time-format';
 import { getScaleBand, getScaleLinear, getScaleTime } from '../../services/scales';
 
-import './Axis.less';
+/**
+ * AxisX
+ */
+
+const DEFAULT_BASE_CLASS = 'chart-axis';
 
 export class AxisX extends Component {
     componentDidMount() {
@@ -56,14 +60,14 @@ export class AxisX extends Component {
 
     render() {
         const { $$height = 0, $$width = 0 } = this.props;
-        const { title = '', className = 'chart-axis chart-axis_x' } = this.props;
+        const { title = '', className = DEFAULT_BASE_CLASS } = this.props;
 
         return (
             <g ref={(el) => this.xGroup = el}
                className={className}
                transform={`translate(0, ${$$height})`}>
                 <text transform={`translate(${$$width / 2}, 0)`}
-                      className='chart-axis__title'
+                      className={`${className}__title`}
                       y='20'
                       dy='0.71em'
                       textAnchor='end'>

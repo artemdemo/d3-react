@@ -66,7 +66,6 @@ export class LinesAreasView extends Component {
         return (
             <div>
                 <Chart data={mainData}
-                       className='lines-chart'
                        width='100%'
                        height='400'
                        margin={{
@@ -75,31 +74,40 @@ export class LinesAreasView extends Component {
                            bottom: 50,
                            left: 40,
                        }}>
-                    <GridX scale='time' ticks={10} />
-                    <GridY scale='linear'
+                    <GridX className='lines-areas-view-grid'
+                           scale='time'
+                           ticks={10} />
+                    <GridY className='lines-areas-view-grid'
+                           scale='linear'
                            ticks={10}
                            maxDomain={maxDomain} />
-                    <LineTime curve='step' area />
-                    <LineTime className='line-chart-laptops'
+                    <LineTime className='lines-areas-view-main-chart'
+                              curve='step'
+                              area />
+                    <LineTime className='lines-areas-view-laptops'
                               data={laptopsData}
                               curve='step'
                               maxDomain={maxDomain}
                               line={false}
                               area />
-                    <LineTime className='line-chart-books'
+                    <LineTime className='lines-areas-view-books'
                               data={booksData}
                               curve='step'
                               maxDomain={maxDomain}
                               line={false}
                               area />
-                    <AxisX title={mainData[0][0]}
+                    <AxisX className='lines-areas-view-axis'
+                           title={mainData[0][0]}
                            scale='time' />
-                    <AxisY position='right' />
-                    <AxisY position='left'
+                    <AxisY className='lines-areas-view-axis'
+                           position='right' />
+                    <AxisY className='lines-areas-view-axis
+                                      lines-areas-view-axis_short-domain'
+                           position='left'
                            data={booksData}
-                           className='chart-axis-short-domain'
                            maxDomain={maxDomain} />
-                    <Legend itemWidth={50}
+                    <Legend className='lines-areas-view-legend'
+                            itemWidth={50}
                             margin={{bottom: -50}}
                             orientation='horizontal' />
                 </Chart>

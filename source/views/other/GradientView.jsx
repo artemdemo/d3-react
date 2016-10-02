@@ -78,14 +78,15 @@ export class GradientView extends Component {
 
         return (
             <div>
-                <button type='button' onClick={() => {
-                    this.backgroundColor = this.backgroundColor === 'white' ? 'black' : 'white';
-                    document.querySelector('body').style.backgroundColor = this.backgroundColor;
-                }}>
+                <button type='button'
+                        className='btn btn-default'
+                        onClick={() => {
+                            this.backgroundColor = this.backgroundColor === 'white' ? 'black' : 'white';
+                            document.querySelector('body').style.backgroundColor = this.backgroundColor;
+                        }}>
                     Toggle dark background
                 </button>
                 <Chart data={mainData}
-                       className='lines-chart'
                        width='100%'
                        height='400'
                        margin={{
@@ -94,11 +95,14 @@ export class GradientView extends Component {
                            bottom: 50,
                            left: 40,
                        }}>
-                    <GridX scale='time' ticks={10} />
-                    <GridY scale='linear'
+                    <GridX className='gradient-view-grid'
+                           scale='time'
+                           ticks={10} />
+                    <GridY className='gradient-view-grid'
+                           scale='linear'
                            ticks={10}
                            maxDomain={maxDomain} />
-                    <LineTime className='gradient-line-chart'
+                    <LineTime className='gradient-view-main-chart'
                               area={{gradientId: 'main-area-gradient'}}
                               curve='step'
                               glow>
@@ -110,7 +114,7 @@ export class GradientView extends Component {
                             </linearGradient>
                         </defs>
                     </LineTime>
-                    <LineTime className='gradient-line-chart-laptops'
+                    <LineTime className='gradient-view-laptops'
                               data={laptopsData}
                               curve='step'
                               maxDomain={maxDomain}
@@ -124,7 +128,7 @@ export class GradientView extends Component {
                             </linearGradient>
                         </defs>
                     </LineTime>
-                    <LineTime className='gradient-line-chart-books'
+                    <LineTime className='gradient-view-books'
                               data={booksData}
                               curve='step'
                               maxDomain={maxDomain}
@@ -138,15 +142,18 @@ export class GradientView extends Component {
                             </linearGradient>
                         </defs>
                     </LineTime>
-                    <AxisX title={mainData[0][0]}
+                    <AxisX className='lines-areas-view-axis'
+                           title={mainData[0][0]}
                            scale='time' />
-                    <AxisY position='right' />
-                    <AxisY position='left'
+                    <AxisY className='lines-areas-view-axis'
+                           position='right' />
+                    <AxisY className='lines-areas-view-axis
+                                      lines-areas-view-axis_short-domain'
+                           position='left'
                            data={booksData}
-                           className='chart-axis-short-domain'
                            maxDomain={maxDomain} />
-                    <Legend itemWidth={50}
-                            className='gradient-chart-legend'
+                    <Legend className='gradient-view-legend'
+                            itemWidth={50}
                             margin={{bottom: -50}}
                             orientation='horizontal' />
                 </Chart>

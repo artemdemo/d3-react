@@ -5,6 +5,8 @@ import { AxisX } from '../d3-chart/components/Axis/AxisX';
 import { AxisY } from '../d3-chart/components/Axis/AxisY';
 import { Bars } from '../d3-chart/components/Bars/Bars';
 
+import './BarsView.less';
+
 export class BarsView extends Component {
     render() {
         const bars = [
@@ -19,12 +21,15 @@ export class BarsView extends Component {
         ];
         return (
             <Chart data={bars}
-                   className='bars-chart'
                    width='100%'
                    height='500'>
-                <Bars />
-                <AxisX title={bars[0][0]} scale='linear' />
-                <AxisY title={bars[0][1]} scale='band' />
+                <Bars className='bars-view__bar' />
+                <AxisX className='bars-view__axis'
+                       title={bars[0][0]}
+                       scale='linear' />
+                <AxisY className='bars-view__axis'
+                       title={bars[0][1]}
+                       scale='band' />
             </Chart>
         );
     }

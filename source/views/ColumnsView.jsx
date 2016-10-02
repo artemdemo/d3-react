@@ -35,29 +35,29 @@ export class ColumnsView extends Component {
 
         return (
             <div>
-                <div className='columns-chart-container'>
+                <div className='columns-view__container'>
                     <Chart data={columns}
-                           className='columns-chart'
+                           className='columns-view__chart'
                            width='100%'
                            height='100%'>
-                        <AxisX title={columns[0][0]} />
-                        <AxisY title={columns[0][1]} />
-                        <Columns />
+                        <AxisX className='columns-view__axis' title={columns[0][0]} />
+                        <AxisY className='columns-view__axis' title={columns[0][1]} />
+                        <Columns className='columns-view-single-chart' />
                     </Chart>
                 </div>
 
-                <div className='columns-chart-container'>
+                <div className='columns-view__container'>
                     <Chart data={groupedColumns}
-                           className='grouped-columns-chart'
+                           className='columns-view__chart'
                            width='100%'
                            height='100%'>
-                        <AxisX title={groupedColumns[0][0]} />
-                        <AxisY title={groupedColumns[0][1]} />
+                        <AxisX className='columns-view__axis' title={groupedColumns[0][0]} />
+                        <AxisY className='columns-view__axis' title={groupedColumns[0][1]} />
                         <Legend itemWidth={60}
                                 margin={{left: 30, top: 10}}
                                 orientation='vertical'
-                                className='chart-legend-columns' />
-                        <GroupedColumns />
+                                className='columns-view__legend' />
+                        <GroupedColumns className='columns-view-grouped-chart' />
                     </Chart>
                 </div>
             </div>

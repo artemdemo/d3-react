@@ -7,6 +7,8 @@ import { LineTime } from '../d3-chart/components/Line/LineTime';
 import { GridX } from '../d3-chart/components/Grid/GridX';
 import { GridY } from '../d3-chart/components/Grid/GridY';
 
+import './LinesView.less';
+
 export class LinesView extends Component {
     render() {
         const line = [
@@ -25,41 +27,41 @@ export class LinesView extends Component {
                     <strong>Simple line</strong>
                 </p>
                 <Chart data={line}
-                       className='lines-chart'
                        width='100%'
                        height='400'>
-                    <GridX />
-                    <LineTime />
+                    <GridX className='lines-view__grid' />
+                    <LineTime className='lines-view-line' />
                     <AxisX title={line[0][0]}
-                           scale='time' />
-                    <AxisY title={line[0][1]} />
+                           scale='time'
+                           className='lines-view__axis' />
+                    <AxisY title={line[0][1]} className='lines-view__axis' />
                 </Chart>
 
                 <p>
                     <strong>Steps</strong>
                 </p>
                 <Chart data={line}
-                       className='lines-chart'
                        width='100%'
                        height='400'>
-                    <GridY scale='linear' ticks={5} />
-                    <LineTime curve='step' />
+                    <GridY scale='linear' ticks={5} className='lines-view__grid' />
+                    <LineTime curve='step' className='lines-view-line' />
                     <AxisX title={line[0][0]}
-                           scale='time' />
-                    <AxisY title={line[0][1]} />
+                           scale='time'
+                           className='lines-view__axis' />
+                    <AxisY title={line[0][1]} className='lines-view__axis' />
                 </Chart>
 
                 <p>
                     <strong>Line with area</strong>
                 </p>
                 <Chart data={line}
-                       className='lines-chart'
                        width='100%'
                        height='400'>
-                    <LineTime area />
+                    <LineTime area className='lines-view-line' />
                     <AxisX title={line[0][0]}
-                           scale='time' />
-                    <AxisY title={line[0][1]} />
+                           scale='time'
+                           className='lines-view__axis' />
+                    <AxisY title={line[0][1]} className='lines-view__axis' />
                 </Chart>
             </div>
         );

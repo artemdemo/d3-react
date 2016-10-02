@@ -11,7 +11,7 @@ import { getScaleBand, getScaleLinear, getScaleTime } from '../../services/scale
  * @tutorial https://bl.ocks.org/d3noob/c506ac45617cf9ed39337f99f8511218
  */
 
-import './Grid.less';
+const DEFAULT_BASE_CLASS = 'chart-grid';
 
 export class GridX extends Component {
     componentDidMount() {
@@ -60,7 +60,7 @@ export class GridX extends Component {
     }
 
     render() {
-        const { $$height, className = 'chart-grid chart-grid_x' } = this.props;
+        const { $$height, className = DEFAULT_BASE_CLASS } = this.props;
         return (
             <g ref={(el) => this.gridGroup = el}
                transform={`translate(0, ${$$height})`}

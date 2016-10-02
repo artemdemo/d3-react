@@ -21,39 +21,34 @@ export class LegendView extends Component {
         ];
 
         return (
-            <div>
-                <div className='chart-container'>
-                    <Chart data={mainData}
-                           className='legend-chart'
-                           margin={{
-                               top: 20,
-                               right: 40,
-                               bottom: 50,
-                               left: 40,
-                           }}
-                           width='100%'
-                           height='400'>
-                        <AxisX title={mainData[0][0]} />
-                        <AxisY title={mainData[0][1]} />
-                        <Legend itemWidth={60}
-                                className='chart-legend-example'
-                                margin={{top: 10, left: 30 }}
-                                orientation='vertical' />
-                        <Legend itemWidth={60}
-                                className='chart-legend-example'
-                                margin={{top: 10, right: 30 }}
-                                orientation='horizontal' />
-                        <Legend itemWidth={60}
-                                className='chart-legend-example'
-                                margin={{bottom: 1, right: 30 }}
-                                orientation='vertical' />
-                        <Legend itemWidth={60}
-                                className='chart-legend-example'
-                                margin={{bottom: -50}}
-                                orientation='horizontal' />
-                    </Chart>
-                </div>
-            </div>
+            <Chart data={mainData}
+                   margin={{
+                       top: 20,
+                       right: 40,
+                       bottom: 50,
+                       left: 40,
+                   }}
+                   width='100%'
+                   height='400'>
+                <AxisX className='legend-view__axis' title={mainData[0][0]} />
+                <AxisY className='legend-view__axis' title={mainData[0][1]} />
+                <Legend itemWidth={60}
+                        className='legend-view-legend'
+                        margin={{top: 10, left: 30 }}
+                        orientation='vertical' />
+                <Legend itemWidth={60}
+                        className='legend-view-legend'
+                        margin={{top: 10, right: 30 }}
+                        orientation='horizontal' />
+                <Legend itemWidth={60}
+                        className='legend-view-legend'
+                        margin={{bottom: 1, right: 30 }}
+                        orientation='vertical' />
+                <Legend itemWidth={60}
+                        className='legend-view-legend'
+                        margin={{bottom: -50}}
+                        orientation='horizontal' />
+            </Chart>
         );
     }
 }

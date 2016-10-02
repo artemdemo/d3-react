@@ -13,11 +13,11 @@ import { getScaleBand, getScaleLinear, getClassesScale } from '../../services/sc
  * @tutorial https://bl.ocks.org/mbostock/3887051
  */
 
-import './Columns.less';
+const DEFAULT_BASE_CLASS = 'columns-chart';
 
 export class GroupedColumns extends Component {
     componentDidMount() {
-        const { $$data, data, $$height } = this.props;
+        const { $$data, data, $$height, className = DEFAULT_BASE_CLASS } = this.props;
         const selectedData = data || $$data;
 
         this.columnTitles = selectedData[0];
@@ -40,21 +40,22 @@ export class GroupedColumns extends Component {
                 };
             });
 
-        const groupClassesScale = getClassesScale(this.columnTitles.map(item => `column_${linefyName(item)}`));
+        const groupClassesScale =
+            getClassesScale(this.columnTitles.map(item => `${className}__column_${linefyName(item)}`));
 
         const { xGroups, xGroupItems, y } = this.createAxisScale(this.props, this.internalData);
 
         d3_select(this.columnsGroup)
-            .selectAll('.columns-group')
+            .selectAll(`.${className}-group`)
             .data(this.internalData)
             .enter().append('g')
-            .attr('class', 'columns-group')
+            .attr('class', `${className}-group`)
             .attr('transform', d => `translate(${xGroups(d.rowTitle)}, 0)`)
 
-            .selectAll('.column')
+            .selectAll(`.${className}__column`)
             .data(group => group.data)
             .enter().append('rect')
-            .attr('class', d => `column ${groupClassesScale(d.name)}`)
+            .attr('class', d => `${className}__column ${groupClassesScale(d.name)}`)
             .attr('x', d => xGroupItems(d.name))
             .attr('y', d => y(d.value))
             .attr('width', xGroupItems.bandwidth())
@@ -62,15 +63,15 @@ export class GroupedColumns extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        const { $$height } = nextProps;
+        const { $$height, className = DEFAULT_BASE_CLASS } = nextProps;
         const { xGroups, xGroupItems, y } = this.createAxisScale(nextProps);
 
         d3_select(this.columnsGroup)
-            .selectAll('.columns-group')
+            .selectAll(`.${className}-group`)
             .data(this.internalData)
             .attr('transform', d => `translate(${xGroups(d.rowTitle)}, 0)`)
 
-            .selectAll('.column')
+            .selectAll(`.${className}__column`)
             .data(group => group.data)
             .attr('x', d => xGroupItems(d.name))
             .attr('y', d => y(d.value))
@@ -95,8 +96,10 @@ export class GroupedColumns extends Component {
     }
 
     render() {
+        const { className = DEFAULT_BASE_CLASS } = this.props;
         return (
-            <g ref={(el) => this.columnsGroup = el} />
+            <g className={className}
+               ref={(el) => this.columnsGroup = el} />
         );
     }
 }

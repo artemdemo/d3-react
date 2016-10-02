@@ -19,9 +19,7 @@ import { getScaleLinear, getScaleTime } from '../../services/scales';
  * @tutorial https://bl.ocks.org/d3noob/119a138ef9bd1d8f0a8d57ea72355252
  */
 
-import './Line.less';
-
-const BASE_CLASS_NAME = 'line-chart';
+const DEFAULT_BASE_CLASS = 'line-chart';
 
 export class LineTime extends Component {
     constructor(props) {
@@ -90,7 +88,7 @@ export class LineTime extends Component {
     }
 
     renderArea() {
-        const { className = BASE_CLASS_NAME, area = false } = this.props;
+        const { className = DEFAULT_BASE_CLASS, area = false } = this.props;
         if (area) {
             const { gradientId } = area;
             let fill = '';
@@ -107,7 +105,7 @@ export class LineTime extends Component {
     }
 
     renderLine() {
-        const { className = BASE_CLASS_NAME, line = true, glow } = this.props;
+        const { className = DEFAULT_BASE_CLASS, line = true, glow } = this.props;
         const glowFilter = (
             <g>
                 <defs>
@@ -133,7 +131,7 @@ export class LineTime extends Component {
     }
 
     render() {
-        const { className = BASE_CLASS_NAME } = this.props;
+        const { className = DEFAULT_BASE_CLASS } = this.props;
 
         if (!this.state.pathFunc) {
             return null;

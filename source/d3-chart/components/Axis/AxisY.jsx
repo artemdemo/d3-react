@@ -4,7 +4,10 @@ import { max as d3_max } from 'd3-array';
 import { select as d3_select } from 'd3-selection';
 import { getScaleBand, getScaleLinear } from '../../services/scales';
 
-import './Axis.less';
+/**
+ * AxisY
+ */
+const DEFAULT_BASE_CLASS = 'chart-axis';
 
 export class AxisY extends Component {
     componentDidMount() {
@@ -59,7 +62,7 @@ export class AxisY extends Component {
     }
 
     render() {
-        const { title = '', position = 'left', className = 'chart-axis chart-axis_y', $$width } = this.props;
+        const { title = '', position = 'left', className = DEFAULT_BASE_CLASS, $$width } = this.props;
         let groupTransform;
         let textY;
 
@@ -79,7 +82,7 @@ export class AxisY extends Component {
                className={className}
                transform={groupTransform}>
                 <text transform='rotate(-90)'
-                      className='chart-axis__title'
+                      className={`${className}__title`}
                       y={textY}
                       dy='0.71em'
                       textAnchor='end'>

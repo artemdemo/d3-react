@@ -3,7 +3,7 @@ import { marginShape } from '../../propTypes';
 import { linefyName } from '../../services/utils';
 import { LegendItem } from './LegendItem';
 
-import './Legend.less';
+const DEFAULT_BASE_CLASS = 'chart-legend';
 
 export class Legend extends Component {
     constructor(props) {
@@ -29,7 +29,7 @@ export class Legend extends Component {
             margin = {},
             itemWidth = 50,
             itemHeight = 20,
-            className = '',
+            className = DEFAULT_BASE_CLASS,
             orientation = 'vertical',
         } = this.props;
 
@@ -50,11 +50,11 @@ export class Legend extends Component {
         }
 
         return (
-            <g className={`chart-legend ${className}`}
+            <g className={className}
                transform={`translate(${marginLeft}, ${marginTop})`}>
                 {this.state.titles.map((title, index) => (
                     <LegendItem text={title}
-                                className={className === '' ? 'chart-legend' : className}
+                                className={`${className}-item`}
                                 indexName={linefyName(title)}
                                 transform={orientation === 'vertical' ?
                                     `translate(0, ${itemHeight * index})` :

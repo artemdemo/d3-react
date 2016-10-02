@@ -29,7 +29,7 @@ export class AppView extends Component {
                         Other
                     </p>
                     <ul>
-                        <li><Link to='/other/gradient'>Gradients</Link></li>
+                        <li><Link to='/other/gradient'>Gradients (black)</Link></li>
                     </ul>
                 </div>
 

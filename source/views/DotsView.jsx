@@ -137,16 +137,18 @@ export class DotsView extends Component {
         ];
 
         return (
-            <div>
-                <Chart data={mainData}
-                       className='dots-chart'
-                       width='100%'
-                       height='500'>
-                    <Dots timeFormat='%b %Y' />
-                    <AxisX title={mainData[0][0]} scale='time' timeFormat='%b %Y' />
-                    <AxisY title={mainData[0][1]} scale='linear' />
-                </Chart>
-            </div>
+            <Chart data={mainData}
+                   width='100%'
+                   height='500'>
+                <Dots timeFormat='%b %Y' />
+                <AxisX className='dots-view__axis'
+                       title={mainData[0][0]}
+                       scale='time'
+                       timeFormat='%b %Y' />
+                <AxisY className='dots-view__axis'
+                       title={mainData[0][1]}
+                       scale='linear' />
+            </Chart>
         );
     }
 }

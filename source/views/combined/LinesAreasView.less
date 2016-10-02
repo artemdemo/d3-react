@@ -1,50 +1,79 @@
-.line-chart-books__line-path {
-    fill: none;
-    stroke: none;
-}
+@import '../../styles/colors';
 
-.line-chart__area {
-    fill: #7ce4ff;
-    stroke: none;
-    opacity: 0.5;
-}
+@axis-color-short-domain: #a1591e;
 
-.line-chart-books__area {
-    fill: #2bb42a;
-    stroke: none;
-    opacity: 1;
-}
-
-.line-chart-laptops__line-path {
-    fill: none;
-    stroke: none;
-}
-
-.line-chart-laptops__area {
-    fill: #e0cf42;
-    stroke: none;
-    opacity: 1;
-}
-
-@axis-color: #a1591e;
-
-.chart-axis-short-domain {
-    path, line {
-        stroke: @axis-color;
-    }
+.lines-areas-view-axis {
     text {
         fill: @axis-color;
     }
+    path, line {
+        stroke: @axis-color;
+    }
+
+    &_short-domain {
+        text {
+            fill: @axis-color-short-domain;
+        }
+        path, line {
+            stroke: @axis-color-short-domain;
+        }
+    }
 }
 
-.chart-legend__rect_sales {
-    fill: steelblue;
+.lines-areas-view-grid {
+    path, line {
+        stroke: @grid-color;
+    }
 }
 
-.chart-legend__rect_books {
-    fill: #2bb42a;
+.lines-areas-view-main-chart {
+    &__line-path {
+        stroke: @base-blue;
+        fill: none;
+    }
+    &__area {
+        fill: #7ce4ff;
+        stroke: none;
+        opacity: 0.5;
+    }
 }
 
-.chart-legend__rect_laptops {
-    fill: #e0cf42;
+.lines-areas-view-laptops {
+    &__line-path {
+        stroke: none;
+        fill: none;
+    }
+    &__area {
+        fill: #e0cf42;
+        stroke: none;
+        opacity: 1;
+    }
+}
+
+.lines-areas-view-books {
+    &__line-path {
+        stroke: none;
+        fill: none;
+    }
+    &__area {
+        fill: #2bb42a;
+        stroke: none;
+        opacity: 1;
+    }
+}
+
+.lines-areas-view-legend {
+    text {
+        fill: @axis-color;
+        font-size: 11px;
+    }
+    &-item__rect_sales {
+        fill: @base-blue;
+    }
+    &-item__rect_books {
+        fill: #2bb42a;
+    }
+    &-item__rect_laptops {
+        fill: #e0cf42;
+    }
 }

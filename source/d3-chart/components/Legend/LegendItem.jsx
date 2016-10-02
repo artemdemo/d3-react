@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 
+const DEFAULT_BASE_CLASS = 'chart-legend-item';
+
 export const LegendItem = function(props) {
     const {
         text = '',
-        className = 'chart-legend-item',
+        className = DEFAULT_BASE_CLASS,
         transform = '',
         rectWidth = 10,
         indexName = '',

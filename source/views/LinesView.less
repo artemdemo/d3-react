@@ -1,0 +1,34 @@
+@import '../styles/colors';
+
+.lines-view-line {
+    &__line-path {
+        fill: none;
+        stroke: @base-blue;
+        stroke-width: 1.5px;
+    }
+
+    &__line-path_glow {
+        stroke-width: 5px;
+    }
+
+    &__area {
+        stroke: none;
+        fill: @base-blue;
+        opacity: 0.5;
+    }
+}
+
+.lines-view__axis {
+    text {
+        fill: @axis-color;
+    }
+    path, line {
+        stroke: @axis-color;
+    }
+}
+
+.lines-view__grid {
+    path, line {
+        stroke: @grid-color;
+    }
+}
