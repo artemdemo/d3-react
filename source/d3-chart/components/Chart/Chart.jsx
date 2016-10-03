@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { marginShape } from '../../propTypes';
-import { throttle } from '../../services/utils';
+import throttle from 'lodash.throttle';
 
 export class Chart extends Component {
     constructor(props) {
