@@ -56,7 +56,7 @@ export class ColumnsView extends Component {
                         <Legend itemWidth={60}
                                 margin={{left: 30, top: 10}}
                                 orientation='vertical'
-                                className='columns-view__legend' />
+                                className='columns-view-legend' />
                         <GroupedColumns className='columns-view-grouped-chart' />
                     </Chart>
                 </div>

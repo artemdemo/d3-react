@@ -1,5 +1,11 @@
 @import '../styles/colors';
 
+.bars-view__container {
+    position: relative;
+    width: 100%;
+    height: 400px;
+}
+
 .bars-view__bar {
     fill: @base-blue;
     stroke: none;
@@ -11,5 +17,17 @@
     }
     path, line {
         stroke: @axis-color;
+    }
+}
+
+.bars-view-grouped-chart {
+    &__bar_books {
+        fill: @color-a;
+    }
+    &__bar_laptops {
+        fill: @color-b;
+    }
+    &__bar_displays {
+        fill: @color-c;
     }
 }

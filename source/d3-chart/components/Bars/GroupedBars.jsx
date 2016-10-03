@@ -1,0 +1,122 @@
+import React, { Component } from 'react';
+import { max as d3_max } from 'd3-array';
+import { select as d3_select } from 'd3-selection';
+import { linefyName } from '../../services/utils';
+import { getScaleBand, getScaleLinear, getClassesScale } from '../../services/scales';
+
+/**
+ * Grouped bars chart
+ */
+
+const DEFAULT_BASE_CLASS = 'bars-chart';
+
+export class GroupedBars extends Component {
+    componentDidMount() {
+        const { $$data, data, $$width, className = DEFAULT_BASE_CLASS } = this.props;
+        const selectedData = data || $$data;
+
+        this.barTitles = selectedData[0];
+        this.barTitles = this.barTitles.slice(1);
+
+        this.rowTitles = [];
+
+        this.internalData = selectedData.slice(1)
+            .map(columns => {
+                const result = [];
+                const rowTitle = columns[0];
+                this.rowTitles.push(rowTitle);
+                columns.slice(1).forEach((value, index) => result.push({
+                    name: this.barTitles[index],
+                    value,
+                }));
+                return {
+                    rowTitle,
+                    data: result,
+                };
+            });
+
+        const groupClassesScale =
+            getClassesScale(this.barTitles.map(item => `${className}__bar_${linefyName(item)}`));
+
+        const { x, yGroups, yGroupItems } = this.createAxisScale(this.props, this.internalData);
+
+        d3_select(this.barsGroup)
+            .selectAll(`.${className}-group`)
+            .data(this.internalData)
+            .enter().append('g')
+            .attr('class', `${className}-group`)
+            .attr('transform', d => `translate(0, ${yGroups(d.rowTitle)})`)
+
+            .selectAll(`.${className}__bar`)
+            .data(group => group.data)
+            .enter().append('rect')
+            .attr('class', d => `${className}__bar ${groupClassesScale(d.name)}`)
+            // .attr('x', d => x(d.value))
+            .attr('y', d => yGroupItems(d.name))
+            .attr('height', yGroupItems.bandwidth())
+            .attr('width', d => $$width - x(d.value));
+
+
+/*        d3_select(this.barsGroup)
+            .selectAll(`.${className}__bar`)
+            .data(this.internalData)
+            .enter().append('rect')
+            .attr('class', `${className}__bar`)
+            // .attr('x', d => x(d[1])) // this will put align bars on the right
+            .attr('y', d => y(d[0]))
+            .attr('height', y.bandwidth())
+            .attr('width', d => $$width - x(d[1]));*/
+    }
+
+    componentWillReceiveProps(nextProps) {
+        const { $$width, className = DEFAULT_BASE_CLASS } = nextProps;
+        const { x, yGroups, yGroupItems } = this.createAxisScale(this.props, this.internalData);
+
+        d3_select(this.columnsGroup)
+            .selectAll(`.${className}-group`)
+            .data(this.internalData)
+            .attr('transform', d => `translate(0, ${yGroups(d.rowTitle)})`)
+
+            .selectAll(`.${className}__bar`)
+            .data(group => group.data)
+            .attr('y', d => yGroupItems(d.name))
+            .attr('height', yGroupItems.bandwidth())
+            .attr('width', d => $$width - x(d.value));
+
+        // d3_select(this.barsGroup).selectAll(`.${className}__bar`)
+        //     .data(this.internalData)
+        //     .attr('y', d => y(d[0]))
+        //     .attr('height', y.bandwidth())
+        //     .attr('width', d => $$width - x(d[1]));
+    }
+
+    createAxisScale(props, data = this.internalData) {
+        const { $$height, $$width } = props;
+
+        const yGroups = getScaleBand($$height);
+        yGroups.domain(this.rowTitles);
+
+        const yGroupItems = getScaleBand(yGroups.bandwidth(), {innerPadding: 0});
+        yGroupItems.domain(this.barTitles);
+
+        const x = getScaleLinear($$width);
+        x.domain([0, d3_max(data, row => d3_max(row.data, item => item.value))]);
+
+        return { x, yGroups, yGroupItems };
+    }
+
+    render() {
+        const { className = DEFAULT_BASE_CLASS } = this.props;
+        return (
+            <g className={className}
+               ref={(el) => this.barsGroup = el} />
+        );
+    }
+}
+
+GroupedBars.propTypes = {
+    data: React.PropTypes.array,
+    className: React.PropTypes.string,
+    $$width: React.PropTypes.number,
+    $$height: React.PropTypes.number,
+};
