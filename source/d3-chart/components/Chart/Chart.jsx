@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { marginShape } from '../../propTypes';
 import throttle from 'lodash.throttle';
+import { marginShape } from '../../propTypes';
 
 export class Chart extends Component {
     constructor(props) {
@@ -31,20 +31,29 @@ export class Chart extends Component {
     }
 
     componentWillUnmount() {
-        window.removeEventListener('resize', this.windowResizehandler)
+        window.removeEventListener('resize', this.windowResizehandler);
     }
 
     updateChartDimensions() {
+        const { minResizeWidth } = this.props;
         const svgDimensions = this.chartSVG.getBoundingClientRect();
-        const width = svgDimensions.width - this.margin.left - this.margin.right;
-        const height = svgDimensions.height - this.margin.top - this.margin.bottom;
 
-        this.setState({
-            containerWidth: svgDimensions.width,
-            containerHeight: svgDimensions.height,
-            width,
-            height,
-        });
+        if (minResizeWidth === undefined || this.state.containerWidth === 0 || svgDimensions.width > minResizeWidth) {
+            const width = svgDimensions.width - this.margin.left - this.margin.right;
+            const height = svgDimensions.height - this.margin.top - this.margin.bottom;
+            this.setState({
+                containerWidth: svgDimensions.width,
+                containerHeight: svgDimensions.height,
+                width,
+                height,
+            });
+        } else if (minResizeWidth !== undefined) {
+            const width = minResizeWidth - this.margin.left - this.margin.right;
+            this.setState({
+                containerWidth: minResizeWidth,
+                width,
+            });
+        }
     }
 
     render() {
@@ -80,8 +89,9 @@ export class Chart extends Component {
 }
 
 Chart.propTypes = {
-    data: React.PropTypes.any.isRequired,
+    data: React.PropTypes.any,
     margin: marginShape,
+    minResizeWidth: React.PropTypes.number,
     className: React.PropTypes.string,
     width: React.PropTypes.string,
     height: React.PropTypes.string,
