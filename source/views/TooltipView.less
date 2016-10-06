@@ -1,0 +1,25 @@
+@import '../styles/colors';
+
+.tooltip-view-line {
+    &__line-path {
+        fill: none;
+        stroke: @base-blue;
+        stroke-width: 1.5px;
+    }
+
+    &__line-path_glow {
+        stroke-width: 5px;
+    }
+
+    &__area {
+        stroke: none;
+        fill: @base-blue;
+        opacity: 0.5;
+    }
+}
+
+.tooltip-view__grid {
+    path, line {
+        stroke: @grid-color;
+    }
+}

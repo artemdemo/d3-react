@@ -18,6 +18,7 @@ export class AppView extends Component {
                         <li><Link to='/legend'>Legend</Link></li>
                         <li><Link to='/dots'>Dots</Link></li>
                         <li><Link to='/pie'>Pie</Link></li>
+                        <li><Link to='/tooltip'>Tooltip</Link></li>
                     </ul>
                     <p>
                         Combined charts
