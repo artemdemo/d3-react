@@ -52,9 +52,11 @@ export class TooltipView extends Component {
                        className='tooltip-view-chart'>
                     <GridY scale='linear' ticks={5} className='lines-view__grid' />
                     <LineTime curve='step' className='tooltip-view-line' />
-                    <ToolTip renderCallback={renderTooltipBox} />
-                    <AxisX title={lineData[0][0]}
-                           scale='time'
+                    <ToolTip scale='time'
+                             className='tooltip-view-tooltip'
+                             renderCallback={renderTooltipBox} />
+                    <AxisX scale='time'
+                           title={lineData[0][0]}
                            className='lines-view__axis' />
                     <AxisY className='legend-view__axis' title={lineData[0][1]} />
                 </Chart>
@@ -64,6 +66,9 @@ export class TooltipView extends Component {
                     <AxisX className='columns-view__axis' title={columns[0][0]} />
                     <AxisY className='columns-view__axis' title={columns[0][1]} />
                     <Columns className='columns-view-single-chart' />
+                    <ToolTip scale='band'
+                             className='tooltip-view-tooltip'
+                             renderCallback={renderTooltipBox} />
                 </Chart>
             </div>
         );

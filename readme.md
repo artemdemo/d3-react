@@ -30,9 +30,9 @@ const data = [
 
 ## ToDo
 
-* Tooltip (like C3)
 * Stocked columns chart
 * Use `<Axis orientation={} />` instead of `AxisX` and `AxisY`
+* Tooltip for bar charts
 * Line + Dots chart
 * Percentage bar chart
 * Large data charts

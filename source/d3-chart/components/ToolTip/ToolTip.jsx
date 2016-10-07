@@ -7,6 +7,7 @@ import ToolTipLine from './ToolTipLine';
 const DEFAULT_BASE_CLASS = '__tooltip';
 const DEFAULT_MOUSE_AREA_PERCENT = 0.8;
 const DEFAULT_TOOLTIP_POSITION_DELTA = 5;
+const DEFAULT_SCALE = 'band';
 
 export class ToolTip extends Component {
     constructor(props) {
@@ -22,7 +23,7 @@ export class ToolTip extends Component {
     }
 
     componentDidMount() {
-        const { $$data, $$height, $$width, renderCallback } = this.props;
+        const { $$data, $$height, $$width, renderCallback, scale = DEFAULT_SCALE } = this.props;
 
         // Use data without title row
         this.internalData = $$data.filter((item, index) => index !== 0);
@@ -43,12 +44,25 @@ export class ToolTip extends Component {
             .attr('class', `${DEFAULT_BASE_CLASS}__column`)
             .attr('fill', 'transparent')
             .attr('x', (d, index) => {
-                toolTipLines[index].x = x(d[0]);
                 toolTipLines[index].y = y(d[1]);
-                return index === 0 ? x(d[0]) : x(d[0]) - (columnWidth / 2);
+                switch (scale) {
+                    case 'time':
+                        toolTipLines[index].x = x(d[0]);
+                        return index === 0 ? x(d[0]) : x(d[0]) - (columnWidth / 2);
+                    case 'band':
+                    default:
+                        toolTipLines[index].x = x(d[0]) + (columnWidth / 2);
+                        return x(d[0]);
+                }
             })
             .attr('width', (d, index, dataArr) => {
-                return index === 0 || index === dataArr.length - 1 ? columnWidth / 2 : columnWidth;
+                switch (scale) {
+                    case 'time':
+                        return index === 0 || index === dataArr.length - 1 ? columnWidth / 2 : columnWidth;
+                    case 'band':
+                    default:
+                        return columnWidth;
+                }
             })
             .attr('height', $$height)
             .on('mouseover', (d, index, dataArr) => {
@@ -104,13 +118,21 @@ export class ToolTip extends Component {
     }
 
     createAxisScale(props, data = this.internalData) {
-        const { $$width, $$height } = props;
+        const { $$width, $$height, scale = DEFAULT_SCALE } = props;
+        let x;
 
-        // const x = getScaleBand($$width);
-        // x.domain(data.map(item => item[0]));
+        console.log('scale', scale);
 
-        const x = getScaleTime($$width);
-        x.domain(d3_extent(data, item => item[0]));
+        switch (scale) {
+            case 'time':
+                x = getScaleTime($$width);
+                x.domain(d3_extent(data, item => item[0]));
+                break;
+            case 'band':
+            default:
+                x = getScaleBand($$width);
+                x.domain(data.map(item => item[0]));
+        }
 
         const y = getScaleLinear($$height);
         y.domain([0, d3_max(data, item => item[1])]);
@@ -141,4 +163,5 @@ export class ToolTip extends Component {
 
 ToolTip.propTypes = {
     renderCallback: React.PropTypes.func,
+    scale: React.PropTypes.oneOf(['band', 'time']),
 };

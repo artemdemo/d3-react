@@ -71,7 +71,7 @@ export class GridX extends Component {
 
 GridX.propTypes = {
     data: React.PropTypes.array,
-    scale: React.PropTypes.string,
+    scale: React.PropTypes.oneOf(['linear', 'band', 'time']),
     className: React.PropTypes.string,
     ticks: React.PropTypes.number,
     timeFormat: React.PropTypes.string,
