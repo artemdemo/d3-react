@@ -65,7 +65,7 @@ export class ToolTip extends Component {
                 }
             })
             .attr('height', $$height)
-            .on('mouseover', (d, index, dataArr) => {
+            .on('mouseenter', (d, index, dataArr) => {
                 let toolTipX = 0;
                 let toolTipY = 0;
                 this.setState({

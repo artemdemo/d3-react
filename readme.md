@@ -30,8 +30,7 @@ const data = [
 
 ## ToDo
 
-* Stocked columns chart
-* Use `<Axis orientation={} />` instead of `AxisX` and `AxisY`
+* Stacked columns chart + tooltip
 * Tooltip for bar charts
 * Line + Dots chart
 * Percentage bar chart
