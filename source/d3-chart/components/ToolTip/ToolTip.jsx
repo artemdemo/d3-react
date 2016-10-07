@@ -102,26 +102,44 @@ export class ToolTip extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        const { $$height, $$width } = nextProps;
-        const { x } = this.createAxisScale(nextProps);
+        const { $$height, $$width, scale = DEFAULT_SCALE } = nextProps;
         const columnWidth = ($$width / (this.internalData.length - 1)) * 0.5;
+        const toolTipLines = this.state.toolTipLines.slice();
+        const { x, y } = this.createAxisScale(nextProps, this.internalData);
 
         d3_select(this.columnsGroup).selectAll(`.${DEFAULT_BASE_CLASS}__column`)
             .data(this.internalData)
             .attr('x', (d, index) => {
-                return index === 0 ? x(d[0]) : x(d[0]) - (columnWidth / 2);
+                toolTipLines[index].y = y(d[1]);
+                switch (scale) {
+                    case 'time':
+                        toolTipLines[index].x = x(d[0]);
+                        return index === 0 ? x(d[0]) : x(d[0]) - (columnWidth / 2);
+                    case 'band':
+                    default:
+                        toolTipLines[index].x = x(d[0]) + (x.bandwidth() / 2);
+                        return x(d[0]) + ((x.bandwidth() - (x.bandwidth() * DEFAULT_MOUSE_AREA_PERCENT)) / 2);
+                }
             })
             .attr('width', (d, index, dataArr) => {
-                return index === 0 || index === dataArr.length - 1 ? columnWidth / 2 : columnWidth;
+                switch (scale) {
+                    case 'time':
+                        return index === 0 || index === dataArr.length - 1 ? columnWidth / 2 : columnWidth;
+                    case 'band':
+                    default:
+                        return x.bandwidth() * DEFAULT_MOUSE_AREA_PERCENT;
+                }
             })
             .attr('height', $$height);
+
+        this.setState({
+            toolTipLines,
+        });
     }
 
     createAxisScale(props, data = this.internalData) {
         const { $$width, $$height, scale = DEFAULT_SCALE } = props;
         let x;
-
-        console.log('scale', scale);
 
         switch (scale) {
             case 'time':
