@@ -13,8 +13,9 @@ const DEFAULT_BASE_CLASS = 'chart-axis';
 
 export class AxisX extends Component {
     componentDidMount() {
-        const { $$data } = this.props;
-        this.internalData = $$data.filter((item, index) => index !== 0);
+        const { $$data, data } = this.props;
+        const selectedData = data || $$data;
+        this.internalData = selectedData.filter((item, index) => index !== 0);
 
         this.createXAxis(this.props, this.internalData);
     }
@@ -29,7 +30,11 @@ export class AxisX extends Component {
      * @param data
      */
     createXAxis(props, data = this.internalData) {
-        const { $$width, scale = 'band', timeFormat = '%Y' } = props;
+        const {
+            $$width,
+            scale = 'band',
+            timeFormat = '%Y',
+        } = props;
         let x;
 
         switch (scale) {
@@ -59,8 +64,12 @@ export class AxisX extends Component {
     }
 
     render() {
-        const { $$height = 0, $$width = 0 } = this.props;
-        const { title = '', className = DEFAULT_BASE_CLASS } = this.props;
+        const {
+            title = '',
+            className = DEFAULT_BASE_CLASS,
+            $$height = 0,
+            $$width = 0,
+        } = this.props;
 
         return (
             <g ref={(el) => this.xGroup = el}

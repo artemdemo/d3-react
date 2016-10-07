@@ -7,7 +7,9 @@ import { getScaleBand, getScaleLinear } from '../../services/scales';
 /**
  * AxisY
  */
+
 const DEFAULT_BASE_CLASS = 'chart-axis';
+const DEFAULT_POSITION = 'left';
 
 export class AxisY extends Component {
     componentDidMount() {
@@ -31,7 +33,7 @@ export class AxisY extends Component {
         const {
             $$height,
             scale = 'linear',
-            position = 'left',
+            position = DEFAULT_POSITION,
             maxDomain = d3_max(data, item => item[1]),
         } = props;
         let y;
@@ -62,7 +64,12 @@ export class AxisY extends Component {
     }
 
     render() {
-        const { title = '', position = 'left', className = DEFAULT_BASE_CLASS, $$width } = this.props;
+        const {
+            title = '',
+            position = DEFAULT_POSITION,
+            className = DEFAULT_BASE_CLASS,
+            $$width = 0,
+        } = this.props;
         let groupTransform;
         let textY;
 
@@ -96,7 +103,7 @@ export class AxisY extends Component {
 AxisY.propTypes = {
     data: React.PropTypes.array,
     title: React.PropTypes.string,
-    className : React.PropTypes.string,
+    className: React.PropTypes.string,
     scale: React.PropTypes.string,
     position: React.PropTypes.string,
     maxDomain: React.PropTypes.number,
