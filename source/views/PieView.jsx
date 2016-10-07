@@ -28,8 +28,7 @@ export class PieView extends Component {
         return (
             <div>
                 <Chart data={mainData}
-                       width='100%'
-                       height='500'>
+                       className='pie-view-chart'>
                     <Legend className='pie-view-legend'
                             margin={{right: 0}}
                             data={mainDataLabels} />
@@ -38,8 +37,7 @@ export class PieView extends Component {
                 </Chart>
 
                 <Chart data={mainData}
-                       width='100%'
-                       height='400'>
+                       className='pie-view-chart-donut'>
                     <Pie className='pie-view-pie'
                          innerRadius={(outerRadius) => {
                              return outerRadius * 0.7;
@@ -47,15 +45,13 @@ export class PieView extends Component {
                 </Chart>
 
                 <Chart data={mainData}
-                       width='100%'
-                       height='400'>
+                       className='pie-view-chart pie-view-chart_donut'>
                     <Pie className='pie-view-pie'
                          innerRadius={() => 50} />
                 </Chart>
 
                 <Chart data={simpleLabels}
-                       width='100%'
-                       height='500'>
+                       className='pie-view-chart'>
                     <Pie className='pie-view-pie'
                          labelPadding={50}
                          hoverIndent={0}

@@ -35,9 +35,8 @@ export class BarsView extends Component {
         return (
             <div>
                 <div className='bars-view__container'>
-                    <Chart data={bars}
-                           width='100%'
-                           height='100%'>
+                    <Chart className='bars-view-chart'
+                           data={bars}>
                         <Bars className='bars-view__bar' />
                         <AxisX className='bars-view__axis'
                                title={bars[0][0]}
@@ -49,9 +48,8 @@ export class BarsView extends Component {
                 </div>
 
                 <div className='bars-view__container'>
-                    <Chart data={groupedBars}
-                           width='100%'
-                           height='100%'>
+                    <Chart className='bars-view-chart'
+                           data={groupedBars}>
                         <GroupedBars className='bars-view-grouped-chart' />
                         <AxisX className='bars-view__axis'
                                title={bars[0][0]}

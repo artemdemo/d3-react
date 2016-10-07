@@ -138,8 +138,7 @@ export class DotsView extends Component {
 
         return (
             <Chart data={mainData}
-                   width='100%'
-                   height='500'>
+                   className='dots-view-chart'>
                 <Dots timeFormat='%b %Y' />
                 <AxisX className='dots-view__axis'
                        title={mainData[0][0]}

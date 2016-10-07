@@ -87,8 +87,7 @@ export class GradientView extends Component {
                     Toggle dark background
                 </button>
                 <Chart data={mainData}
-                       width='100%'
-                       height='400'
+                       className='gradient-view-chart'
                        margin={{
                            top: 20,
                            right: 40,

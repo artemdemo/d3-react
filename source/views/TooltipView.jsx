@@ -5,6 +5,7 @@ import { AxisX } from '../d3-chart/components/Axis/AxisX';
 import { AxisY } from '../d3-chart/components/Axis/AxisY';
 import { GridY } from '../d3-chart/components/Grid/GridY';
 import { LineTime } from '../d3-chart/components/Line/LineTime';
+import { ToolTip } from '../d3-chart/components/ToolTip/ToolTip';
 
 import './TooltipView.less';
 
@@ -29,8 +30,8 @@ export class TooltipView extends Component {
                        bottom: 50,
                        left: 40,
                    }}
-                   width='100%'
-                   height='400'>
+                   className='tooltip-view-chart'>
+                <ToolTip />
                 <LineTime curve='step' className='tooltip-view-line' />
                 <GridY scale='linear' ticks={5} className='lines-view__grid' />
                 <AxisX title={lineData[0][0]}

@@ -66,8 +66,7 @@ export class LinesAreasView extends Component {
         return (
             <div>
                 <Chart data={mainData}
-                       width='100%'
-                       height='400'
+                       className='lines-areas-view-chart'
                        margin={{
                            top: 20,
                            right: 40,

@@ -26,9 +26,7 @@ export class LinesView extends Component {
                 <p>
                     <strong>Simple line</strong>
                 </p>
-                <Chart data={line}
-                       width='100%'
-                       height='400'>
+                <Chart data={line} className='lines-view-chart'>
                     <GridX className='lines-view__grid' />
                     <LineTime className='lines-view-line' />
                     <AxisX title={line[0][0]}
@@ -40,9 +38,7 @@ export class LinesView extends Component {
                 <p>
                     <strong>Steps</strong>
                 </p>
-                <Chart data={line}
-                       width='100%'
-                       height='400'>
+                <Chart data={line} className='lines-view-chart'>
                     <GridY scale='linear' ticks={5} className='lines-view__grid' />
                     <LineTime curve='step' className='lines-view-line' />
                     <AxisX title={line[0][0]}
@@ -54,9 +50,7 @@ export class LinesView extends Component {
                 <p>
                     <strong>Line with area</strong>
                 </p>
-                <Chart data={line}
-                       width='100%'
-                       height='400'>
+                <Chart data={line} className='lines-view-chart'>
                     <LineTime area className='lines-view-line' />
                     <AxisX title={line[0][0]}
                            scale='time'

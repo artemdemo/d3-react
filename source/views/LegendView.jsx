@@ -28,8 +28,7 @@ export class LegendView extends Component {
                        bottom: 50,
                        left: 40,
                    }}
-                   width='100%'
-                   height='400'>
+                   className='legend-view-chart'>
                 <AxisX className='legend-view__axis' title={mainData[0][0]} />
                 <AxisY className='legend-view__axis' title={mainData[0][1]} />
                 <Legend itemWidth={60}

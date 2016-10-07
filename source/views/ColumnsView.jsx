@@ -37,9 +37,7 @@ export class ColumnsView extends Component {
             <div>
                 <div className='columns-view__container'>
                     <Chart data={columns}
-                           className='columns-view__chart'
-                           width='100%'
-                           height='100%'>
+                           className='columns-view-chart'>
                         <AxisX className='columns-view__axis' title={columns[0][0]} />
                         <AxisY className='columns-view__axis' title={columns[0][1]} />
                         <Columns className='columns-view-single-chart' />
@@ -48,9 +46,7 @@ export class ColumnsView extends Component {
 
                 <div className='columns-view__container'>
                     <Chart data={groupedColumns}
-                           className='columns-view__chart'
-                           width='100%'
-                           height='100%'>
+                           className='columns-view-chart'>
                         <AxisX className='columns-view__axis' title={groupedColumns[0][0]} />
                         <AxisY className='columns-view__axis' title={groupedColumns[0][1]} />
                         <Legend itemWidth={60}
