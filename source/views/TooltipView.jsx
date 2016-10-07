@@ -31,9 +31,9 @@ export class TooltipView extends Component {
                        left: 40,
                    }}
                    className='tooltip-view-chart'>
-                <ToolTip />
                 <LineTime curve='step' className='tooltip-view-line' />
                 <GridY scale='linear' ticks={5} className='lines-view__grid' />
+                <ToolTip />
                 <AxisX title={lineData[0][0]}
                        scale='time'
                        className='lines-view__axis' />

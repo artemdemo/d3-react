@@ -46,9 +46,9 @@ export class Columns extends Component {
         const { $$height, $$width } = props;
 
         const x = getScaleBand($$width);
-        const y = getScaleLinear($$height);
-
         x.domain(data.map(item => item[0]));
+
+        const y = getScaleLinear($$height);
         y.domain([0, d3_max(data, item => item[1])]);
 
         return { x, y };
