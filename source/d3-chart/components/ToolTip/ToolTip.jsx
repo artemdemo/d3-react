@@ -6,6 +6,7 @@ import ToolTipLine from './ToolTipLine';
 
 const DEFAULT_BASE_CLASS = '__tooltip';
 const DEFAULT_MOUSE_AREA_PERCENT = 0.8;
+const DEFAULT_TOOLTIP_POSITION_DELTA = 5;
 
 export class ToolTip extends Component {
     constructor(props) {
@@ -13,11 +14,15 @@ export class ToolTip extends Component {
 
         this.state = {
             toolTipLines: [],
+            showTooltip: false,
+            toolTipX: 0,
+            toolTipY: 0,
+            toolTipBox: null,
         };
     }
 
     componentDidMount() {
-        const { $$data, $$height, $$width } = this.props;
+        const { $$data, $$height, $$width, renderCallback } = this.props;
 
         // Use data without title row
         this.internalData = $$data.filter((item, index) => index !== 0);
@@ -25,6 +30,7 @@ export class ToolTip extends Component {
             return {
                 visible: false,
                 x: 0,
+                y: 0,
             };
         });
 
@@ -45,11 +51,26 @@ export class ToolTip extends Component {
                 return index === 0 || index === dataArr.length - 1 ? columnWidth / 2 : columnWidth;
             })
             .attr('height', $$height)
-            .on('mouseover', (d, index) => {
+            .on('mouseover', (d, index, dataArr) => {
+                let toolTipX = 0;
+                let toolTipY = 0;
                 this.setState({
                     toolTipLines: this.state.toolTipLines.map((item, itemIndex) => {
-                        return itemIndex === index ? Object.assign(item, {visible: true}) : item;
+                        if (itemIndex === index) {
+                            toolTipX = item.x + DEFAULT_TOOLTIP_POSITION_DELTA;
+                            toolTipY = item.y - DEFAULT_TOOLTIP_POSITION_DELTA;
+                            return Object.assign(item, {visible: true});
+                        }
+                        return item;
                     }),
+                    showTooltip: true,
+
+                    // Tooltip is passed via callback case I want to pass him current item,
+                    // otherwise he wouldn't know what is he rendering.
+                    // In this way he will be able to make template and fill it with right data for each tooltip
+                    toolTipBox: renderCallback(d, index, dataArr),
+                    toolTipX,
+                    toolTipY,
                 });
             })
             .on('mouseout', (d, index) => {
@@ -57,6 +78,7 @@ export class ToolTip extends Component {
                     toolTipLines: this.state.toolTipLines.map((item, itemIndex) => {
                         return itemIndex === index ? Object.assign(item, {visible: false}) : item;
                     }),
+                    showTooltip: false,
                 });
             });
 
@@ -107,6 +129,10 @@ export class ToolTip extends Component {
                                      key={`${DEFAULT_BASE_CLASS}-line-${index}`} />
                     ))}
                 </g>
+                <g style={{display: this.state.showTooltip ? 'initial' : 'none'}}
+                   transform={`translate(${this.state.toolTipX}, ${this.state.toolTipY})`}>
+                    {this.state.toolTipBox}
+                </g>
                 <g ref={(el) => this.columnsGroup = el} />
             </g>
         );
@@ -114,4 +140,5 @@ export class ToolTip extends Component {
 }
 
 ToolTip.propTypes = {
+    renderCallback: React.PropTypes.func,
 };
