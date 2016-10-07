@@ -30,12 +30,13 @@ const data = [
 
 ## ToDo
 
+* Tooltip (like C3)
+* Stocked columns chart
+* Use `<Axis orientation={} />` instead of `AxisX` and `AxisY`
 * Line + Dots chart
 * Percentage bar chart
 * Large data charts
 * Chart with dynamically updating data
-* Grouped bars chart
-* Tooltip (like C3)
 
 ## D3 examples
 

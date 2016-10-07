@@ -59,7 +59,7 @@ export class Chart extends Component {
     }
 
     render() {
-        const { width = '100%', height, className = DEFAULT_BASE_CLASS } = this.props;
+        const { className = DEFAULT_BASE_CLASS } = this.props;
         let children = null;
 
         if (this.state.width && this.state.height) {
@@ -76,19 +76,16 @@ export class Chart extends Component {
         }
 
         return (
-            <div className={className} style={{position: 'relative'}}>
-                <svg ref={(el) => this.chartSVG = el}
-                     className={`${className}__chart`}
-                     preserveAspectRatio='xMidYMid'
-                     viewBox={`0, 0, ${this.state.containerWidth}, ${this.state.containerHeight}`}
-                     width='100%'
-                     height='100%' >
-                    <g transform={`translate(${this.margin.left}, ${this.margin.top})`}>
-                        {children}
-                    </g>
-                </svg>
-                <div style={{position: 'absolute'}}></div>
-            </div>
+            <svg ref={(el) => this.chartSVG = el}
+                 className={className}
+                 preserveAspectRatio='xMidYMid'
+                 viewBox={`0, 0, ${this.state.containerWidth}, ${this.state.containerHeight}`}
+                 width='100%'
+                 height='100%' >
+                <g transform={`translate(${this.margin.left}, ${this.margin.top})`}>
+                    {children}
+                </g>
+            </svg>
         );
     }
 }
@@ -98,6 +95,4 @@ Chart.propTypes = {
     margin: marginShape,
     minResizeWidth: React.PropTypes.number,
     className: React.PropTypes.string,
-    width: React.PropTypes.string,
-    height: React.PropTypes.string,
 };
