@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { sum as d3_sum } from 'd3-array';
 
 import { Chart } from '../d3-chart/components/Chart/Chart';
 import { AxisX } from '../d3-chart/components/Axis/AxisX';
@@ -45,6 +46,19 @@ export class ColumnsView extends Component {
             ['2017', 230, 600, 980],
         ];
 
+        const stackedColumnsAxisY = stackedColumns.map((columns, index) => {
+            if (index === 0) {
+                return [
+                    'Year',
+                    'Group',
+                ];
+            }
+            return [
+                columns[0],
+                d3_sum(columns.slice(1)),
+            ];
+        });
+
         return (
             <div>
                 <div className='columns-view__container'>
@@ -73,7 +87,7 @@ export class ColumnsView extends Component {
                     <Chart data={stackedColumns}
                            className='columns-view-chart'>
                         <AxisX className='columns-view__axis' title='Groups' />
-                        <AxisY className='columns-view__axis' title='Years' />
+                        <AxisY className='columns-view__axis' title='Sales' data={stackedColumnsAxisY} />
                         <StackedColumns className='columns-view-stacked-chart' />
                         <Legend itemWidth={60}
                                 margin={{left: 100, top: 10}}
