@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { select as d3_select } from 'd3-selection';
-import { extent as d3_extent, max as d3_max } from 'd3-array';
+import { extent as d3_extent, max as d3_max, sum as d3_sum } from 'd3-array';
 import { getScaleBand, getScaleTime, getScaleLinear } from '../../services/scales';
 import ToolTipLine from './ToolTipLine';
 
@@ -23,10 +23,19 @@ export class ToolTip extends Component {
     }
 
     componentDidMount() {
-        const { $$data, $$height, $$width, renderCallback, scale = DEFAULT_SCALE } = this.props;
+        const {
+            $$data,
+            $$height,
+            $$width,
+            data,
+            renderCallback,
+            className = DEFAULT_BASE_CLASS,
+            scale = DEFAULT_SCALE,
+        } = this.props;
+        const selectedData = data || $$data;
 
         // Use data without title row
-        this.internalData = $$data.filter((item, index) => index !== 0);
+        this.internalData = selectedData.filter((item, index) => index !== 0);
         const toolTipLines = this.internalData.map(() => {
             return {
                 visible: false,
@@ -38,13 +47,14 @@ export class ToolTip extends Component {
         const columnWidth = ($$width / (this.internalData.length - 1)) * DEFAULT_MOUSE_AREA_PERCENT;
         const { x, y } = this.createAxisScale(this.props, this.internalData);
 
-        d3_select(this.columnsGroup).selectAll(`.${DEFAULT_BASE_CLASS}__column`)
+        d3_select(this.columnsGroup).selectAll(`.${className}__column`)
             .data(this.internalData)
             .enter().append('rect')
-            .attr('class', `${DEFAULT_BASE_CLASS}__column`)
+            .attr('class', `${className}__column`)
             .attr('fill', 'transparent')
             .attr('x', (d, index) => {
-                toolTipLines[index].y = y(d[1]);
+                const yPosition = d3_max(d.slice(1));
+                toolTipLines[index].y = y(yPosition);
                 switch (scale) {
                     case 'time':
                         toolTipLines[index].x = x(d[0]);
@@ -102,12 +112,12 @@ export class ToolTip extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        const { $$height, $$width, scale = DEFAULT_SCALE } = nextProps;
+        const { $$height, $$width, scale = DEFAULT_SCALE, className = DEFAULT_BASE_CLASS } = nextProps;
         const columnWidth = ($$width / (this.internalData.length - 1)) * 0.5;
         const toolTipLines = this.state.toolTipLines.slice();
         const { x, y } = this.createAxisScale(nextProps, this.internalData);
 
-        d3_select(this.columnsGroup).selectAll(`.${DEFAULT_BASE_CLASS}__column`)
+        d3_select(this.columnsGroup).selectAll(`.${className}__column`)
             .data(this.internalData)
             .attr('x', (d, index) => {
                 toolTipLines[index].y = y(d[1]);
@@ -153,20 +163,20 @@ export class ToolTip extends Component {
         }
 
         const y = getScaleLinear($$height);
-        y.domain([0, d3_max(data, item => item[1])]);
+        y.domain([0, d3_max(data, item => d3_max(item.slice(1)))]);
 
         return { x, y };
     }
 
     render() {
-        const { $$height } = this.props;
+        const { $$height, className = DEFAULT_BASE_CLASS } = this.props;
         return (
-            <g className={DEFAULT_BASE_CLASS}>
+            <g className={className}>
                 <g>
                     {this.state.toolTipLines.map((item, index) => (
                         <ToolTipLine item={item} height={$$height}
-                                     className={`${DEFAULT_BASE_CLASS}-line`}
-                                     key={`${DEFAULT_BASE_CLASS}-line-${index}`} />
+                                     className={`${className}-line`}
+                                     key={`${className}-line-${index}`} />
                     ))}
                 </g>
                 <g style={{display: this.state.showTooltip ? 'initial' : 'none'}}
@@ -180,6 +190,7 @@ export class ToolTip extends Component {
 }
 
 ToolTip.propTypes = {
+    data: React.PropTypes.array,
     renderCallback: React.PropTypes.func,
     scale: React.PropTypes.oneOf(['band', 'time']),
 };
