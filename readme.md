@@ -28,6 +28,8 @@ const data = [
 
 ![alt tag](img/line-chart-gradient.png)
 
+![alt tag](img/stacked-columns-tooltip.png)
+
 ## ToDo
 
 * Stacked columns chart + tooltip
