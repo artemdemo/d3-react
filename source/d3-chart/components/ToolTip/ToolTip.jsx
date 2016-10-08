@@ -92,7 +92,7 @@ export class ToolTip extends Component {
                     // Tooltip is passed via callback case I want to pass him current item,
                     // otherwise he wouldn't know what is he rendering.
                     // In this way he will be able to make template and fill it with right data for each tooltip
-                    toolTipBox: renderCallback(d, index, dataArr),
+                    toolTipBox: renderCallback(d, index),
                     toolTipX,
                     toolTipY,
                 });

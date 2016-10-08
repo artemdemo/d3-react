@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { sum as d3_sum } from 'd3-array';
 
 import { Chart } from '../d3-chart/components/Chart/Chart';
 import { AxisX } from '../d3-chart/components/Axis/AxisX';
@@ -6,6 +7,7 @@ import { AxisY } from '../d3-chart/components/Axis/AxisY';
 import { GridY } from '../d3-chart/components/Grid/GridY';
 import { LineTime } from '../d3-chart/components/Line/LineTime';
 import { Columns } from '../d3-chart/components/Columns/Columns';
+import { StackedColumns } from '../d3-chart/components/Columns/StackedColumns';
 import { ToolTip } from '../d3-chart/components/ToolTip/ToolTip';
 
 import './TooltipView.less';
@@ -34,9 +36,45 @@ export class TooltipView extends Component {
             ['2017', 1030],
         ];
 
-        const renderTooltipBox = (d, index, dataArray) => {
+        const stackedColumns = [
+            ['Year', 'Under 5', '5 to 13', '13 to 25'],
+            ['2011', 300, 500, 750],
+            ['2012', 180, 230, 400],
+            ['2013', 100, 400, 430],
+            ['2014', 400, 520, 830],
+            ['2015', 170, 490, 600],
+            ['2016', 260, 600, 730],
+            ['2017', 230, 600, 980],
+        ];
+
+        const stackedColumnsAxisY = stackedColumns.map((columns, index) => {
+            if (index === 0) {
+                return [
+                    'Year',
+                    'Group',
+                ];
+            }
+            return [
+                columns[0],
+                d3_sum(columns.slice(1)),
+            ];
+        });
+
+        const renderTooltipBox = (d) => {
             return (
-                <text>{d[1]}</text>
+                <text className='tooltip-view-box'>{d[1]}</text>
+            );
+        };
+
+        const renderTooltipBoxStackedChart = (d, index) => {
+            const currentItem = stackedColumns[index + 1];
+            return (
+                <text className='tooltip-view-box'>
+                    <tspan x='0' y='0'>{currentItem[1]}</tspan>
+                    <tspan x='0' y='15'>{currentItem[2]}</tspan>
+                    <tspan x='0' y='30'>{currentItem[3]}</tspan>
+                    <tspan x='0' y='45'>Total: {d[1]}</tspan>
+                </text>
             );
         };
 
@@ -69,6 +107,17 @@ export class TooltipView extends Component {
                     <ToolTip scale='band'
                              className='tooltip-view-tooltip'
                              renderCallback={renderTooltipBox} />
+                </Chart>
+
+                <Chart data={stackedColumns}
+                       className='tooltip-view-chart'>
+                    <AxisX className='columns-view__axis' title='Groups' />
+                    <AxisY className='columns-view__axis' title='Sales' data={stackedColumnsAxisY} />
+                    <StackedColumns className='columns-view-stacked-chart' />
+                    <ToolTip scale='band'
+                             className='tooltip-view-tooltip'
+                             data={stackedColumnsAxisY}
+                             renderCallback={renderTooltipBoxStackedChart} />
                 </Chart>
             </div>
         );
