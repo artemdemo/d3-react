@@ -42,13 +42,25 @@
         fill: @axis-color;
         font-size: 11px;
     }
-    &-item__rect_books {
+    &-item__rect_books, &-item__rect_under-5 {
         fill: @color-a;
     }
-    &-item__rect_laptops {
+    &-item__rect_laptops, &-item__rect_5-to-13 {
         fill: @color-b;
     }
-    &-item__rect_displays {
+    &-item__rect_displays, &-item__rect_13-to-25 {
+        fill: @color-c;
+    }
+}
+
+.columns-view-stacked-chart-serie {
+    &_under-5 {
+        fill: @color-a;
+    }
+    &_5-to-13 {
+        fill: @color-b;
+    }
+    &_13-to-25 {
         fill: @color-c;
     }
 }
