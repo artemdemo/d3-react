@@ -2,9 +2,7 @@ import React, { Component } from 'react';
 import throttle from 'lodash.throttle';
 import { marginShape } from '../../propTypes';
 
-const DEFAULT_BASE_CLASS = 'chart-container';
-
-export class Chart extends Component {
+export default class Chart extends Component {
     constructor(props) {
         super(props);
 
@@ -37,51 +35,46 @@ export class Chart extends Component {
     }
 
     updateChartDimensions() {
-        const { minResizeWidth } = this.props;
+        const { minResizeWidth = 0 } = this.props;
         const svgDimensions = this.chartSVG.getBoundingClientRect();
-
-        if (minResizeWidth === undefined || this.state.containerWidth === 0 || svgDimensions.width > minResizeWidth) {
-            const width = svgDimensions.width - this.margin.left - this.margin.right;
-            const height = svgDimensions.height - this.margin.top - this.margin.bottom;
-            this.setState({
-                containerWidth: svgDimensions.width,
-                containerHeight: svgDimensions.height,
-                width,
-                height,
-            });
-        } else if (minResizeWidth !== undefined) {
-            const width = minResizeWidth - this.margin.left - this.margin.right;
-            this.setState({
-                containerWidth: minResizeWidth,
-                width,
-            });
-        }
+        const height = svgDimensions.height - this.margin.top - this.margin.bottom;
+        const minWidth = svgDimensions.width > minResizeWidth ? svgDimensions.width : minResizeWidth;
+        const width = minWidth - this.margin.left - this.margin.right;
+        this.setState({
+            containerWidth: minWidth,
+            containerHeight: svgDimensions.height,
+            width,
+            height,
+        });
     }
 
     render() {
-        const { className = DEFAULT_BASE_CLASS } = this.props;
+        const { width = '100%', height, className } = this.props;
         let children = null;
 
         if (this.state.width && this.state.height) {
             const { data } = this.props;
             children = React.Children.map(
                 this.props.children,
-                child => {
-                    return React.cloneElement(child, {
-                        $$data: data,
+                (child) => {
+                    const newProps = {
                         $$width: this.state.width,
                         $$height: this.state.height,
-                    });
+                    };
+                    if (data) {
+                        newProps.$$data = data;
+                    }
+                    return React.cloneElement(child, newProps);
                 });
         }
 
         return (
-            <svg ref={(el) => this.chartSVG = el}
+            <svg ref={el => this.chartSVG = el}
                  className={className}
                  preserveAspectRatio='xMidYMid'
                  viewBox={`0, 0, ${this.state.containerWidth}, ${this.state.containerHeight}`}
-                 width='100%'
-                 height='100%' >
+                 width={width}
+                 height={height} >
                 <g transform={`translate(${this.margin.left}, ${this.margin.top})`}>
                     {children}
                 </g>
@@ -92,7 +85,9 @@ export class Chart extends Component {
 
 Chart.propTypes = {
     data: React.PropTypes.any,
-    margin: marginShape,
     minResizeWidth: React.PropTypes.number,
+    margin: marginShape,
     className: React.PropTypes.string,
+    width: React.PropTypes.string,
+    height: React.PropTypes.string,
 };

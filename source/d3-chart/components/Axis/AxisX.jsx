@@ -10,14 +10,13 @@ import { getScaleBand, getScaleLinear, getScaleTime } from '../../services/scale
  */
 
 const DEFAULT_BASE_CLASS = 'chart-axis';
+const LINEAR = 'linear';
+const BAND = 'band';
+const TIME = 'time';
 
-export class AxisX extends Component {
+export default class AxisX extends Component {
     componentDidMount() {
-        const { $$data, data } = this.props;
-        const selectedData = data || $$data;
-        this.internalData = selectedData.filter((item, index) => index !== 0);
-
-        this.createXAxis(this.props, this.internalData);
+        this.createXAxis(this.props);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -27,36 +26,41 @@ export class AxisX extends Component {
     /**
      * Create or update X axis
      * @param props
-     * @param data
      */
-    createXAxis(props, data = this.internalData) {
+    createXAxis(props) {
         const {
             $$width,
-            scale = 'band',
-            timeFormat = '%Y',
+            $$data,
+            data,
+            scale = BAND,
+            timeFormat,
         } = props;
+        const selectedData = data || $$data;
+        const internalData = selectedData.filter((item, index) => index !== 0);
         let x;
 
         switch (scale) {
-            case 'linear':
+            case LINEAR:
                 x = getScaleLinear($$width);
-                x.domain([d3_max(data, item => item[1]), 0]);
+                x.domain([d3_max(internalData, item => item[1]), 0]);
                 break;
-            case 'time':
-                const parseTime = d3_timeParse(timeFormat);
-                const dataParsed = data.map(item => {
+            case TIME:
+                const parseTime = timeFormat ? d3_timeParse(timeFormat) : null;
+                const dataParsed = internalData.map((item) => {
+                    const dateObject = parseTime ? parseTime(item[0]) : item[0];
                     return [
-                        parseTime(item[0]),
+                        dateObject,
                         item[1],
                     ];
                 });
+
                 x = getScaleTime($$width);
                 x.domain(d3_extent(dataParsed, item => item[0]));
                 break;
-            case 'band':
+            case BAND:
             default:
                 x = getScaleBand($$width);
-                x.domain(data.map(item => item[0]));
+                x.domain(internalData.map(item => item[0]));
         }
 
         d3_select(this.xGroup)
@@ -72,7 +76,7 @@ export class AxisX extends Component {
         } = this.props;
 
         return (
-            <g ref={(el) => this.xGroup = el}
+            <g ref={el => this.xGroup = el}
                className={className}
                transform={`translate(0, ${$$height})`}>
                 <text transform={`translate(${$$width / 2}, 0)`}
@@ -91,6 +95,6 @@ AxisX.propTypes = {
     data: React.PropTypes.array,
     title: React.PropTypes.string,
     className: React.PropTypes.string,
-    scale: React.PropTypes.string,
+    scale: React.PropTypes.oneOf([LINEAR, BAND, TIME]),
     timeFormat: React.PropTypes.string,
 };

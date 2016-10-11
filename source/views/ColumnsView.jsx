@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { sum as d3_sum } from 'd3-array';
 
-import { Chart } from '../d3-chart/components/Chart/Chart';
-import { AxisX } from '../d3-chart/components/Axis/AxisX';
-import { AxisY } from '../d3-chart/components/Axis/AxisY';
+import Chart from '../d3-chart/components/Chart/Chart';
+import AxisX from '../d3-chart/components/Axis/AxisX';
+import AxisY from '../d3-chart/components/Axis/AxisY';
 import { Columns } from '../d3-chart/components/Columns/Columns';
 import { GroupedColumns } from '../d3-chart/components/Columns/GroupedColumns';
 import { StackedColumns } from '../d3-chart/components/Columns/StackedColumns';

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 
-import { Chart } from '../d3-chart/components/Chart/Chart';
-import { AxisX } from '../d3-chart/components/Axis/AxisX';
-import { AxisY } from '../d3-chart/components/Axis/AxisY';
+import Chart from '../d3-chart/components/Chart/Chart';
+import AxisX from '../d3-chart/components/Axis/AxisX';
+import AxisY from '../d3-chart/components/Axis/AxisY';
 import { Bars } from '../d3-chart/components/Bars/Bars';
 import { GroupedBars } from '../d3-chart/components/Bars/GroupedBars';
 

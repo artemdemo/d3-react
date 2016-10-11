@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 
-import { Chart } from '../d3-chart/components/Chart/Chart';
-import { AxisX } from '../d3-chart/components/Axis/AxisX';
-import { AxisY } from '../d3-chart/components/Axis/AxisY';
+import Chart from '../d3-chart/components/Chart/Chart';
+import AxisX from '../d3-chart/components/Axis/AxisX';
+import AxisY from '../d3-chart/components/Axis/AxisY';
 import { Legend } from '../d3-chart/components/Legend/Legend';
 
 import './LegendView.less';
@@ -29,7 +29,7 @@ export class LegendView extends Component {
                        left: 40,
                    }}
                    className='legend-view-chart'>
-                <AxisX className='legend-view__axis' title={mainData[0][0]} />
+                <AxisX className='legend-view__axis' timeFormat='%Y' title={mainData[0][0]} />
                 <AxisY className='legend-view__axis' title={mainData[0][1]} />
                 <Legend itemWidth={60}
                         className='legend-view-legend'

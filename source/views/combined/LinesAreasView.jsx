@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import _ from 'underscore';
+import moment from 'moment';
 
-import { Chart } from '../../d3-chart/components/Chart/Chart';
-import { AxisX } from '../../d3-chart/components/Axis/AxisX';
-import { AxisY } from '../../d3-chart/components/Axis/AxisY';
+import Chart from '../../d3-chart/components/Chart/Chart';
+import AxisX from '../../d3-chart/components/Axis/AxisX';
+import AxisY from '../../d3-chart/components/Axis/AxisY';
 import { LineTime } from '../../d3-chart/components/Line/LineTime';
 import { GridX } from '../../d3-chart/components/Grid/GridX';
 import { GridY } from '../../d3-chart/components/Grid/GridY';
@@ -13,7 +14,7 @@ import './LinesAreasView.less';
 
 export class LinesAreasView extends Component {
     render() {
-        const mainData = [
+        let mainData = [
             ['Year', 'Sales', 'Books', 'Laptops'],
             ['2000', 5500, 100, 150],
             ['2001', 6000, 10, 0],
@@ -34,16 +35,37 @@ export class LinesAreasView extends Component {
             ['2016', 6600, 180, 100],
             ['2017', 10300, 250, 300],
         ];
+        mainData = mainData.map((item, index) => {
+            if (index === 0) {
+                return item;
+            }
+            return [
+                moment(item[0], 'YYYY').toDate(),
+                item[1],
+                item[2],
+                item[3],
+            ];
+        });
 
-        const booksData = mainData.map(item => [
-            item[0],
-            item[2],
-        ]);
+        const booksData = mainData.map((item, index) => {
+            if (index === 0) {
+                return item;
+            }
+            return [
+                moment(item[0], 'YYYY').toDate(),
+                item[2],
+            ];
+        });
 
-        const laptopsData = mainData.map(item => [
-            item[0],
-            item[3],
-        ]);
+        const laptopsData = mainData.map((item, index) => {
+            if (index === 0) {
+                return item;
+            }
+            return [
+                moment(item[0], 'YYYY').toDate(),
+                item[3],
+            ];
+        });
 
         const salesList = [];
         const booksList = [];

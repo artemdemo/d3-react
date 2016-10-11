@@ -9,9 +9,12 @@ import { getScaleBand, getScaleLinear } from '../../services/scales';
  */
 
 const DEFAULT_BASE_CLASS = 'chart-axis';
-const DEFAULT_POSITION = 'left';
+const RIGHT = 'right';
+const LEFT = 'left';
+const LINEAR = 'linear';
+const BAND = 'band';
 
-export class AxisY extends Component {
+export default class AxisY extends Component {
     componentDidMount() {
         const { $$data, data } = this.props;
         const selectedData = data || $$data;
@@ -32,29 +35,29 @@ export class AxisY extends Component {
     createYAxis(props, data = this.internalData) {
         const {
             $$height,
-            scale = 'linear',
-            position = DEFAULT_POSITION,
+            scale = LINEAR,
+            position = LEFT,
             maxDomain = d3_max(data, item => item[1]),
         } = props;
         let y;
         let axisPosition;
 
         switch (scale) {
-            case 'band':
+            case BAND:
                 y = getScaleBand($$height);
                 y.domain(data.map(item => item[0]));
                 break;
-            case 'linear':
+            case LINEAR:
             default:
                 y = getScaleLinear($$height);
                 y.domain([0, maxDomain]);
         }
 
         switch (position) {
-            case 'right':
+            case RIGHT:
                 axisPosition = d3_axisRight(y);
                 break;
-            case 'left':
+            case LEFT:
             default:
                 axisPosition = d3_axisLeft(y);
         }
@@ -66,7 +69,7 @@ export class AxisY extends Component {
     render() {
         const {
             title = '',
-            position = DEFAULT_POSITION,
+            position = LEFT,
             className = DEFAULT_BASE_CLASS,
             $$width = 0,
         } = this.props;
@@ -74,18 +77,18 @@ export class AxisY extends Component {
         let textY;
 
         switch (position) {
-            case 'right':
+            case RIGHT:
                 groupTransform = `translate(${$$width}, 0)`;
                 textY = -13;
                 break;
-            case 'left':
+            case LEFT:
             default:
                 groupTransform = '';
                 textY = 6;
         }
 
         return (
-            <g ref={(el) => this.yGroup = el}
+            <g ref={el => this.yGroup = el}
                className={className}
                transform={groupTransform}>
                 <text transform='rotate(-90)'
@@ -104,8 +107,8 @@ AxisY.propTypes = {
     data: React.PropTypes.array,
     title: React.PropTypes.string,
     className: React.PropTypes.string,
-    scale: React.PropTypes.string,
-    position: React.PropTypes.string,
+    scale: React.PropTypes.oneOf([LINEAR, BAND]),
+    position: React.PropTypes.oneOf([LEFT, RIGHT]),
     maxDomain: React.PropTypes.number,
     minDomain: React.PropTypes.number,
 };

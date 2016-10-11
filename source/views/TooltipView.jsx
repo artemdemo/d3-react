@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { sum as d3_sum } from 'd3-array';
 
-import { Chart } from '../d3-chart/components/Chart/Chart';
-import { AxisX } from '../d3-chart/components/Axis/AxisX';
-import { AxisY } from '../d3-chart/components/Axis/AxisY';
+import Chart from '../d3-chart/components/Chart/Chart';
+import AxisX from '../d3-chart/components/Axis/AxisX';
+import AxisY from '../d3-chart/components/Axis/AxisY';
 import { GridY } from '../d3-chart/components/Grid/GridY';
 import { LineTime } from '../d3-chart/components/Line/LineTime';
 import { Columns } from '../d3-chart/components/Columns/Columns';
@@ -94,6 +94,7 @@ export class TooltipView extends Component {
                              className='tooltip-view-tooltip'
                              renderCallback={renderTooltipBox} />
                     <AxisX scale='time'
+                           timeFormat='%Y'
                            title={lineData[0][0]}
                            className='lines-view__axis' />
                     <AxisY className='legend-view__axis' title={lineData[0][1]} />
@@ -101,7 +102,7 @@ export class TooltipView extends Component {
 
                 <Chart data={columns}
                        className='tooltip-view-chart'>
-                    <AxisX className='columns-view__axis' title={columns[0][0]} />
+                    <AxisX className='columns-view__axis' timeFormat='%Y' title={columns[0][0]} />
                     <AxisY className='columns-view__axis' title={columns[0][1]} />
                     <Columns className='columns-view-single-chart' />
                     <ToolTip scale='band'
@@ -111,7 +112,7 @@ export class TooltipView extends Component {
 
                 <Chart data={stackedColumns}
                        className='tooltip-view-chart'>
-                    <AxisX className='columns-view__axis' title='Groups' />
+                    <AxisX className='columns-view__axis' timeFormat='%Y' title='Groups' />
                     <AxisY className='columns-view__axis' title='Sales' data={stackedColumnsAxisY} />
                     <StackedColumns className='columns-view-stacked-chart' />
                     <ToolTip scale='band'
