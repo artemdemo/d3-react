@@ -18,6 +18,7 @@ import { PieView } from './views/PieView';
 import { TooltipView } from './views/TooltipView';
 import { LinesAreasView } from './views/combined/LinesAreasView';
 import { GradientView } from './views/other/GradientView';
+import ChartMapView from './views/interactive/ChartMapView';
 
 
 render(
@@ -37,6 +38,9 @@ render(
                 </Route>
                 <Route path='other'>
                     <Route path='gradient' component={GradientView} />
+                </Route>
+                <Route path='interactive'>
+                    <Route path='chart-map' component={ChartMapView} />
                 </Route>
             </Route>
         </Router>
