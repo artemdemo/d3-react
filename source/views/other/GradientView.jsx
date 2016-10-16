@@ -4,7 +4,7 @@ import _ from 'underscore';
 import Chart from '../../d3-chart/components/Chart/Chart';
 import AxisX from '../../d3-chart/components/Axis/AxisX';
 import AxisY from '../../d3-chart/components/Axis/AxisY';
-import LineTime from '../../d3-chart/components/Line/LineTime';
+import Line from '../../d3-chart/components/Line/Line';
 import GridX from '../../d3-chart/components/Grid/GridX';
 import GridY from '../../d3-chart/components/Grid/GridY';
 import { Legend } from '../../d3-chart/components/Legend/Legend';
@@ -102,10 +102,10 @@ export class GradientView extends Component {
                            scale='linear'
                            ticks={10}
                            dataDelta={{y: booksDeltaY}} />
-                    <LineTime className='gradient-view-main-chart'
-                              area={{gradientId: 'main-area-gradient'}}
-                              curve='step'
-                              glow>
+                    <Line className='gradient-view-main-chart'
+                          area={{gradientId: 'main-area-gradient'}}
+                          curve='step'
+                          glow >
                         <defs>
                             <linearGradient id='main-area-gradient' x1='0%' y1='0%' x2='0%' y2='100%'>
                                 <stop offset='0%' stopColor='#0f2e48' />
@@ -113,8 +113,8 @@ export class GradientView extends Component {
                                 <stop offset='100%' stopColor='#115c9b' />
                             </linearGradient>
                         </defs>
-                    </LineTime>
-                    <LineTime className='gradient-view-laptops'
+                    </Line>
+                    <Line className='gradient-view-laptops'
                               data={laptopsData}
                               curve='step'
                               dataDelta={{y: booksDeltaY}}
@@ -127,8 +127,8 @@ export class GradientView extends Component {
                                 <stop offset='100%' stopColor='#e0cf42' />
                             </linearGradient>
                         </defs>
-                    </LineTime>
-                    <LineTime className='gradient-view-books'
+                    </Line>
+                    <Line className='gradient-view-books'
                               data={booksData}
                               curve='step'
                               dataDelta={{y: booksDeltaY}}
@@ -141,7 +141,7 @@ export class GradientView extends Component {
                                 <stop offset='100%' stopColor='#0ea30c' />
                             </linearGradient>
                         </defs>
-                    </LineTime>
+                    </Line>
                     <AxisX className='lines-areas-view-axis'
                            timeFormat='%Y'
                            title={mainData[0][0]}

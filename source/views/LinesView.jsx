@@ -3,9 +3,9 @@ import React, { Component } from 'react';
 import Chart from '../d3-chart/components/Chart/Chart';
 import AxisX from '../d3-chart/components/Axis/AxisX';
 import AxisY from '../d3-chart/components/Axis/AxisY';
-import LineTime from '../d3-chart/components/Line/LineTime';
 import GridX from '../d3-chart/components/Grid/GridX';
 import GridY from '../d3-chart/components/Grid/GridY';
+import Line from '../d3-chart/components/Line/Line';
 
 import './LinesView.less';
 
@@ -28,7 +28,7 @@ export class LinesView extends Component {
                 </p>
                 <Chart data={line} className='lines-view-chart'>
                     <GridX className='lines-view__grid' />
-                    <LineTime className='lines-view-line' />
+                    <Line className='lines-view-line' />
                     <AxisX title={line[0][0]}
                            scale='time'
                            timeFormat='%Y'
@@ -41,7 +41,7 @@ export class LinesView extends Component {
                 </p>
                 <Chart data={line} className='lines-view-chart'>
                     <GridY scale='linear' ticks={5} className='lines-view__grid' />
-                    <LineTime curve='step' className='lines-view-line' />
+                    <Line curve='step' className='lines-view-line' />
                     <AxisX title={line[0][0]}
                            scale='time'
                            timeFormat='%Y'
@@ -53,7 +53,7 @@ export class LinesView extends Component {
                     <strong>Line with area</strong>
                 </p>
                 <Chart data={line} className='lines-view-chart'>
-                    <LineTime area className='lines-view-line' />
+                    <Line area className='lines-view-line' />
                     <AxisX title={line[0][0]}
                            scale='time'
                            timeFormat='%Y'

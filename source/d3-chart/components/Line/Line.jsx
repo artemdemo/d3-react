@@ -5,10 +5,8 @@ import {
     curveStep as d3_curveStep,
     curveMonotoneX as d3_curveMonotoneX,
 } from 'd3-shape';
-import { zoom as d3_zoom } from 'd3-zoom';
 import { max as d3_max, extent as d3_extent } from 'd3-array';
 import { timeParse as d3_timeParse } from 'd3-time-format';
-import { select as d3_select, event as d3_event } from 'd3-selection';
 import { getScaleLinear, getScaleTime, getScaleBand } from '../../services/scales';
 import { deltaShape } from '../../propTypes';
 
@@ -63,23 +61,6 @@ export default class Line extends Component {
 
         if (this.internalData.length === 0) {
             return;
-        }
-
-        console.log(this.groupZoom);
-        if (this.groupZoom) {
-            const zoom = d3_zoom()
-                .scaleExtent([1, Infinity])
-                .translateExtent([[0, 0], [$$width, $$height]])
-                .extent([[0, 0], [$$width, $$height]])
-                .on('zoom', this.zoomed);
-
-            this.groupZoom.innerHTML = '';
-            d3_select(this.groupZoom)
-                .append('rect')
-                .attr('style', 'cursor: move; fill: none; pointer-events: all;')
-                .attr('width', $$width)
-                .attr('height', $$height)
-                .call(zoom);
         }
 
         let x;
@@ -144,10 +125,6 @@ export default class Line extends Component {
         });
     }
 
-    zoomed() {
-        if (d3_event.sourceEvent && d3_event.sourceEvent.type === 'brush') return;
-    }
-
     renderArea() {
         const { className = DEFAULT_BASE_CLASS, area = false } = this.props;
         if (area) {
@@ -171,16 +148,14 @@ export default class Line extends Component {
         const glowPath = (
             <path className={`${className}__line-path ${className}__line-path_glow`}
                   d={this.state.pathFunc(this.internalData)}
-                  filter={`url(#line-blur-filter-${this.saltId})`}
-                  clipPath={`url(#line-clip-path-${this.saltId})`} />
+                  filter={`url(#line-blur-filter-${this.saltId})`} />
         );
         if (line === true) {
             return (
                 <g>
                     {glow === true ? glowPath : null}
                     <path className={`${className}__line-path`}
-                          d={this.state.pathFunc(this.internalData)}
-                          clipPath={`url(#line-clip-path-${this.saltId})`} />
+                          d={this.state.pathFunc(this.internalData)} />
                 </g>
             );
         }
@@ -204,15 +179,10 @@ export default class Line extends Component {
                             height={$$height}>
                         <feGaussianBlur in='SourceGraphic' stdDeviation='5' />
                     </filter>
-                    <clipPath id={`line-clip-path-${this.saltId}`}>
-                        <rect width={$$width}
-                              height={$$height} />
-                    </clipPath>
                 </defs>
                 {this.renderArea()}
                 {this.renderLine()}
                 {this.props.children}
-                <g ref={el => this.groupZoom = el} />
             </g>
         );
     }
@@ -265,5 +235,4 @@ Line.propTypes = {
      * Line curve type
      */
     curve: React.PropTypes.oneOf([STEP, MONOTONE]),
-    zoomable: React.PropTypes.bool,
 };

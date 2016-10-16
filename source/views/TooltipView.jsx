@@ -5,7 +5,7 @@ import Chart from '../d3-chart/components/Chart/Chart';
 import AxisX from '../d3-chart/components/Axis/AxisX';
 import AxisY from '../d3-chart/components/Axis/AxisY';
 import GridY from '../d3-chart/components/Grid/GridY';
-import LineTime from '../d3-chart/components/Line/LineTime';
+import Line from '../d3-chart/components/Line/Line';
 import { Columns } from '../d3-chart/components/Columns/Columns';
 import StackedColumns from '../d3-chart/components/Columns/StackedColumns';
 import ToolTip from '../d3-chart/components/ToolTip/ToolTip';
@@ -89,7 +89,7 @@ export class TooltipView extends Component {
                        }}
                        className='tooltip-view-chart'>
                     <GridY scale='linear' ticks={5} className='lines-view__grid' />
-                    <LineTime curve='step' className='tooltip-view-line' />
+                    <Line curve='step' className='tooltip-view-line' />
                     <ToolTip scale='time'
                              className='tooltip-view-tooltip'
                              renderCallback={renderTooltipBox} />

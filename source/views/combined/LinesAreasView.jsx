@@ -5,9 +5,9 @@ import moment from 'moment';
 import Chart from '../../d3-chart/components/Chart/Chart';
 import AxisX from '../../d3-chart/components/Axis/AxisX';
 import AxisY from '../../d3-chart/components/Axis/AxisY';
-import LineTime from '../../d3-chart/components/Line/LineTime';
 import GridX from '../../d3-chart/components/Grid/GridX';
 import GridY from '../../d3-chart/components/Grid/GridY';
+import Line from '../../d3-chart/components/Line/Line';
 import { Legend } from '../../d3-chart/components/Legend/Legend';
 
 import './LinesAreasView.less';
@@ -103,16 +103,16 @@ export class LinesAreasView extends Component {
                            scale='linear'
                            ticks={10}
                            dataDelta={{y: booksDeltaY}} />
-                    <LineTime className='lines-areas-view-main-chart'
+                    <Line className='lines-areas-view-main-chart'
                               curve='step'
                               area />
-                    <LineTime className='lines-areas-view-laptops'
+                    <Line className='lines-areas-view-laptops'
                               data={laptopsData}
                               curve='step'
                               dataDelta={{y: booksDeltaY}}
                               line={false}
                               area />
-                    <LineTime className='lines-areas-view-books'
+                    <Line className='lines-areas-view-books'
                               data={booksData}
                               curve='step'
                               dataDelta={{y: booksDeltaY}}
