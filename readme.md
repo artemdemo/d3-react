@@ -32,8 +32,6 @@ const data = [
 
 ## ToDo
 
-* Stacked columns chart + tooltip
-* Tooltip for bar charts
 * Line + Dots chart
 * Percentage bar chart
 * Large data charts
