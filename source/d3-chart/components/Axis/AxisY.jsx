@@ -2,11 +2,8 @@ import React, { Component } from 'react';
 import { axisLeft as d3_axisLeft, axisRight as d3_axisRight } from 'd3-axis';
 import { max as d3_max } from 'd3-array';
 import { select as d3_select } from 'd3-selection';
+import { format as d3_format } from 'd3-format';
 import { getScaleBand, getScaleLinear } from '../../services/scales';
-
-/**
- * AxisY
- */
 
 const DEFAULT_BASE_CLASS = 'chart-axis';
 const RIGHT = 'right';
@@ -14,13 +11,12 @@ const LEFT = 'left';
 const LINEAR = 'linear';
 const BAND = 'band';
 
+/**
+ * AxisY
+ */
 export default class AxisY extends Component {
     componentDidMount() {
-        const { $$data, data } = this.props;
-        const selectedData = data || $$data;
-        this.internalData = selectedData.filter((item, index) => index !== 0);
-
-        this.createYAxis(this.props, this.internalData);
+        this.createYAxis(this.props);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -30,40 +26,43 @@ export default class AxisY extends Component {
     /**
      * Create or update Y axis
      * @param props
-     * @param data
      */
-    createYAxis(props, data = this.internalData) {
-        const {
-            $$height,
-            scale = LINEAR,
-            position = LEFT,
-            maxDomain = d3_max(data, item => item[1]),
-        } = props;
+    createYAxis(props) {
+        const { $$data, $$dataDelta, $$height, labelNumberFormat } = props;
+        const { axisTicks = 10, scale = LINEAR, position = LEFT } = props;
+        const { data = $$data, dataDelta = $$dataDelta } = props;
+        const internalData = data.filter((item, index) => index !== 0);
         let y;
-        let axisPosition;
+        let axis;
 
         switch (scale) {
             case BAND:
                 y = getScaleBand($$height);
-                y.domain(data.map(item => item[0]));
+                y.domain(internalData.map(item => item[0]));
                 break;
             case LINEAR:
             default:
                 y = getScaleLinear($$height);
-                y.domain([0, maxDomain]);
+                const maxY = dataDelta && dataDelta.y ?
+                dataDelta.y * d3_max(internalData, item => item[1]) :
+                    d3_max(internalData, item => item[1]);
+                y.domain([0, maxY]);
         }
 
         switch (position) {
             case RIGHT:
-                axisPosition = d3_axisRight(y);
+                axis = d3_axisRight(y);
                 break;
             case LEFT:
             default:
-                axisPosition = d3_axisLeft(y);
+                axis = d3_axisLeft(y);
         }
 
+        axis.ticks(axisTicks)
+            .tickFormat(d => labelNumberFormat ? d3_format(labelNumberFormat)(d) : d);
+
         d3_select(this.yGroup)
-            .call(axisPosition.ticks(10));
+            .call(axis);
     }
 
     render() {
@@ -104,11 +103,36 @@ export default class AxisY extends Component {
 }
 
 AxisY.propTypes = {
+    /**
+     * Main data object of the component.
+     * See `<Chart />`
+     */
     data: React.PropTypes.array,
+    /**
+     * Axis title
+     */
     title: React.PropTypes.string,
+    /**
+     * Components class property for CSS
+     */
     className: React.PropTypes.string,
+    /**
+     * Number formatting for labels
+     * @link https://github.com/d3/d3-format
+     */
+    labelNumberFormat: React.PropTypes.string,
+    /**
+     * Axis scale. Determine how to treat components `data`
+     */
     scale: React.PropTypes.oneOf([LINEAR, BAND]),
+    /**
+     * Axis position - `left` or `right`.
+     */
     position: React.PropTypes.oneOf([LEFT, RIGHT]),
-    maxDomain: React.PropTypes.number,
-    minDomain: React.PropTypes.number,
+    /**
+     * Axis ticks.
+     * Hint to d3 - how many ticks should be generated
+     * @link https://github.com/d3/d3-scale/blob/master/README.md#time_ticks
+     */
+    axisTicks: React.PropTypes.number,
 };

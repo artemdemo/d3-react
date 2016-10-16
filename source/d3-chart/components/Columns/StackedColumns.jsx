@@ -1,115 +1,145 @@
 import React, { Component } from 'react';
 import { stack as d3_stack } from 'd3-shape';
-import { max as d3_max, sum as d3_sum } from 'd3-array';
+import { max as d3_max, sum as d3_sum, extent as d3_extent } from 'd3-array';
 import { select as d3_select } from 'd3-selection';
+import { timeParse as d3_timeParse } from 'd3-time-format';
 import { linefyName } from '../../services/utils';
-import { getScaleBand, getScaleLinear, getClassesScale } from '../../services/scales';
-
-/**
- * Columns chart
- *
- * @tutorial http://bl.ocks.org/mbostock/3885304
- *
- * Grouped columns
- * @tutorial https://bl.ocks.org/mbostock/3887051
- *
- * Stacked columns
- * @tutorial http://bl.ocks.org/mbostock/3886208
- */
+import { getScaleBand, getScaleLinear, getClassesScale, getScaleTime } from '../../services/scales';
+import { deltaShape } from '../../propTypes';
 
 const DEFAULT_BASE_CLASS = 'columns-chart';
+const BAND = 'band';
+const TIME = 'time';
 
-export class StackedColumns extends Component {
+/**
+ * Stacked columns chart
+ *
+ * http://bl.ocks.org/mbostock/3886208
+ */
+export default class StackedColumns extends Component {
     componentDidMount() {
-        const { $$data, data, className = DEFAULT_BASE_CLASS } = this.props;
-        const selectedData = data || $$data;
+        this.updateColumns(this.props);
+    }
 
-        this.columnTitles = selectedData[0];
-        this.columnTitles = this.columnTitles.slice(1);
+    componentWillReceiveProps(nextProps) {
+        this.updateColumns(nextProps);
+    }
 
-        this.rowTitles = [];
+    updateColumns(props) {
+        const { $$width, $$height, $$data, $$dataDelta, scale, timeFormat, className = DEFAULT_BASE_CLASS } = props;
+        const { dataDelta = $$dataDelta, data = $$data } = props;
 
-        this.internalData = selectedData.slice(1);
+        let columnTitles = data[0];
+        columnTitles = columnTitles.slice(1);
 
-        const formattedData = this.internalData
-            .map(columns => {
+        const rowTitles = [];
+        const internalData = data.slice(1);
+        const formattedData = internalData
+            .map((columns) => {
                 const columnTitle = {
                     original: columns[0],
-                    linified: linefyName(columns[0]),
+                    linified: linefyName(String(columns[0])),
                 };
                 const resultColumn = {
                     _title: columnTitle,
                 };
-                this.rowTitles.push(columnTitle.linified);
+                rowTitles.push(columnTitle.linified);
                 columns.slice(1).forEach((column, index) => {
-                    resultColumn[linefyName(this.columnTitles[index])] = column;
+                    resultColumn[linefyName(columnTitles[index])] = column;
                 });
                 return resultColumn;
             });
 
-        this.stackData = d3_stack().keys(this.columnTitles.map(title => linefyName(title)))(formattedData);
+        let x;
+        let columnWidth;
+        switch (scale) {
+            case TIME:
+                const parseTime = timeFormat ? d3_timeParse(timeFormat) : null;
+                const dataParsed = internalData.map((item) => {
+                    const dateObject = parseTime ? parseTime(item[0]) : item[0];
+                    return [
+                        dateObject,
+                        item[1],
+                    ];
+                });
 
+                x = getScaleTime($$width);
+                x.domain(d3_extent(dataParsed, item => item[0]));
+                columnWidth = dataParsed.length > 0 ? $$width / dataParsed.length : 0;
+                break;
+            case BAND:
+            default:
+                x = getScaleBand($$width);
+                x.domain(rowTitles);
+                columnWidth = x.bandwidth();
+        }
+
+        const y = getScaleLinear($$height);
+        const maxY = dataDelta && dataDelta.y ?
+        dataDelta.y * d3_max(data, row => d3_sum(row.slice(1))) :
+            d3_max(data, row => d3_sum(row.slice(1)));
+        y.domain([0, maxY]);
+
+        const stackData = d3_stack().keys(columnTitles.map(title => linefyName(title)))(formattedData);
         const groupClassesScale =
-            getClassesScale(this.columnTitles.map(item => `${className}-serie_${linefyName(item)}`));
+            getClassesScale(columnTitles.map(item => `${className}-serie_${linefyName(item)}`));
 
-        const { x, y } = this.createAxisScale(this.props, this.internalData);
+        this.columnsGroup.innerHTML = '';
 
         d3_select(this.columnsGroup)
             .selectAll(`.${className}-serie`)
-            .data(this.stackData)
+            .data(stackData)
             .enter().append('g')
-            .attr('class', (d) => `${className}-serie ${groupClassesScale(d.key)}`)
+            .attr('class', d => `${className}-serie ${groupClassesScale(d.key)}`)
 
             .selectAll(`.${className}__column`)
             .data(d => d)
             .enter().append('rect')
             .attr('class', `${className}__column`)
-            .attr('x', d => x(d.data._title.linified))
+            .attr('x', (d) => {
+                switch (scale) {
+                    case TIME:
+                        return x(d.data._title.original);
+                    case BAND:
+                    default:
+                        return x(d.data._title.linified);
+                }
+            })
             .attr('y', d => y(d[1]))
-            .attr('width', x.bandwidth())
+            .attr('width', columnWidth)
             .attr('height', d => y(d[0]) - y(d[1]));
-    }
-
-    componentWillReceiveProps(nextProps) {
-        const { className = DEFAULT_BASE_CLASS } = nextProps;
-        const { x, y } = this.createAxisScale(nextProps);
-
-        d3_select(this.columnsGroup)
-            .selectAll(`.${className}-serie`)
-            .data(this.stackData)
-
-            .selectAll(`.${className}__column`)
-            .data(d => d)
-            .attr('x', d => x(d.data._title.linified))
-            .attr('y', d => y(d[1]))
-            .attr('width', x.bandwidth())
-            .attr('height', d => y(d[0]) - y(d[1]));
-
-    }
-
-    createAxisScale(props, data = this.internalData) {
-        const { $$height, $$width } = props;
-
-        const x = getScaleBand($$width);
-        x.domain(this.rowTitles);
-
-        const y = getScaleLinear($$height);
-        y.domain([0, d3_max(data, row => d3_sum(row.slice(1)))]);
-
-        return { x, y };
     }
 
     render() {
         const { className = DEFAULT_BASE_CLASS } = this.props;
         return (
             <g className={className}
-               ref={(el) => this.columnsGroup = el} />
+               ref={el => this.columnsGroup = el} />
         );
     }
 }
 
 StackedColumns.propTypes = {
+    /**
+     * Main data object of the component
+     * See `<Chart />`
+     */
     data: React.PropTypes.array,
-    $$height: React.PropTypes.number,
-    $$width: React.PropTypes.number,
+    /**
+     * Time format of axis labels (by default, expected to be Date() object)
+     */
+    timeFormat: React.PropTypes.string,
+    /**
+     * Delta change for maximum data value.
+     * Value is in percents.
+     */
+    dataDelta: deltaShape,
+    /**
+     * Components class property for CSS
+     */
+    className: React.PropTypes.string,
+    /**
+     * Axis scale. Determine how to treat components `data`
+     */
+    scale: React.PropTypes.oneOf([BAND, TIME]),
 };

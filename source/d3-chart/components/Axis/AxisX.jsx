@@ -2,18 +2,17 @@ import React, { Component } from 'react';
 import { axisBottom as d3_axisBottom } from 'd3-axis';
 import { max as d3_max, extent as d3_extent } from 'd3-array';
 import { select as d3_select } from 'd3-selection';
-import { timeParse as d3_timeParse } from 'd3-time-format';
+import { timeParse as d3_timeParse, timeFormat as d3_timeFormat } from 'd3-time-format';
 import { getScaleBand, getScaleLinear, getScaleTime } from '../../services/scales';
-
-/**
- * AxisX
- */
 
 const DEFAULT_BASE_CLASS = 'chart-axis';
 const LINEAR = 'linear';
 const BAND = 'band';
 const TIME = 'time';
 
+/**
+ * AxisX
+ */
 export default class AxisX extends Component {
     componentDidMount() {
         this.createXAxis(this.props);
@@ -31,9 +30,11 @@ export default class AxisX extends Component {
         const {
             $$width,
             $$data,
+            axisTicks = 10,
             data,
             scale = BAND,
             timeFormat,
+            labelTimeFormat,
         } = props;
         const selectedData = data || $$data;
         const internalData = selectedData.filter((item, index) => index !== 0);
@@ -63,8 +64,14 @@ export default class AxisX extends Component {
                 x.domain(internalData.map(item => item[0]));
         }
 
+        const axis = d3_axisBottom(x).ticks(axisTicks);
+
+        if (labelTimeFormat) {
+            axis.tickFormat(d3_timeFormat(labelTimeFormat));
+        }
+
         d3_select(this.xGroup)
-            .call(d3_axisBottom(x));
+            .call(axis);
     }
 
     render() {
@@ -92,9 +99,36 @@ export default class AxisX extends Component {
 }
 
 AxisX.propTypes = {
+    /**
+     * Main data object of the component
+     * See `<Chart />`
+     */
     data: React.PropTypes.array,
+    /**
+     * Axis title
+     */
     title: React.PropTypes.string,
+    /**
+     * Label time formatting
+     * @link https://github.com/d3/d3-time-format
+     */
+    labelTimeFormat: React.PropTypes.string,
+    /**
+     * Components class property for CSS
+     */
     className: React.PropTypes.string,
+    /**
+     * Axis scale. Determine how to treat components `data`
+     */
     scale: React.PropTypes.oneOf([LINEAR, BAND, TIME]),
+    /**
+     * Time format of axis labels (by default, expected to be Date() object)
+     */
     timeFormat: React.PropTypes.string,
+    /**
+     * Axis ticks.
+     * Hint to d3 - how many ticks should be generated
+     * @link https://github.com/d3/d3-scale/blob/master/README.md#time_ticks
+     */
+    axisTicks: React.PropTypes.number,
 };

@@ -5,7 +5,7 @@ import moment from 'moment';
 import Chart from '../../d3-chart/components/Chart/Chart';
 import AxisX from '../../d3-chart/components/Axis/AxisX';
 import AxisY from '../../d3-chart/components/Axis/AxisY';
-import { LineTime } from '../../d3-chart/components/Line/LineTime';
+import LineTime from '../../d3-chart/components/Line/LineTime';
 import { GridX } from '../../d3-chart/components/Grid/GridX';
 import { GridY } from '../../d3-chart/components/Grid/GridY';
 import { Legend } from '../../d3-chart/components/Legend/Legend';

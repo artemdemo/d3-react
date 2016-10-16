@@ -5,9 +5,9 @@ import Chart from '../d3-chart/components/Chart/Chart';
 import AxisX from '../d3-chart/components/Axis/AxisX';
 import AxisY from '../d3-chart/components/Axis/AxisY';
 import { GridY } from '../d3-chart/components/Grid/GridY';
-import { LineTime } from '../d3-chart/components/Line/LineTime';
+import LineTime from '../d3-chart/components/Line/LineTime';
 import { Columns } from '../d3-chart/components/Columns/Columns';
-import { StackedColumns } from '../d3-chart/components/Columns/StackedColumns';
+import StackedColumns from '../d3-chart/components/Columns/StackedColumns';
 import { ToolTip } from '../d3-chart/components/ToolTip/ToolTip';
 
 import './TooltipView.less';

@@ -6,3 +6,8 @@ export const marginShape = React.PropTypes.shape({
     bottom: React.PropTypes.number,
     left: React.PropTypes.number,
 });
+
+export const deltaShape = React.PropTypes.shape({
+    x: React.PropTypes.number,
+    y: React.PropTypes.number,
+});

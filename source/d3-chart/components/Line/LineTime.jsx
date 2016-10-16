@@ -2,26 +2,24 @@ import React, { Component } from 'react';
 import { line as d3_line, area as d3_area, curveStep as d3_curveStep } from 'd3-shape';
 import { max as d3_max, extent as d3_extent } from 'd3-array';
 import { getScaleLinear, getScaleTime } from '../../services/scales';
-
-/**
- * Line chart
- *
- * @tutorial https://bl.ocks.org/mbostock/02d893e3486c70c4475f
- * @tutorial https://bl.ocks.org/mbostock/3884955
- *
- * Steps line chart
- * @tutorial http://bl.ocks.org/shimizu/f7ef798894427a99efe5e173e003260d
- *
- * Different curve lines
- * @tutorial https://bl.ocks.org/d3noob/ced1b9b18bd8192d2c898884033b5529
- *
- * Line with area
- * @tutorial https://bl.ocks.org/d3noob/119a138ef9bd1d8f0a8d57ea72355252
- */
+import { deltaShape } from '../../propTypes';
 
 const DEFAULT_BASE_CLASS = 'line-chart';
+const STEP = 'step';
 
-export class LineTime extends Component {
+/**
+ * Line time chart
+ *
+ * https://bl.ocks.org/mbostock/02d893e3486c70c4475f
+ * https://bl.ocks.org/mbostock/3884955
+ *
+ * Steps line chart
+ * http://bl.ocks.org/shimizu/f7ef798894427a99efe5e173e003260d
+ *
+ * Different curve lines
+ * https://bl.ocks.org/d3noob/ced1b9b18bd8192d2c898884033b5529
+ */
+export default class LineTime extends Component {
     constructor(props) {
         super(props);
 
@@ -34,31 +32,32 @@ export class LineTime extends Component {
     }
 
     componentDidMount() {
-        const { $$data, data } = this.props;
-        const selectedData = data || $$data;
-        this.internalData = selectedData.filter((item, index) => index !== 0);
-
-        this.updatePaths(this.props, this.internalData);
+        this.updatePaths(this.props);
     }
 
     componentWillReceiveProps(nextProps) {
-        this.updatePaths(nextProps, this.internalData);
+        this.updatePaths(nextProps);
     }
 
-    updatePaths(props, data = this.internalData) {
-        const {
-            $$height,
-            $$width,
-            curve,
-            area,
-            maxDomain = d3_max(data, item => item[1]),
-        } = props;
+    updatePaths(props) {
+        const { $$height, $$width, $$data, $$dataDelta, curve, area} = props;
+        const { dataDelta = $$dataDelta, data = $$data } = props;
+
+        this.internalData = data.filter((item, index) => index !== 0);
+
+        if (this.internalData.length === 0) {
+            return;
+        }
 
         const x = getScaleTime($$width);
         const y = getScaleLinear($$height);
 
-        x.domain(d3_extent(data, item => item[0]));
-        y.domain([0, maxDomain]);
+        x.domain(d3_extent(this.internalData, item => item[0]));
+
+        const maxY = dataDelta && dataDelta.y ?
+            dataDelta.y * d3_max(this.internalData, item => item[1]) :
+            d3_max(this.internalData, item => item[1]);
+        y.domain([0, maxY]);
 
         const pathFunc = d3_line()
             .x(d => x(d[0]))
@@ -74,7 +73,7 @@ export class LineTime extends Component {
         }
 
         switch (curve) {
-            case 'step':
+            case STEP:
                 pathFunc.curve(d3_curveStep);
                 if (areaFunc) {
                     areaFunc.curve(d3_curveStep);
@@ -148,7 +147,19 @@ export class LineTime extends Component {
 }
 
 LineTime.propTypes = {
+    /**
+     * Main data object of the component
+     * See `<Chart />`
+     */
     data: React.PropTypes.array,
+    /**
+     * Delta change for maximum data value.
+     * Value is in percents.
+     */
+    dataDelta: deltaShape,
+    /**
+     * Components class property for CSS
+     */
     className: React.PropTypes.string,
     glow: React.PropTypes.bool,
     area: React.PropTypes.oneOfType([
@@ -158,5 +169,5 @@ LineTime.propTypes = {
         }),
     ]),
     line: React.PropTypes.bool,
-    maxDomain: React.PropTypes.number,
+    curve: React.PropTypes.oneOf([STEP]),
 };

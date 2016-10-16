@@ -6,7 +6,7 @@ import AxisX from '../d3-chart/components/Axis/AxisX';
 import AxisY from '../d3-chart/components/Axis/AxisY';
 import { Columns } from '../d3-chart/components/Columns/Columns';
 import { GroupedColumns } from '../d3-chart/components/Columns/GroupedColumns';
-import { StackedColumns } from '../d3-chart/components/Columns/StackedColumns';
+import StackedColumns from '../d3-chart/components/Columns/StackedColumns';
 import { Legend } from '../d3-chart/components/Legend/Legend';
 
 import './ColumnsView.less';

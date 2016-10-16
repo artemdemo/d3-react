@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import throttle from 'lodash.throttle';
-import { marginShape } from '../../propTypes';
+import { marginShape, deltaShape } from '../../propTypes';
 
+/**
+ * Parent component for all charts
+ */
 export default class Chart extends Component {
     constructor(props) {
         super(props);
@@ -49,7 +52,7 @@ export default class Chart extends Component {
     }
 
     render() {
-        const { width = '100%', height, className } = this.props;
+        const { className, dataDelta } = this.props;
         let children = null;
 
         if (this.state.width && this.state.height) {
@@ -64,6 +67,9 @@ export default class Chart extends Component {
                     if (data) {
                         newProps.$$data = data;
                     }
+                    if (dataDelta) {
+                        newProps.$$dataDelta = dataDelta;
+                    }
                     return React.cloneElement(child, newProps);
                 });
         }
@@ -73,8 +79,7 @@ export default class Chart extends Component {
                  className={className}
                  preserveAspectRatio='xMidYMid'
                  viewBox={`0, 0, ${this.state.containerWidth}, ${this.state.containerHeight}`}
-                 width={width}
-                 height={height} >
+                 width='100%' >
                 <g transform={`translate(${this.margin.left}, ${this.margin.top})`}>
                     {children}
                 </g>
@@ -84,10 +89,39 @@ export default class Chart extends Component {
 }
 
 Chart.propTypes = {
+    /**
+     * Main data object of the component.
+     * I'm using similar data structure to Google charts, for example:
+     * ```
+     * const data = [
+     *     ['Year', 'Sales', 'Revenue'],
+     *     ['2011', 300, 100],
+     *     ['2012', 180, 10],
+     *     ['2013', 510, 230],
+     *     ['2014', 400, 100],
+     *     ['2015', 1170, 700],
+     *     ['2016', 660, 210],
+     *     ['2017', 1030, 500]
+     *  ];
+     * ```
+     */
     data: React.PropTypes.any,
+    /**
+     * Delta change for maximum data value.
+     * Value is in percents.
+     */
+    dataDelta: deltaShape,
+    /**
+     * Minimum width under which component will stop listen to window resize.
+     * After that component will be responsive like simple vector image.
+     */
     minResizeWidth: React.PropTypes.number,
+    /**
+     * Inner graph margin
+     */
     margin: marginShape,
+    /**
+     * Components class property for CSS
+     */
     className: React.PropTypes.string,
-    width: React.PropTypes.string,
-    height: React.PropTypes.string,
 };
