@@ -4,46 +4,44 @@ import { max as d3_max, extent as d3_extent } from 'd3-array';
 import { timeParse as d3_timeParse } from 'd3-time-format';
 import { select as d3_select } from 'd3-selection';
 import { getScaleBand, getScaleLinear, getScaleTime } from '../../services/scales';
+import { deltaShape } from '../../propTypes';
+
+const DEFAULT_BASE_CLASS = 'chart-grid';
+const LINEAR = 'linear';
+const TIME = 'time';
+const BAND = 'band';
 
 /**
  * Grid Y
  *
  * @tutorial https://bl.ocks.org/d3noob/c506ac45617cf9ed39337f99f8511218
  */
-
-const DEFAULT_BASE_CLASS = 'chart-grid';
-
-export class GridY extends Component {
+export default class GridY extends Component {
     componentDidMount() {
-        const { $$data, data } = this.props;
-        const selectedData = data || $$data;
-        this.internalData = selectedData.filter((item, index) => index !== 0);
-
-        this.createGrid(this.props, this.internalData);
+        this.createGrid(this.props);
     }
 
     componentWillReceiveProps(nextProps) {
-        this.createGrid(nextProps, this.internalData);
+        this.createGrid(nextProps);
     }
 
-    createGrid(props, data = this.internalData) {
-        const {
-            $$width,
-            $$height,
-            scale = 'linear',
-            timeFormat = '%Y',
-            ticks = 10,
-            maxDomain = d3_max(data, item => item[1])
-        } = props;
+    createGrid(props) {
+        const { $$width, $$height, $$data, $$dataDelta } = props;
+        const { scale = LINEAR, timeFormat, ticks = 10 } = props;
+        const { data = $$data, dataDelta = $$dataDelta } = props;
+        const internalData = data.filter((item, index) => index !== 0);
         let y;
 
         switch (scale) {
-            case 'linear':
+            case LINEAR:
+                const maxY = dataDelta && dataDelta.y ?
+                    dataDelta.y * d3_max(internalData, item => item[1]) :
+                    d3_max(internalData, item => item[1]);
                 y = getScaleLinear($$height);
-                y.domain([0, maxDomain]);
+                y.domain([0, maxY]);
                 break;
-            case 'time':
-                const parseTime = d3_timeParse(timeFormat);
+            case TIME:
+                const parseTime = timeFormat ? d3_timeParse(timeFormat) : null;
                 const dataParsed = data.map(item => {
                     return [
                         parseTime(item[0]),
@@ -53,7 +51,7 @@ export class GridY extends Component {
                 y = getScaleTime($$height);
                 y.domain(d3_extent(dataParsed, item => item[0]));
                 break;
-            case 'band':
+            case BAND:
             default:
                 y = getScaleBand($$height);
                 y.domain(data.map(item => item[0]));
@@ -76,10 +74,32 @@ export class GridY extends Component {
 }
 
 GridY.propTypes = {
+    /**
+     * Main data object of the component.
+     * See `<Chart />`
+     */
     data: React.PropTypes.array,
-    scale: React.PropTypes.string,
+    /**
+     * Axis scale. Determine how to treat components `data`
+     */
+    scale: React.PropTypes.oneOf([LINEAR, TIME, BAND]),
+    /**
+     * Component class property for CSS
+     */
     className: React.PropTypes.string,
+    /**
+     * Axis ticks.
+     * Hint to d3 - how many ticks should be generated
+     * @link https://github.com/d3/d3-scale/blob/master/README.md#time_ticks
+     */
     ticks: React.PropTypes.number,
-    maxDomain: React.PropTypes.number,
+    /**
+     * Delta change for maximum data value.
+     * Value is in percents.
+     */
+    dataDelta: deltaShape,
+    /**
+     * Time format of axis labels (by default, expected to be Date() object)
+     */
     timeFormat: React.PropTypes.string,
 };

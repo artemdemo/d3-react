@@ -6,8 +6,8 @@ import Chart from '../../d3-chart/components/Chart/Chart';
 import AxisX from '../../d3-chart/components/Axis/AxisX';
 import AxisY from '../../d3-chart/components/Axis/AxisY';
 import LineTime from '../../d3-chart/components/Line/LineTime';
-import { GridX } from '../../d3-chart/components/Grid/GridX';
-import { GridY } from '../../d3-chart/components/Grid/GridY';
+import GridX from '../../d3-chart/components/Grid/GridX';
+import GridY from '../../d3-chart/components/Grid/GridY';
 import { Legend } from '../../d3-chart/components/Legend/Legend';
 
 import './LinesAreasView.less';
@@ -56,6 +56,7 @@ export class LinesAreasView extends Component {
                 item[2],
             ];
         });
+        const booksDeltaY = 3;
 
         const laptopsData = mainData.map((item, index) => {
             if (index === 0) {
@@ -101,20 +102,20 @@ export class LinesAreasView extends Component {
                     <GridY className='lines-areas-view-grid'
                            scale='linear'
                            ticks={10}
-                           maxDomain={maxDomain} />
+                           dataDelta={{y: booksDeltaY}} />
                     <LineTime className='lines-areas-view-main-chart'
                               curve='step'
                               area />
                     <LineTime className='lines-areas-view-laptops'
                               data={laptopsData}
                               curve='step'
-                              maxDomain={maxDomain}
+                              dataDelta={{y: booksDeltaY}}
                               line={false}
                               area />
                     <LineTime className='lines-areas-view-books'
                               data={booksData}
                               curve='step'
-                              maxDomain={maxDomain}
+                              dataDelta={{y: booksDeltaY}}
                               line={false}
                               area />
                     <AxisX className='lines-areas-view-axis'
@@ -126,7 +127,7 @@ export class LinesAreasView extends Component {
                                       lines-areas-view-axis_short-domain'
                            position='left'
                            data={booksData}
-                           maxDomain={maxDomain} />
+                           dataDelta={{y: booksDeltaY}} />
                     <Legend className='lines-areas-view-legend'
                             itemWidth={50}
                             margin={{bottom: -50}}

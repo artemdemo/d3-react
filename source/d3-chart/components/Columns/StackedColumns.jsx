@@ -135,7 +135,7 @@ StackedColumns.propTypes = {
      */
     dataDelta: deltaShape,
     /**
-     * Components class property for CSS
+     * Component class property for CSS
      */
     className: React.PropTypes.string,
     /**

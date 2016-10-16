@@ -114,7 +114,7 @@ AxisX.propTypes = {
      */
     labelTimeFormat: React.PropTypes.string,
     /**
-     * Components class property for CSS
+     * Component class property for CSS
      */
     className: React.PropTypes.string,
     /**

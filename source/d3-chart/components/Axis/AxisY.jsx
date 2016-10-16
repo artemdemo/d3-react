@@ -4,6 +4,7 @@ import { max as d3_max } from 'd3-array';
 import { select as d3_select } from 'd3-selection';
 import { format as d3_format } from 'd3-format';
 import { getScaleBand, getScaleLinear } from '../../services/scales';
+import { deltaShape } from '../../propTypes';
 
 const DEFAULT_BASE_CLASS = 'chart-axis';
 const RIGHT = 'right';
@@ -44,7 +45,7 @@ export default class AxisY extends Component {
             default:
                 y = getScaleLinear($$height);
                 const maxY = dataDelta && dataDelta.y ?
-                dataDelta.y * d3_max(internalData, item => item[1]) :
+                    dataDelta.y * d3_max(internalData, item => item[1]) :
                     d3_max(internalData, item => item[1]);
                 y.domain([0, maxY]);
         }
@@ -113,9 +114,14 @@ AxisY.propTypes = {
      */
     title: React.PropTypes.string,
     /**
-     * Components class property for CSS
+     * Component class property for CSS
      */
     className: React.PropTypes.string,
+    /**
+     * Delta change for maximum data value.
+     * Value is in percents.
+     */
+    dataDelta: deltaShape,
     /**
      * Number formatting for labels
      * @link https://github.com/d3/d3-format

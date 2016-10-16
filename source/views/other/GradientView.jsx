@@ -52,6 +52,7 @@ export class GradientView extends Component {
             item[0],
             item[2],
         ]);
+        const booksDeltaY = 3;
 
         const laptopsData = mainData.map(item => [
             item[0],
@@ -100,7 +101,7 @@ export class GradientView extends Component {
                     <GridY className='gradient-view-grid'
                            scale='linear'
                            ticks={10}
-                           maxDomain={maxDomain} />
+                           dataDelta={{y: booksDeltaY}} />
                     <LineTime className='gradient-view-main-chart'
                               area={{gradientId: 'main-area-gradient'}}
                               curve='step'
@@ -116,7 +117,7 @@ export class GradientView extends Component {
                     <LineTime className='gradient-view-laptops'
                               data={laptopsData}
                               curve='step'
-                              maxDomain={maxDomain}
+                              dataDelta={{y: booksDeltaY}}
                               line={false}
                               area={{gradientId: 'laptops-area-gradient'}}>
                         <defs>
@@ -130,7 +131,7 @@ export class GradientView extends Component {
                     <LineTime className='gradient-view-books'
                               data={booksData}
                               curve='step'
-                              maxDomain={maxDomain}
+                              dataDelta={{y: booksDeltaY}}
                               line={false}
                               area={{gradientId: 'books-area-gradient'}} >
                         <defs>
@@ -151,7 +152,7 @@ export class GradientView extends Component {
                                       lines-areas-view-axis_short-domain'
                            position='left'
                            data={booksData}
-                           maxDomain={maxDomain} />
+                           dataDelta={{y: booksDeltaY}} />
                     <Legend className='gradient-view-legend'
                             itemWidth={50}
                             margin={{bottom: -50}}

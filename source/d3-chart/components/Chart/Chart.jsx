@@ -121,7 +121,7 @@ Chart.propTypes = {
      */
     margin: marginShape,
     /**
-     * Components class property for CSS
+     * Component class property for CSS
      */
     className: React.PropTypes.string,
 };

@@ -5,15 +5,17 @@ import { timeParse as d3_timeParse } from 'd3-time-format';
 import { select as d3_select } from 'd3-selection';
 import { getScaleBand, getScaleLinear, getScaleTime } from '../../services/scales';
 
+const DEFAULT_BASE_CLASS = 'chart-grid';
+const LINEAR = 'linear';
+const TIME = 'time';
+const BAND = 'band';
+
 /**
  * Grid X
  *
  * @tutorial https://bl.ocks.org/d3noob/c506ac45617cf9ed39337f99f8511218
  */
-
-const DEFAULT_BASE_CLASS = 'chart-grid';
-
-export class GridX extends Component {
+export default class GridX extends Component {
     componentDidMount() {
         const { $$data, data } = this.props;
         const selectedData = data || $$data;
@@ -26,18 +28,21 @@ export class GridX extends Component {
         this.createGrid(nextProps, this.internalData);
     }
 
-    createGrid(props, data = this.internalData) {
-        const { $$width, $$height, scale = 'band', timeFormat = '%Y', ticks = 10 } = props;
+    createGrid(props) {
+        const { $$width, $$height, $$data } = props;
+        const { scale = BAND, timeFormat, ticks = 10 } = props;
+        const { data = $$data } = props;
+        const internalData = data.filter((item, index) => index !== 0);
         let x;
 
         switch (scale) {
             case 'linear':
                 x = getScaleLinear($$width);
-                x.domain([d3_max(data, item => item[1]), 0]);
+                x.domain([d3_max(internalData, item => item[1]), 0]);
                 break;
             case 'time':
                 const parseTime = d3_timeParse(timeFormat);
-                const dataParsed = data.map(item => {
+                const dataParsed = internalData.map(item => {
                     return [
                         parseTime(item[0]),
                         item[1],
@@ -49,7 +54,7 @@ export class GridX extends Component {
             case 'band':
             default:
                 x = getScaleBand($$width);
-                x.domain(data.map(item => item[0]));
+                x.domain(internalData.map(item => item[0]));
         }
 
         d3_select(this.gridGroup)
@@ -70,9 +75,27 @@ export class GridX extends Component {
 }
 
 GridX.propTypes = {
+    /**
+     * Main data object of the component.
+     * See `<Chart />`
+     */
     data: React.PropTypes.array,
-    scale: React.PropTypes.oneOf(['linear', 'band', 'time']),
+    /**
+     * Axis scale. Determine how to treat components `data`
+     */
+    scale: React.PropTypes.oneOf([LINEAR, TIME, BAND]),
+    /**
+     * Component class property for CSS
+     */
     className: React.PropTypes.string,
+    /**
+     * Axis ticks.
+     * Hint to d3 - how many ticks should be generated
+     * @link https://github.com/d3/d3-scale/blob/master/README.md#time_ticks
+     */
     ticks: React.PropTypes.number,
+    /**
+     * Time format of axis labels (by default, expected to be Date() object)
+     */
     timeFormat: React.PropTypes.string,
 };
