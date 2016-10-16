@@ -45,8 +45,8 @@ export default class AxisY extends Component {
             default:
                 y = getScaleLinear($$height);
                 const maxY = dataDelta && dataDelta.y ?
-                    dataDelta.y * d3_max(internalData, item => item[1]) :
-                    d3_max(internalData, item => item[1]);
+                    dataDelta.y * d3_max(internalData, item => Number(item[1])) :
+                    d3_max(internalData, item => Number(item[1]));
                 y.domain([0, maxY]);
         }
 

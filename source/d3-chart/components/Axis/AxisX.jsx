@@ -127,7 +127,7 @@ AxisX.propTypes = {
     timeFormat: React.PropTypes.string,
     /**
      * Axis ticks.
-     * Hint to d3 - how many ticks should be generated
+     * Hint to d3 - how many ticks should be generated (default is 10)
      * @link https://github.com/d3/d3-scale/blob/master/README.md#time_ticks
      */
     axisTicks: React.PropTypes.number,
