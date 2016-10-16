@@ -8,7 +8,7 @@ import GridY from '../d3-chart/components/Grid/GridY';
 import LineTime from '../d3-chart/components/Line/LineTime';
 import { Columns } from '../d3-chart/components/Columns/Columns';
 import StackedColumns from '../d3-chart/components/Columns/StackedColumns';
-import { ToolTip } from '../d3-chart/components/ToolTip/ToolTip';
+import ToolTip from '../d3-chart/components/ToolTip/ToolTip';
 
 import './TooltipView.less';
 

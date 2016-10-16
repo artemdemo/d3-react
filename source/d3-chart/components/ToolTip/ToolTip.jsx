@@ -7,9 +7,11 @@ import ToolTipLine from './ToolTipLine';
 const DEFAULT_BASE_CLASS = '__tooltip';
 const DEFAULT_MOUSE_AREA_PERCENT = 0.8;
 const DEFAULT_TOOLTIP_POSITION_DELTA = 5;
-const DEFAULT_SCALE = 'band';
+const TIME = 'time';
+const BAND = 'band';
+const DEFAULT_SCALE = BAND;
 
-export class ToolTip extends Component {
+export default class ToolTip extends Component {
     constructor(props) {
         super(props);
 
@@ -56,10 +58,10 @@ export class ToolTip extends Component {
                 const yPosition = d3_max(d.slice(1));
                 toolTipLines[index].y = y(yPosition);
                 switch (scale) {
-                    case 'time':
+                    case TIME:
                         toolTipLines[index].x = x(d[0]);
                         return index === 0 ? x(d[0]) : x(d[0]) - (columnWidth / 2);
-                    case 'band':
+                    case BAND:
                     default:
                         toolTipLines[index].x = x(d[0]) + (columnWidth / 2);
                         return x(d[0]);
@@ -67,9 +69,9 @@ export class ToolTip extends Component {
             })
             .attr('width', (d, index, dataArr) => {
                 switch (scale) {
-                    case 'time':
+                    case TIME:
                         return index === 0 || index === dataArr.length - 1 ? columnWidth / 2 : columnWidth;
-                    case 'band':
+                    case BAND:
                     default:
                         return columnWidth;
                 }
@@ -122,10 +124,10 @@ export class ToolTip extends Component {
             .attr('x', (d, index) => {
                 toolTipLines[index].y = y(d[1]);
                 switch (scale) {
-                    case 'time':
+                    case TIME:
                         toolTipLines[index].x = x(d[0]);
                         return index === 0 ? x(d[0]) : x(d[0]) - (columnWidth / 2);
-                    case 'band':
+                    case BAND:
                     default:
                         toolTipLines[index].x = x(d[0]) + (x.bandwidth() / 2);
                         return x(d[0]) + ((x.bandwidth() - (x.bandwidth() * DEFAULT_MOUSE_AREA_PERCENT)) / 2);
@@ -133,9 +135,9 @@ export class ToolTip extends Component {
             })
             .attr('width', (d, index, dataArr) => {
                 switch (scale) {
-                    case 'time':
+                    case TIME:
                         return index === 0 || index === dataArr.length - 1 ? columnWidth / 2 : columnWidth;
-                    case 'band':
+                    case BAND:
                     default:
                         return x.bandwidth() * DEFAULT_MOUSE_AREA_PERCENT;
                 }
@@ -152,11 +154,11 @@ export class ToolTip extends Component {
         let x;
 
         switch (scale) {
-            case 'time':
+            case TIME:
                 x = getScaleTime($$width);
                 x.domain(d3_extent(data, item => item[0]));
                 break;
-            case 'band':
+            case BAND:
             default:
                 x = getScaleBand($$width);
                 x.domain(data.map(item => item[0]));
@@ -190,7 +192,27 @@ export class ToolTip extends Component {
 }
 
 ToolTip.propTypes = {
+    /**
+     * Main data object of the component.
+     * See `<Chart />`
+     */
     data: React.PropTypes.array,
+    /**
+     * Callback function that will be called when tooltip should be rendered.
+     * Callback should return SVG tree of the tooltip.
+     *
+     * @example
+     * ```
+     * const renderTooltipBox = (d) => {
+     *       return (
+     *           <text className='tooltip-view-box'>{d[1]}</text>
+     *       );
+     *   };
+     * ```
+     */
     renderCallback: React.PropTypes.func,
-    scale: React.PropTypes.oneOf(['band', 'time']),
+    /**
+     * Axis scale. Determine how to treat components `data`
+     */
+    scale: React.PropTypes.oneOf([BAND, TIME]),
 };
