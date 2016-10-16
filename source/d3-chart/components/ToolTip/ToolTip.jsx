@@ -25,20 +25,21 @@ export default class ToolTip extends Component {
     }
 
     componentDidMount() {
-        const {
-            $$data,
-            $$height,
-            $$width,
-            data,
-            renderCallback,
-            className = DEFAULT_BASE_CLASS,
-            scale = DEFAULT_SCALE,
-        } = this.props;
-        const selectedData = data || $$data;
+        this.createToolTip(this.props);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this.createToolTip(nextProps);
+    }
+
+    createToolTip(props) {
+        const { $$data, $$height, $$width } = props;
+        const { renderCallback, className = DEFAULT_BASE_CLASS, scale = DEFAULT_SCALE } = props;
+        const { data = $$data } = props;
 
         // Use data without title row
-        this.internalData = selectedData.filter((item, index) => index !== 0);
-        const toolTipLines = this.internalData.map(() => {
+        const internalData = data.filter((item, index) => index !== 0);
+        const toolTipLines = internalData.map(() => {
             return {
                 visible: false,
                 x: 0,
@@ -46,11 +47,11 @@ export default class ToolTip extends Component {
             };
         });
 
-        const columnWidth = ($$width / (this.internalData.length - 1)) * DEFAULT_MOUSE_AREA_PERCENT;
-        const { x, y } = this.createAxisScale(this.props, this.internalData);
+        const columnWidth = ($$width / (internalData.length - 1)) * DEFAULT_MOUSE_AREA_PERCENT;
+        const { x, y } = this.createAxisScale(props, internalData);
 
         d3_select(this.columnsGroup).selectAll(`.${className}__column`)
-            .data(this.internalData)
+            .data(internalData)
             .enter().append('rect')
             .attr('class', `${className}__column`)
             .attr('fill', 'transparent')
@@ -113,43 +114,7 @@ export default class ToolTip extends Component {
         });
     }
 
-    componentWillReceiveProps(nextProps) {
-        const { $$height, $$width, scale = DEFAULT_SCALE, className = DEFAULT_BASE_CLASS } = nextProps;
-        const columnWidth = ($$width / (this.internalData.length - 1)) * 0.5;
-        const toolTipLines = this.state.toolTipLines.slice();
-        const { x, y } = this.createAxisScale(nextProps, this.internalData);
-
-        d3_select(this.columnsGroup).selectAll(`.${className}__column`)
-            .data(this.internalData)
-            .attr('x', (d, index) => {
-                toolTipLines[index].y = y(d[1]);
-                switch (scale) {
-                    case TIME:
-                        toolTipLines[index].x = x(d[0]);
-                        return index === 0 ? x(d[0]) : x(d[0]) - (columnWidth / 2);
-                    case BAND:
-                    default:
-                        toolTipLines[index].x = x(d[0]) + (x.bandwidth() / 2);
-                        return x(d[0]) + ((x.bandwidth() - (x.bandwidth() * DEFAULT_MOUSE_AREA_PERCENT)) / 2);
-                }
-            })
-            .attr('width', (d, index, dataArr) => {
-                switch (scale) {
-                    case TIME:
-                        return index === 0 || index === dataArr.length - 1 ? columnWidth / 2 : columnWidth;
-                    case BAND:
-                    default:
-                        return x.bandwidth() * DEFAULT_MOUSE_AREA_PERCENT;
-                }
-            })
-            .attr('height', $$height);
-
-        this.setState({
-            toolTipLines,
-        });
-    }
-
-    createAxisScale(props, data = this.internalData) {
+    createAxisScale(props, data) {
         const { $$width, $$height, scale = DEFAULT_SCALE } = props;
         let x;
 
