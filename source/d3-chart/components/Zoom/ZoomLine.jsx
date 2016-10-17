@@ -10,6 +10,7 @@ import { max as d3_max, extent as d3_extent } from 'd3-array';
 import { timeParse as d3_timeParse } from 'd3-time-format';
 import { select as d3_select, event as d3_event } from 'd3-selection';
 import { getScaleLinear, getScaleTime, getScaleBand } from '../../services/scales';
+
 import AxisY from '../Axis/AxisY';
 import AxisX from '../Axis/AxisX';
 
@@ -20,7 +21,13 @@ const MONOTONE = 'monotone';
 const BAND = 'band';
 const TIME = 'time';
 
-class ZoomLine extends Component {
+/**
+ * Zoom line
+ *
+ * Brush & Zoom
+ * https://bl.ocks.org/mbostock/34f08d5e11952a80609169b7917d4172
+ */
+export default class ZoomLine extends Component {
     constructor(props) {
         super(props);
 
@@ -28,6 +35,7 @@ class ZoomLine extends Component {
         this.x = null;
         this.y = null;
         this.saltId = Math.floor(Math.random() * 10000);
+        this.propsRender = false;
 
         this.state = {
             linePath: null,
@@ -43,6 +51,7 @@ class ZoomLine extends Component {
 
     componentWillReceiveProps(nextProps) {
         this.applyZoomHandler(nextProps);
+        this.propsRender = true;
     }
 
     getLinePathFunction() {
@@ -77,10 +86,14 @@ class ZoomLine extends Component {
     }
 
     zoomHandler() {
-        const { $$height } = this.props;
+        const { $$height, $$width } = this.props;
         if (d3_event.sourceEvent && d3_event.sourceEvent.type === 'brush') return;
         const t = d3_event.transform;
         this.x.domain(t.rescaleX(this.x).domain());
+
+        // Get most left x and most right
+        // console.log(this.x.invert(0), this.x.invert($$width));
+
         this.setState({
             linePath: this.getLinePathFunction()(this.internalData),
             areaPath: this.getAreaPathFunction($$height)(this.internalData),
@@ -129,9 +142,9 @@ class ZoomLine extends Component {
     }
 
     render() {
-        const { $$height, $$width, $$data, $$dataDelta } = this.props;
+        const { $$height, $$width, $$data } = this.props;
         const { scale = TIME, className = DEFAULT_BASE_CLASS, curve, area, timeFormat } = this.props;
-        const { dataDelta = $$dataDelta, data = $$data } = this.props;
+        const { data = $$data } = this.props;
 
         this.internalData = data.filter((item, index) => index !== 0);
 
@@ -160,9 +173,7 @@ class ZoomLine extends Component {
         }
 
         this.y = getScaleLinear($$height);
-        const maxY = dataDelta && dataDelta.y ?
-            dataDelta.y * d3_max(this.internalData, item => Number(item[1])) :
-            d3_max(this.internalData, item => Number(item[1]));
+        const maxY = d3_max(this.internalData, item => Number(item[1]));
         this.y.domain([0, maxY]);
 
         const linePathFunc = this.getLinePathFunction();
@@ -188,9 +199,16 @@ class ZoomLine extends Component {
                 break;
         }
 
-        const areaPath = this.state.areaPath || areaPathFunc(this.internalData);
-        const linePath = this.state.linePath || linePathFunc(this.internalData);
+        const areaPath = this.propsRender || !this.state.linePath ?
+            areaPathFunc(this.internalData) :
+            this.state.areaPath;
+        const linePath = this.propsRender || !this.state.linePath ?
+            linePathFunc(this.internalData) :
+            this.state.linePath;
+        const xScale = this.propsRender || !this.state.x ? this.x : this.state.x;
+        const yScale = this.propsRender || !this.state.y ? this.y : this.state.y;
 
+        this.propsRender = false;
         return (
             <g className={className}>
                 <defs>
@@ -210,12 +228,12 @@ class ZoomLine extends Component {
                 {this.renderLine(linePath)}
                 {this.props.children}
                 <g ref={el => this.groupZoom = el} />
-                <AxisY className={`${DEFAULT_BASE_CLASS}__axis`}
-                       yScale={this.state.y || this.y}
+                <AxisY className={`${className}__axis`}
+                       yScale={yScale}
                        $$width={$$width}
                        $$height={$$height} />
-                <AxisX className={`${DEFAULT_BASE_CLASS}__axis`}
-                       xScale={this.state.x || this.x}
+                <AxisX className={`${className}__axis`}
+                       xScale={xScale}
                        $$width={$$width}
                        $$height={$$height} />
             </g>
@@ -223,4 +241,46 @@ class ZoomLine extends Component {
     }
 }
 
-export default ZoomLine;
+ZoomLine.propTypes = {
+    /**
+     * Main data object of the component
+     * See `<Chart />`
+     */
+    data: React.PropTypes.array,
+    /**
+     * Component class property for CSS
+     */
+    className: React.PropTypes.string,
+    /**
+     * Axis scale. Determine how to treat components `data`
+     */
+    scale: React.PropTypes.oneOf([BAND, TIME]),
+    /**
+     * Time format of axis labels (by default, expected to be Date() object)
+     */
+    timeFormat: React.PropTypes.string,
+    /**
+     * Will add glow to the path.
+     * Essentially it will add path with gaussian blur filter applied to it.
+     */
+    glow: React.PropTypes.bool,
+    /**
+     * Add area path under the graph.
+     * In order to use gradient you'll need to specify `gradientId`.
+     */
+    area: React.PropTypes.oneOfType([
+        React.PropTypes.bool,
+        React.PropTypes.shape({
+            gradientId: React.PropTypes.string,
+        }),
+    ]),
+    /**
+     * Whether add or not line path.
+     * You can use only `area`
+     */
+    line: React.PropTypes.bool,
+    /**
+     * Line curve type
+     */
+    curve: React.PropTypes.oneOf([STEP, MONOTONE]),
+};

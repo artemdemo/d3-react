@@ -29,8 +29,6 @@ const TIME = 'time';
  * Different curve lines
  * https://bl.ocks.org/d3noob/ced1b9b18bd8192d2c898884033b5529
  *
- * Brush & Zoom
- * https://bl.ocks.org/mbostock/34f08d5e11952a80609169b7917d4172
  */
 export default class Line extends Component {
     constructor(props) {

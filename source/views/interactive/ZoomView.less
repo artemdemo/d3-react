@@ -1,5 +1,7 @@
 @import '../../styles/colors';
 
+@zoom-chart-axis-color: #787878;
+
 .chart-map-view_main-chart {
     width: 100%;
     height: 400px;
@@ -10,12 +12,12 @@
     height: 100px;
 }
 
-.chart-map-view__axis {
+.chart-map-view__axis, .chart-map-view-line__axis {
     text {
-        fill: @axis-color;
+        fill: @zoom-chart-axis-color;
     }
     path, line {
-        stroke: @axis-color;
+        stroke: @zoom-chart-axis-color;
     }
 }
 
