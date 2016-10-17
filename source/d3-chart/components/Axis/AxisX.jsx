@@ -29,7 +29,6 @@ export default class AxisX extends Component {
         const internalData = data.filter((item, index) => index !== 0);
 
         let x;
-
         switch (scale) {
             case LINEAR:
                 x = getScaleLinear($$width);
@@ -131,5 +130,9 @@ AxisX.propTypes = {
      * @link https://github.com/d3/d3-scale/blob/master/README.md#time_ticks
      */
     axisTicks: React.PropTypes.number,
-    xScale: React.PropTypes.object,
+    /**
+     * You can provide scale function directly to the component.
+     * In this case component wouldn't calculate it.
+     */
+    xScale: React.PropTypes.func,
 };

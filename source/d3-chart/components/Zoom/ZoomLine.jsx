@@ -10,8 +10,10 @@ import { max as d3_max, extent as d3_extent } from 'd3-array';
 import { timeParse as d3_timeParse } from 'd3-time-format';
 import { select as d3_select, event as d3_event } from 'd3-selection';
 import { getScaleLinear, getScaleTime, getScaleBand } from '../../services/scales';
+import AxisY from '../Axis/AxisY';
+import AxisX from '../Axis/AxisX';
 
-const DEFAULT_BASE_CLASS = 'line-chart';
+const DEFAULT_BASE_CLASS = 'zoom-line-chart';
 const STEP = 'step';
 const MONOTONE = 'monotone';
 
@@ -30,6 +32,8 @@ class ZoomLine extends Component {
         this.state = {
             linePath: null,
             areaPath: null,
+            x: null,
+            y: null,
         };
     }
 
@@ -80,6 +84,8 @@ class ZoomLine extends Component {
         this.setState({
             linePath: this.getLinePathFunction()(this.internalData),
             areaPath: this.getAreaPathFunction($$height)(this.internalData),
+            x: this.x,
+            y: this.y,
         });
     }
 
@@ -204,6 +210,14 @@ class ZoomLine extends Component {
                 {this.renderLine(linePath)}
                 {this.props.children}
                 <g ref={el => this.groupZoom = el} />
+                <AxisY className={`${DEFAULT_BASE_CLASS}__axis`}
+                       yScale={this.state.y || this.y}
+                       $$width={$$width}
+                       $$height={$$height} />
+                <AxisX className={`${DEFAULT_BASE_CLASS}__axis`}
+                       xScale={this.state.x || this.x}
+                       $$width={$$width}
+                       $$height={$$height} />
             </g>
         );
     }

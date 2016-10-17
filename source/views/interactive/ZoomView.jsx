@@ -1,15 +1,14 @@
 import React from 'react';
 
-import chartData from './ChartMap.data';
+import chartData from './Zoom.data';
 import Chart from '../../d3-chart/components/Chart/Chart';
 import AxisX from '../../d3-chart/components/Axis/AxisX';
-import AxisY from '../../d3-chart/components/Axis/AxisY';
 import Line from '../../d3-chart/components/Line/Line';
 import ZoomLine from '../../d3-chart/components/Zoom/ZoomLine';
 
-import './ChartMapView.less';
+import './ZoomView.less';
 
-const ChartMapView = () => {
+const ZoomView = () => {
     return (
         <div>
             <Chart data={chartData}
@@ -45,4 +44,4 @@ const ChartMapView = () => {
     );
 };
 
-export default ChartMapView;
+export default ZoomView;

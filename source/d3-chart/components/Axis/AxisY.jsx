@@ -24,18 +24,13 @@ export default class AxisY extends Component {
         this.createYAxis(nextProps);
     }
 
-    /**
-     * Create or update Y axis
-     * @param props
-     */
-    createYAxis(props) {
-        const { $$data, $$dataDelta, $$height, labelNumberFormat } = props;
-        const { axisTicks = 10, scale = LINEAR, position = LEFT } = props;
+    getYScale(props) {
+        const { $$data, $$dataDelta, $$height } = props;
+        const { scale = LINEAR } = props;
         const { data = $$data, dataDelta = $$dataDelta } = props;
         const internalData = data.filter((item, index) => index !== 0);
-        let y;
-        let axis;
 
+        let y;
         switch (scale) {
             case BAND:
                 y = getScaleBand($$height);
@@ -45,10 +40,22 @@ export default class AxisY extends Component {
             default:
                 y = getScaleLinear($$height);
                 const maxY = dataDelta && dataDelta.y ?
-                    dataDelta.y * d3_max(internalData, item => Number(item[1])) :
+                dataDelta.y * d3_max(internalData, item => Number(item[1])) :
                     d3_max(internalData, item => Number(item[1]));
                 y.domain([0, maxY]);
         }
+
+        return y;
+    }
+
+    /**
+     * Create or update Y axis
+     * @param props
+     */
+    createYAxis(props) {
+        const { axisTicks = 10, position = LEFT, labelNumberFormat, yScale } = props;
+        const y = yScale || this.getYScale(props);
+        let axis;
 
         switch (position) {
             case RIGHT:
@@ -141,4 +148,9 @@ AxisY.propTypes = {
      * @link https://github.com/d3/d3-scale/blob/master/README.md#time_ticks
      */
     axisTicks: React.PropTypes.number,
+    /**
+     * You can provide scale function directly to the component.
+     * In this case component wouldn't calculate it.
+     */
+    yScale: React.PropTypes.func,
 };

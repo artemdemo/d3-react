@@ -34,7 +34,7 @@ export class AppView extends Component {
                                 Interactive charts
                             </p>
                             <ul>
-                                <li><Link to='/interactive/chart-map'>Chart map (brush)</Link></li>
+                                <li><Link to='/interactive/zoom'>Zoom (brush)</Link></li>
                             </ul>
                         </div>
                         <div className='col-sm-4'>
