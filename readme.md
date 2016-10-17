@@ -30,6 +30,8 @@ const data = [
 
 ![alt tag](img/stacked-columns-tooltip.png)
 
+![alt tag](img/zoom-brush.png)
+
 ## ToDo
 
 * Line + Dots chart
