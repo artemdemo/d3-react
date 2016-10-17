@@ -36,30 +36,54 @@ export default class Line extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            pathFunc: null,
-            areaFunc: null,
-        };
-
         this.saltId = Math.floor(Math.random() * 10000);
     }
 
-    componentDidMount() {
-        this.updatePaths(this.props);
+    renderArea(pathString) {
+        const { className = DEFAULT_BASE_CLASS, area = false } = this.props;
+        if (area) {
+            const { gradientId } = area;
+            let fill = '';
+            if (gradientId) {
+                fill = `url(#${gradientId})`;
+            }
+            return (
+                <path className={`${className}__area`}
+                      d={pathString}
+                      fill={fill}
+                      clipPath={`url(#line-clip-path-${this.saltId})`} />
+            );
+        }
+        return null;
     }
 
-    componentWillReceiveProps(nextProps) {
-        this.updatePaths(nextProps);
+    renderLine(pathString) {
+        const { className = DEFAULT_BASE_CLASS, line = true, glow } = this.props;
+        const glowPath = (
+            <path className={`${className}__line-path ${className}__line-path_glow`}
+                  d={pathString}
+                  filter={`url(#line-blur-filter-${this.saltId})`} />
+        );
+        if (line === true) {
+            return (
+                <g>
+                    {glow === true ? glowPath : null}
+                    <path className={`${className}__line-path`}
+                          d={pathString} />
+                </g>
+            );
+        }
+        return null;
     }
 
-    updatePaths(props) {
-        const { $$height, $$width, $$data, $$dataDelta } = props;
-        const { scale = TIME, curve, area, timeFormat } = props;
-        const { dataDelta = $$dataDelta, data = $$data } = props;
+    render() {
+        const { $$height, $$width, $$data, $$dataDelta } = this.props;
+        const { scale = TIME, className = DEFAULT_BASE_CLASS, curve, area, timeFormat } = this.props;
+        const { dataDelta = $$dataDelta, data = $$data } = this.props;
 
-        this.internalData = data.filter((item, index) => index !== 0);
+        let internalData = data.filter((item, index) => index !== 0);
 
-        if (this.internalData.length === 0) {
+        if (internalData.length === 0) {
             return;
         }
 
@@ -67,12 +91,12 @@ export default class Line extends Component {
         switch (scale) {
             case BAND:
                 x = getScaleBand($$width);
-                x.domain(this.internalData.map(item => item[0]));
+                x.domain(internalData.map(item => item[0]));
                 break;
             case TIME:
             default:
                 const parseTime = timeFormat ? d3_timeParse(timeFormat) : null;
-                this.internalData = this.internalData.map((item) => {
+                internalData = internalData.map((item) => {
                     const dateObject = parseTime ? parseTime(item[0]) : item[0];
                     return [
                         dateObject,
@@ -81,14 +105,14 @@ export default class Line extends Component {
                 });
 
                 x = getScaleTime($$width);
-                x.domain(d3_extent(this.internalData, item => item[0]));
+                x.domain(d3_extent(internalData, item => item[0]));
         }
 
         const y = getScaleLinear($$height);
 
         const maxY = dataDelta && dataDelta.y ?
-            dataDelta.y * d3_max(this.internalData, item => Number(item[1])) :
-            d3_max(this.internalData, item => Number(item[1]));
+        dataDelta.y * d3_max(internalData, item => Number(item[1])) :
+            d3_max(internalData, item => Number(item[1]));
         y.domain([0, maxY]);
 
         const pathFunc = d3_line()
@@ -119,56 +143,6 @@ export default class Line extends Component {
                 break;
         }
 
-        this.setState({
-            pathFunc,
-            areaFunc,
-        });
-    }
-
-    renderArea() {
-        const { className = DEFAULT_BASE_CLASS, area = false } = this.props;
-        if (area) {
-            const { gradientId } = area;
-            let fill = '';
-            if (gradientId) {
-                fill = `url(#${gradientId})`;
-            }
-            return (
-                <path className={`${className}__area`}
-                      d={this.state.areaFunc(this.internalData)}
-                      fill={fill}
-                      clipPath={`url(#line-clip-path-${this.saltId})`} />
-            );
-        }
-        return null;
-    }
-
-    renderLine() {
-        const { className = DEFAULT_BASE_CLASS, line = true, glow } = this.props;
-        const glowPath = (
-            <path className={`${className}__line-path ${className}__line-path_glow`}
-                  d={this.state.pathFunc(this.internalData)}
-                  filter={`url(#line-blur-filter-${this.saltId})`} />
-        );
-        if (line === true) {
-            return (
-                <g>
-                    {glow === true ? glowPath : null}
-                    <path className={`${className}__line-path`}
-                          d={this.state.pathFunc(this.internalData)} />
-                </g>
-            );
-        }
-        return null;
-    }
-
-    render() {
-        const { $$width, $$height, className = DEFAULT_BASE_CLASS } = this.props;
-
-        if (!this.state.pathFunc) {
-            return null;
-        }
-
         return (
             <g className={className}>
                 <defs>
@@ -180,8 +154,8 @@ export default class Line extends Component {
                         <feGaussianBlur in='SourceGraphic' stdDeviation='5' />
                     </filter>
                 </defs>
-                {this.renderArea()}
-                {this.renderLine()}
+                {area ? this.renderArea(areaFunc(internalData)) : null}
+                {this.renderLine(pathFunc(internalData))}
                 {this.props.children}
             </g>
         );

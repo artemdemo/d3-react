@@ -27,17 +27,10 @@ export default class AxisX extends Component {
      * @param props
      */
     createXAxis(props) {
-        const {
-            $$width,
-            $$data,
-            axisTicks = 10,
-            data,
-            scale = BAND,
-            timeFormat,
-            labelTimeFormat,
-        } = props;
-        const selectedData = data || $$data;
-        const internalData = selectedData.filter((item, index) => index !== 0);
+        const { $$width, $$data } = props;
+        const { axisTicks = 10, scale = BAND, timeFormat, labelTimeFormat } = props;
+        const { data = $$data } = props;
+        const internalData = data.filter((item, index) => index !== 0);
         let x;
 
         switch (scale) {
