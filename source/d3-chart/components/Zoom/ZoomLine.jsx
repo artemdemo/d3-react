@@ -5,16 +5,19 @@ import {
     curveStep as d3_curveStep,
     curveMonotoneX as d3_curveMonotoneX,
 } from 'd3-shape';
-import { zoom as d3_zoom } from 'd3-zoom';
+import { zoom as d3_zoom, zoomIdentity as d3_zoomIdentity } from 'd3-zoom';
 import { max as d3_max, extent as d3_extent } from 'd3-array';
 import { timeParse as d3_timeParse } from 'd3-time-format';
 import { select as d3_select, event as d3_event } from 'd3-selection';
-import { getScaleLinear, getScaleTime, getScaleBand } from '../../services/scales';
+import { getScaleLinear, getScaleTime, getScaleBand, setScale } from '../../services/scales';
+import nerve from '../../services/nerve';
 
 import AxisY from '../Axis/AxisY';
 import AxisX from '../Axis/AxisX';
 
+const ZOOM_CLASS = 'zoom';
 const DEFAULT_BASE_CLASS = 'zoom-line-chart';
+
 const STEP = 'step';
 const MONOTONE = 'monotone';
 
@@ -30,6 +33,14 @@ const TIME = 'time';
 export default class ZoomLine extends Component {
     constructor(props) {
         super(props);
+
+        const { connectId } = props;
+        if (connectId) {
+            nerve.on({
+                route: `${connectId}/update-brush`,
+                callback: (s) => this.updateZoom(s),
+            });
+        }
 
         this.internalData = [];
         this.x = null;
@@ -50,8 +61,13 @@ export default class ZoomLine extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
+        const { connectId } = nextProps;
         this.applyZoomHandler(nextProps);
         this.propsRender = true;
+        if (connectId) {
+            // <Brush /> doesn't have x scale by itself, therefore I should pass it
+            setScale(this.x, `${connectId}-x`);
+        }
     }
 
     getLinePathFunction() {
@@ -70,26 +86,35 @@ export default class ZoomLine extends Component {
     applyZoomHandler(props) {
         const { $$height, $$width } = props;
 
-        const zoom = d3_zoom()
+        this.zoom = d3_zoom()
             .scaleExtent([1, Infinity])
             .translateExtent([[0, 0], [$$width, $$height]])
             .extent([[0, 0], [$$width, $$height]])
             .on('zoom', () => this.zoomHandler());
 
-        this.groupZoom.innerHTML = '';
-        d3_select(this.groupZoom)
+        this.zoomGroup.innerHTML = '';
+        d3_select(this.zoomGroup)
             .append('rect')
+            .attr('class', `${ZOOM_CLASS}`)
             .attr('style', 'cursor: move; fill: none; pointer-events: all;')
             .attr('width', $$width)
             .attr('height', $$height)
-            .call(zoom);
+            .call(this.zoom);
     }
 
     zoomHandler() {
-        const { $$height, $$width } = this.props;
-        if (d3_event.sourceEvent && d3_event.sourceEvent.type === 'brush') return;
+        const { $$height, $$width, connectId } = this.props;
         const t = d3_event.transform;
         this.x.domain(t.rescaleX(this.x).domain());
+        if (connectId) {
+            nerve.send({
+                route: `${connectId}/update-scale`,
+                data: {
+                    x: this.x,
+                    t,
+                },
+            });
+        }
 
         // Get most left x and most right
         // console.log(this.x.invert(0), this.x.invert($$width));
@@ -100,6 +125,15 @@ export default class ZoomLine extends Component {
             x: this.x,
             y: this.y,
         });
+    }
+
+    updateZoom(s) {
+        const { $$width } = this.props;
+        d3_select(this.zoomGroup)
+            .select(`.${ZOOM_CLASS}`)
+            .call(this.zoom.transform, d3_zoomIdentity
+                .scale($$width / (s[1] - s[0]))
+                .translate(-s[0], 0));
     }
 
     renderArea(pathString) {
@@ -143,7 +177,7 @@ export default class ZoomLine extends Component {
 
     render() {
         const { $$height, $$width, $$data } = this.props;
-        const { scale = TIME, className = DEFAULT_BASE_CLASS, curve, area, timeFormat } = this.props;
+        const { scale = TIME, className = DEFAULT_BASE_CLASS, curve, area, timeFormat, connectId } = this.props;
         const { data = $$data } = this.props;
 
         this.internalData = data.filter((item, index) => index !== 0);
@@ -170,6 +204,9 @@ export default class ZoomLine extends Component {
 
                 this.x = getScaleTime($$width);
                 this.x.domain(d3_extent(this.internalData, item => item[0]));
+        }
+        if (connectId) {
+            setScale(this.x, `${connectId}-x`);
         }
 
         this.y = getScaleLinear($$height);
@@ -227,7 +264,7 @@ export default class ZoomLine extends Component {
                 {this.renderArea(areaPath)}
                 {this.renderLine(linePath)}
                 {this.props.children}
-                <g ref={el => this.groupZoom = el} />
+                <g ref={el => this.zoomGroup = el} />
                 <AxisY className={`${className}__axis`}
                        yScale={yScale}
                        $$width={$$width}
@@ -283,4 +320,5 @@ ZoomLine.propTypes = {
      * Line curve type
      */
     curve: React.PropTypes.oneOf([STEP, MONOTONE]),
+    brush: React.PropTypes.bool,
 };

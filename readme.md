@@ -41,10 +41,8 @@ const data = [
 
 * Zoom
   http://bl.ocks.org/mbostock/431a331294d2b5ddd33f947cf4c81319
-* Brush & Zoom
-  https://bl.ocks.org/mbostock/34f08d5e11952a80609169b7917d4172
-* Brush & Zoom II
-  https://bl.ocks.org/mbostock/f48fcdb929a620ed97877e4678ab15e6
+* Brush & custom handlers
+  http://bl.ocks.org/mbostock/4349545
 
 
 ## Charts for inspiration

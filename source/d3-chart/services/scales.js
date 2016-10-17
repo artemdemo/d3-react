@@ -49,3 +49,9 @@ export const getClassesScale = (domain) => {
         .domain(domain)
         .range(domain);
 };
+
+const scales = {};
+
+export const setScale = (scale, id) => scales[id] = scale;
+
+export const getScale = (id) => scales[id];
