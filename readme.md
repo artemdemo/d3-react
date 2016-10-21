@@ -5,7 +5,7 @@ d3 based charts as react components
 ## Data structure
 
 I'm using similar data structure to Google charts, for example:
-```
+```javascript
 const data = [
     ['Year', 'Sales', 'Revenue'],
     ['2011', 300, 100],

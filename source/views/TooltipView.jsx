@@ -91,6 +91,7 @@ export class TooltipView extends Component {
                     <GridY scale='linear' ticks={5} className='lines-view__grid' />
                     <Line curve='step' className='tooltip-view-line' />
                     <ToolTip scale='time'
+                             timeFormat='%Y'
                              className='tooltip-view-tooltip'
                              renderCallback={renderTooltipBox} />
                     <AxisX scale='time'
@@ -102,7 +103,10 @@ export class TooltipView extends Component {
 
                 <Chart data={columns}
                        className='tooltip-view-chart'>
-                    <AxisX className='columns-view__axis' timeFormat='%Y' title={columns[0][0]} />
+                    <AxisX scale='band'
+                           timeFormat='%Y'
+                           title={columns[0][0]}
+                           className='columns-view__axis' />
                     <AxisY className='columns-view__axis' title={columns[0][1]} />
                     <Columns className='columns-view-single-chart' />
                     <ToolTip scale='band'
@@ -112,7 +116,10 @@ export class TooltipView extends Component {
 
                 <Chart data={stackedColumns}
                        className='tooltip-view-chart'>
-                    <AxisX className='columns-view__axis' timeFormat='%Y' title='Groups' />
+                    <AxisX scale='band'
+                           timeFormat='%Y'
+                           title='Groups'
+                           className='columns-view__axis' />
                     <AxisY className='columns-view__axis' title='Sales' data={stackedColumnsAxisY} />
                     <StackedColumns className='columns-view-stacked-chart' />
                     <ToolTip scale='band'

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { select as d3_select } from 'd3-selection';
-import { extent as d3_extent, max as d3_max, sum as d3_sum } from 'd3-array';
+import { timeParse as d3_timeParse } from 'd3-time-format';
+import { extent as d3_extent, max as d3_max } from 'd3-array';
 import { getScaleBand, getScaleTime, getScaleLinear } from '../../services/scales';
 import ToolTipLine from './ToolTipLine';
 
@@ -34,11 +35,11 @@ export default class ToolTip extends Component {
 
     createToolTip(props) {
         const { $$data, $$height, $$width } = props;
-        const { renderCallback, className = DEFAULT_BASE_CLASS, scale = DEFAULT_SCALE } = props;
+        const { renderCallback, className = DEFAULT_BASE_CLASS, scale = DEFAULT_SCALE, timeFormat } = props;
         const { data = $$data } = props;
 
         // Use data without title row
-        const internalData = data.filter((item, index) => index !== 0);
+        let internalData = data.filter((item, index) => index !== 0);
         const toolTipLines = internalData.map(() => {
             return {
                 visible: false,
@@ -48,7 +49,30 @@ export default class ToolTip extends Component {
         });
 
         const columnWidth = ($$width / (internalData.length - 1)) * DEFAULT_MOUSE_AREA_PERCENT;
-        const { x, y } = this.createAxisScale(props, internalData);
+
+        let x;
+        switch (scale) {
+            case TIME:
+                const parseTime = timeFormat ? d3_timeParse(timeFormat) : null;
+                internalData = internalData.map((item) => {
+                    const dateObject = parseTime ? parseTime(item[0]) : item[0];
+                    return [
+                        dateObject,
+                        item[1],
+                    ];
+                });
+
+                x = getScaleTime($$width);
+                x.domain(d3_extent(internalData, item => item[0]));
+                break;
+            case BAND:
+            default:
+                x = getScaleBand($$width);
+                x.domain(internalData.map(item => item[0]));
+        }
+
+        const y = getScaleLinear($$height);
+        y.domain([0, d3_max(internalData, item => d3_max(item.slice(1)))]);
 
         d3_select(this.columnsGroup).selectAll(`.${className}__column`)
             .data(internalData)
@@ -61,11 +85,11 @@ export default class ToolTip extends Component {
                 switch (scale) {
                     case TIME:
                         toolTipLines[index].x = x(d[0]);
-                        return index === 0 ? x(d[0]) : x(d[0]) - (columnWidth / 2);
+                        return x(d[0]);
                     case BAND:
                     default:
                         toolTipLines[index].x = x(d[0]) + (columnWidth / 2);
-                        return x(d[0]);
+                        return x(d[0]) - columnWidth / 2;
                 }
             })
             .attr('width', (d, index, dataArr) => {
@@ -114,27 +138,6 @@ export default class ToolTip extends Component {
         });
     }
 
-    createAxisScale(props, data) {
-        const { $$width, $$height, scale = DEFAULT_SCALE } = props;
-        let x;
-
-        switch (scale) {
-            case TIME:
-                x = getScaleTime($$width);
-                x.domain(d3_extent(data, item => item[0]));
-                break;
-            case BAND:
-            default:
-                x = getScaleBand($$width);
-                x.domain(data.map(item => item[0]));
-        }
-
-        const y = getScaleLinear($$height);
-        y.domain([0, d3_max(data, item => d3_max(item.slice(1)))]);
-
-        return { x, y };
-    }
-
     render() {
         const { $$height, className = DEFAULT_BASE_CLASS } = this.props;
         return (
@@ -180,4 +183,8 @@ ToolTip.propTypes = {
      * Axis scale. Determine how to treat components `data`
      */
     scale: React.PropTypes.oneOf([BAND, TIME]),
+    /**
+     * Time format of axis labels (by default, expected to be Date() object)
+     */
+    timeFormat: React.PropTypes.string,
 };
