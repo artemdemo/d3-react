@@ -3,13 +3,16 @@ import { stack as d3_stack } from 'd3-shape';
 import { max as d3_max, sum as d3_sum, extent as d3_extent } from 'd3-array';
 import { select as d3_select } from 'd3-selection';
 import { timeParse as d3_timeParse } from 'd3-time-format';
+import _ from '../../libraries/lodash';
 import { linefyName } from '../../services/utils';
 import { getScaleBand, getScaleLinear, getClassesScale, getScaleTime } from '../../services/scales';
 import { deltaShape } from '../../propTypes';
 
 const DEFAULT_BASE_CLASS = 'columns-chart';
-const BAND = 'band';
-const TIME = 'time';
+const scaleType = {
+    BAND: 'band',
+    TIME: 'time',
+};
 
 /**
  * Stacked columns chart
@@ -53,7 +56,7 @@ export default class StackedColumns extends Component {
         let x;
         let columnWidth;
         switch (scale) {
-            case TIME:
+            case scaleType.TIME:
                 const parseTime = timeFormat ? d3_timeParse(timeFormat) : null;
                 const dataParsed = internalData.map((item) => {
                     const dateObject = parseTime ? parseTime(item[0]) : item[0];
@@ -67,7 +70,7 @@ export default class StackedColumns extends Component {
                 x.domain(d3_extent(dataParsed, item => item[0]));
                 columnWidth = dataParsed.length > 0 ? $$width / dataParsed.length : 0;
                 break;
-            case BAND:
+            case scaleType.BAND:
             default:
                 x = getScaleBand($$width);
                 x.domain(rowTitles);
@@ -98,9 +101,9 @@ export default class StackedColumns extends Component {
             .attr('class', `${className}__column`)
             .attr('x', (d) => {
                 switch (scale) {
-                    case TIME:
+                    case scaleType.TIME:
                         return x(d.data._title.original);
-                    case BAND:
+                    case scaleType.BAND:
                     default:
                         return x(d.data._title.linified);
                 }
@@ -141,5 +144,5 @@ StackedColumns.propTypes = {
     /**
      * Axis scale. Determine how to treat components `data`
      */
-    scale: React.PropTypes.oneOf([BAND, TIME]),
+    scale: React.PropTypes.oneOf(_.values(scaleType)),
 };

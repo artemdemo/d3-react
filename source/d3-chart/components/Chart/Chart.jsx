@@ -38,7 +38,7 @@ export default class Chart extends Component {
     }
 
     updateChartDimensions() {
-        const { minResizeWidth = 0 } = this.props;
+        const { minResizeWidth = 0, onResize } = this.props;
         const svgDimensions = this.chartSVG.getBoundingClientRect();
         const height = svgDimensions.height - this.margin.top - this.margin.bottom;
         const minWidth = svgDimensions.width > minResizeWidth ? svgDimensions.width : minResizeWidth;
@@ -49,6 +49,9 @@ export default class Chart extends Component {
             width,
             height,
         });
+        if (onResize) {
+            onResize({width, height});
+        }
     }
 
     render() {
@@ -90,20 +93,7 @@ export default class Chart extends Component {
 
 Chart.propTypes = {
     /**
-     * Main data object of the component.
-     * I'm using similar data structure to Google charts, for example:
-     * ```
-     * const data = [
-     *     ['Year', 'Sales', 'Revenue'],
-     *     ['2011', 300, 100],
-     *     ['2012', 180, 10],
-     *     ['2013', 510, 230],
-     *     ['2014', 400, 100],
-     *     ['2015', 1170, 700],
-     *     ['2016', 660, 210],
-     *     ['2017', 1030, 500]
-     *  ];
-     * ```
+     * Main data object of the component
      */
     data: React.PropTypes.any,
     /**
@@ -121,7 +111,13 @@ Chart.propTypes = {
      */
     margin: marginShape,
     /**
-     * Component class property for CSS
+     * Components class property for CSS
      */
     className: React.PropTypes.string,
+    /**
+     * Function will be called on Chart resize.
+     * Notice that it will stop called if you use `minResizeWidth`
+     * (if width is less then `minResizeWidth`)
+     */
+    onResize: React.PropTypes.func,
 };

@@ -3,14 +3,19 @@ import { axisLeft as d3_axisLeft, axisRight as d3_axisRight } from 'd3-axis';
 import { max as d3_max } from 'd3-array';
 import { select as d3_select } from 'd3-selection';
 import { format as d3_format } from 'd3-format';
+import _ from '../../libraries/lodash';
 import { getScaleBand, getScaleLinear } from '../../services/scales';
 import { deltaShape } from '../../propTypes';
 
 const DEFAULT_BASE_CLASS = 'chart-axis';
-const RIGHT = 'right';
-const LEFT = 'left';
-const LINEAR = 'linear';
-const BAND = 'band';
+const axisSide = {
+    LEFT: 'left',
+    RIGHT: 'right',
+};
+const axisTypes = {
+    LINEAR: 'linear',
+    BAND: 'band',
+};
 
 /**
  * AxisY
@@ -26,17 +31,17 @@ export default class AxisY extends Component {
 
     getYScale(props) {
         const { $$data, $$dataDelta, $$height } = props;
-        const { scale = LINEAR } = props;
+        const { scale = axisTypes.LINEAR } = props;
         const { data = $$data, dataDelta = $$dataDelta } = props;
         const internalData = data.filter((item, index) => index !== 0);
 
         let y;
         switch (scale) {
-            case BAND:
+            case axisTypes.BAND:
                 y = getScaleBand($$height);
                 y.domain(internalData.map(item => item[0]));
                 break;
-            case LINEAR:
+            case axisTypes.LINEAR:
             default:
                 y = getScaleLinear($$height);
                 const maxY = dataDelta && dataDelta.y ?
@@ -53,15 +58,15 @@ export default class AxisY extends Component {
      * @param props
      */
     createYAxis(props) {
-        const { axisTicks = 10, position = LEFT, labelNumberFormat, yScale } = props;
+        const { axisTicks = 10, position = axisSide.LEFT, labelNumberFormat, yScale } = props;
         const y = yScale || this.getYScale(props);
         let axis;
 
         switch (position) {
-            case RIGHT:
+            case axisSide.RIGHT:
                 axis = d3_axisRight(y);
                 break;
-            case LEFT:
+            case axisSide.LEFT:
             default:
                 axis = d3_axisLeft(y);
         }
@@ -76,7 +81,7 @@ export default class AxisY extends Component {
     render() {
         const {
             title = '',
-            position = LEFT,
+            position = axisSide.LEFT,
             className = DEFAULT_BASE_CLASS,
             $$width = 0,
         } = this.props;
@@ -84,11 +89,11 @@ export default class AxisY extends Component {
         let textY;
 
         switch (position) {
-            case RIGHT:
+            case axisSide.RIGHT:
                 groupTransform = `translate(${$$width}, 0)`;
                 textY = -13;
                 break;
-            case LEFT:
+            case axisSide.LEFT:
             default:
                 groupTransform = '';
                 textY = 6;
@@ -137,11 +142,11 @@ AxisY.propTypes = {
     /**
      * Axis scale. Determine how to treat components `data`
      */
-    scale: React.PropTypes.oneOf([LINEAR, BAND]),
+    scale: React.PropTypes.oneOf(_.values(axisTypes)),
     /**
      * Axis position - `left` or `right`.
      */
-    position: React.PropTypes.oneOf([LEFT, RIGHT]),
+    position: React.PropTypes.oneOf(_.values(axisSide)),
     /**
      * Axis ticks.
      * Hint to d3 - how many ticks should be generated

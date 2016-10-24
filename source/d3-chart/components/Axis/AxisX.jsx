@@ -3,12 +3,16 @@ import { axisBottom as d3_axisBottom } from 'd3-axis';
 import { max as d3_max, extent as d3_extent } from 'd3-array';
 import { select as d3_select } from 'd3-selection';
 import { timeParse as d3_timeParse, timeFormat as d3_timeFormat } from 'd3-time-format';
+import _ from '../../libraries/lodash';
 import { getScaleBand, getScaleLinear, getScaleTime } from '../../services/scales';
 
 const DEFAULT_BASE_CLASS = 'chart-axis';
-const LINEAR = 'linear';
-const BAND = 'band';
-const TIME = 'time';
+
+const axisTypes = {
+    LINEAR: 'linear',
+    BAND: 'band',
+    TIME: 'time',
+};
 
 /**
  * AxisX
@@ -24,17 +28,17 @@ export default class AxisX extends Component {
 
     getXScale(props) {
         const { $$width, $$data } = props;
-        const { scale = BAND, timeFormat } = props;
+        const { scale = axisTypes.BAND, timeFormat } = props;
         const { data = $$data } = props;
         const internalData = data.filter((item, index) => index !== 0);
 
         let x;
         switch (scale) {
-            case LINEAR:
+            case axisTypes.LINEAR:
                 x = getScaleLinear($$width);
                 x.domain([d3_max(internalData, item => item[1]), 0]);
                 break;
-            case TIME:
+            case axisTypes.TIME:
                 const parseTime = timeFormat ? d3_timeParse(timeFormat) : null;
                 const dataParsed = internalData.map((item) => {
                     const dateObject = parseTime ? parseTime(item[0]) : item[0];
@@ -47,7 +51,7 @@ export default class AxisX extends Component {
                 x = getScaleTime($$width);
                 x.domain(d3_extent(dataParsed, item => item[0]));
                 break;
-            case BAND:
+            case axisTypes.BAND:
             default:
                 x = getScaleBand($$width);
                 x.domain(internalData.map(item => item[0]));
@@ -119,7 +123,7 @@ AxisX.propTypes = {
     /**
      * Axis scale. Determine how to treat components `data`
      */
-    scale: React.PropTypes.oneOf([LINEAR, BAND, TIME]),
+    scale: React.PropTypes.oneOf(_.values(axisTypes)),
     /**
      * Time format of axis labels (by default, expected to be Date() object)
      */

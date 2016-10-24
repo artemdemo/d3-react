@@ -7,28 +7,22 @@ import {
 } from 'd3-shape';
 import { max as d3_max, extent as d3_extent } from 'd3-array';
 import { timeParse as d3_timeParse } from 'd3-time-format';
+import _ from '../../libraries/lodash';
 import { getScaleLinear, getScaleTime, getScaleBand } from '../../services/scales';
 import { deltaShape } from '../../propTypes';
 
 const DEFAULT_BASE_CLASS = 'line-chart';
-const STEP = 'step';
-const MONOTONE = 'monotone';
-
-const BAND = 'band';
-const TIME = 'time';
+const curveTypes = {
+    STEP: 'step',
+    MONOTONE: 'monotone',
+};
+const axisTypes = {
+    BAND: 'band',
+    TIME: 'time',
+};
 
 /**
  * Line chart
- *
- * https://bl.ocks.org/mbostock/02d893e3486c70c4475f
- * https://bl.ocks.org/mbostock/3884955
- *
- * Steps line chart
- * http://bl.ocks.org/shimizu/f7ef798894427a99efe5e173e003260d
- *
- * Different curve lines
- * https://bl.ocks.org/d3noob/ced1b9b18bd8192d2c898884033b5529
- *
  */
 export default class Line extends Component {
     constructor(props) {
@@ -76,22 +70,22 @@ export default class Line extends Component {
 
     render() {
         const { $$height, $$width, $$data, $$dataDelta } = this.props;
-        const { scale = TIME, className = DEFAULT_BASE_CLASS, curve, area, timeFormat } = this.props;
+        const { scale = axisTypes.TIME, className = DEFAULT_BASE_CLASS, curve, area, timeFormat } = this.props;
         const { dataDelta = $$dataDelta, data = $$data } = this.props;
 
         let internalData = data.filter((item, index) => index !== 0);
 
         if (internalData.length === 0) {
-            return;
+            return null;
         }
 
         let x;
         switch (scale) {
-            case BAND:
+            case axisTypes.BAND:
                 x = getScaleBand($$width);
                 x.domain(internalData.map(item => item[0]));
                 break;
-            case TIME:
+            case axisTypes.TIME:
             default:
                 const parseTime = timeFormat ? d3_timeParse(timeFormat) : null;
                 internalData = internalData.map((item) => {
@@ -127,13 +121,13 @@ export default class Line extends Component {
         }
 
         switch (curve) {
-            case STEP:
+            case curveTypes.STEP:
                 pathFunc.curve(d3_curveStep);
                 if (areaFunc) {
                     areaFunc.curve(d3_curveStep);
                 }
                 break;
-            case MONOTONE:
+            case curveTypes.MONOTONE:
                 pathFunc.curve(d3_curveMonotoneX);
                 if (areaFunc) {
                     areaFunc.curve(d3_curveMonotoneX);
@@ -178,7 +172,7 @@ Line.propTypes = {
     /**
      * Axis scale. Determine how to treat components `data`
      */
-    scale: React.PropTypes.oneOf([BAND, TIME]),
+    scale: React.PropTypes.oneOf(_.values(axisTypes)),
     /**
      * Time format of axis labels (by default, expected to be Date() object)
      */
@@ -206,5 +200,5 @@ Line.propTypes = {
     /**
      * Line curve type
      */
-    curve: React.PropTypes.oneOf([STEP, MONOTONE]),
+    curve: React.PropTypes.oneOf(_.values(curveTypes)),
 };
