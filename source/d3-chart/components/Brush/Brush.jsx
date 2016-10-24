@@ -1,10 +1,17 @@
 import React, {Component} from 'react';
 import { select as d3_select, event as d3_event } from 'd3-selection';
 import { brushX as d3_brushX } from 'd3-brush';
-import { getScale } from '../../services/scales';
+import { extent as d3_extent } from 'd3-array';
+import { timeParse as d3_timeParse } from 'd3-time-format';
+import _ from '../../libraries/lodash';
+import { getScale, getScaleBand, getScaleTime } from '../../services/scales';
 import nerve from '../../services/nerve';
 
 const BRUSH_CLASS = 'brush';
+const scaleType = {
+    BAND: 'band',
+    TIME: 'time',
+};
 
 /**
  * Brush
@@ -36,21 +43,60 @@ export default class Brush extends Component {
 
     componentDidMount() {
         const { connectId } = this.props;
-        const initialXScale = getScale(`${connectId}-x`);
-        if (initialXScale) {
-            this.x = initialXScale;
-            this.updateBrushInstance(this.props);
-            this.updateBrushElement();
+        if (connectId) {
+            const initialScale = getScale(`${connectId}-x`);
+            this.x = initialScale ? initialScale : this.createXScale(this.props);
+        } else {
+            this.x = this.createXScale(this.props);
         }
+        this.updateBrushInstance(this.props);
+        this.updateBrushElement();
     }
 
     componentWillReceiveProps(nextProps) {
         const { connectId } = nextProps;
         if (connectId) {
-            this.x = getScale(`${connectId}-x`);
+            const initialScale = getScale(`${connectId}-x`);
+            this.x = initialScale ? initialScale : this.createXScale(this.props);
+        } else {
+            this.x = this.createXScale(nextProps);
         }
         this.updateBrushInstance(nextProps);
         this.updateBrushElement();
+    }
+
+    createXScale(props) {
+        const { $$width, $$data } = props;
+        const { scale = scaleType.TIME, timeFormat } = props;
+        const { data = $$data } = props;
+
+        let internalData = data.filter((item, index) => index !== 0);
+
+        if (internalData.length === 0) {
+            return null;
+        }
+
+        let x;
+        switch (scale) {
+            case scaleType.BAND:
+                x = getScaleBand($$width);
+                x.domain(internalData.map(item => item[0]));
+                break;
+            case scaleType.TIME:
+            default:
+                const parseTime = timeFormat ? d3_timeParse(timeFormat) : null;
+                internalData = internalData.map((item) => {
+                    const dateObject = parseTime ? parseTime(item[0]) : item[0];
+                    return [
+                        dateObject,
+                        item[1],
+                    ];
+                });
+
+                x = getScaleTime($$width);
+                x.domain(d3_extent(internalData, item => item[0]));
+        }
+        return x;
     }
 
     updateScale(data) {
@@ -120,4 +166,8 @@ export default class Brush extends Component {
 
 Brush.propTypes = {
     connectId: React.PropTypes.string,
+    /**
+     * Axis scale. Determine how to treat components `data`
+     */
+    scale: React.PropTypes.oneOf(_.values(scaleType)),
 };
