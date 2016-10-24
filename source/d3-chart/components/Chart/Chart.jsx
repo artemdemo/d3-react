@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import throttle from 'lodash.throttle';
+import _ from '../../libraries/lodash';
 import { marginShape, deltaShape } from '../../propTypes';
 
 /**
@@ -23,7 +23,7 @@ export default class Chart extends Component {
             left: 40,
         }, props.margin);
 
-        this.windowResizehandler = throttle(() => {
+        this.windowResizehandler = _.throttle(() => {
             this.updateChartDimensions();
         }, 20);
     }

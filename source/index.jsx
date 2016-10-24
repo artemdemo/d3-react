@@ -18,6 +18,7 @@ import { PieView } from './views/PieView';
 import { TooltipView } from './views/TooltipView';
 import { LinesAreasView } from './views/combined/LinesAreasView';
 import { GradientView } from './views/other/GradientView';
+import ZoomView from './views/interactive/ZoomView';
 
 
 render(
@@ -37,6 +38,9 @@ render(
                 </Route>
                 <Route path='other'>
                     <Route path='gradient' component={GradientView} />
+                </Route>
+                <Route path='interactive'>
+                    <Route path='zoom' component={ZoomView} />
                 </Route>
             </Route>
         </Router>

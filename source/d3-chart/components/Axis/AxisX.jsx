@@ -22,17 +22,13 @@ export default class AxisX extends Component {
         this.createXAxis(nextProps);
     }
 
-    /**
-     * Create or update X axis
-     * @param props
-     */
-    createXAxis(props) {
+    getXScale(props) {
         const { $$width, $$data } = props;
-        const { axisTicks = 10, scale = BAND, timeFormat, labelTimeFormat } = props;
+        const { scale = BAND, timeFormat } = props;
         const { data = $$data } = props;
         const internalData = data.filter((item, index) => index !== 0);
-        let x;
 
+        let x;
         switch (scale) {
             case LINEAR:
                 x = getScaleLinear($$width);
@@ -57,6 +53,16 @@ export default class AxisX extends Component {
                 x.domain(internalData.map(item => item[0]));
         }
 
+        return x;
+    }
+
+    /**
+     * Create or update X axis
+     * @param props
+     */
+    createXAxis(props) {
+        const { axisTicks = 10, labelTimeFormat, xScale } = props;
+        const x = xScale || this.getXScale(props);
         const axis = d3_axisBottom(x).ticks(axisTicks);
 
         if (labelTimeFormat) {
@@ -124,4 +130,9 @@ AxisX.propTypes = {
      * @link https://github.com/d3/d3-scale/blob/master/README.md#time_ticks
      */
     axisTicks: React.PropTypes.number,
+    /**
+     * You can provide scale function directly to the component.
+     * In this case component wouldn't calculate it.
+     */
+    xScale: React.PropTypes.func,
 };
