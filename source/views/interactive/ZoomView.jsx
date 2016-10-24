@@ -22,11 +22,12 @@ const ZoomView = () => {
                        bottom: 50,
                        left: 40,
                    }}
-                   className='zoom-view_main-chart'>
+                   className='zoom-view__main-chart'>
                 <ZoomLine className='zoom-view-line'
                           timeFormat='%b %Y'
                           area />
             </Chart>
+
 
             <p>
                 <strong>Zoom with brush</strong>
@@ -39,7 +40,7 @@ const ZoomView = () => {
                        bottom: 50,
                        left: 40,
                    }}
-                   className='zoom-view_main-chart'>
+                   className='zoom-view__main-chart'>
                 <ZoomLine className='zoom-view-line'
                           timeFormat='%b %Y'
                           connectId='zoom-scale'
@@ -53,7 +54,7 @@ const ZoomView = () => {
                        bottom: 50,
                        left: 40,
                    }}
-                   className='zoom-view_map-chart'>
+                   className='zoom-view__map-chart'>
                 <AxisX className='zoom-view__axis'
                        scale='time'
                        timeFormat='%b %Y'
@@ -63,6 +64,14 @@ const ZoomView = () => {
                       area />
                 <Brush connectId='zoom-scale' />
             </Chart>
+
+
+            <p>
+                <strong>Zoom with custom brush</strong>
+            </p>
+
+
+
         </div>
     );
 };

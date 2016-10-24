@@ -70,17 +70,27 @@ export default class Brush extends Component {
 
     updateBrushElement() {
         this.brushGroup.innerHTML = '';
-        d3_select(this.brushGroup)
+        const gBrush = d3_select(this.brushGroup)
             .append('g')
             .attr('class', `${BRUSH_CLASS}`)
-            .call(this.brush)
-            .call(this.brush.move, this.x.range());
+            .call(this.brush);
+
+        this.handle = gBrush.selectAll('.handle--custom')
+            .data([{type: 'w'}, {type: 'e'}])
+            .enter().append('circle')
+            .attr('class', 'handle--custom')
+            .attr('r', 10);
+
+        gBrush.call(this.brush.move, this.x.range());
     }
 
     brushHandler() {
-        const { connectId } = this.props;
-        if (d3_event.sourceEvent && d3_event.sourceEvent.type === 'zoom') return;
+        const { connectId, $$height } = this.props;
         const s = d3_event.selection || this.x.range();
+        if (s) {
+            this.handle.attr("transform", function(d, i) { return "translate(" + s[i] + "," + $$height / 2 + ")"; });
+        }
+        if (d3_event.sourceEvent && d3_event.sourceEvent.type === 'zoom') return;
         this.x.domain(s.map(this.x.invert, this.x));
         if (connectId) {
             nerve.send({
