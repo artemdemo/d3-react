@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { select as d3_select, event as d3_event } from 'd3-selection';
 import { brushX as d3_brushX } from 'd3-brush';
-import { getScale } from '../../services/scales'
+import { getScale } from '../../services/scales';
 import nerve from '../../services/nerve';
 
 const BRUSH_CLASS = 'brush';

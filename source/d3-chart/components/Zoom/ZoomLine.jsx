@@ -9,6 +9,7 @@ import { zoom as d3_zoom, zoomIdentity as d3_zoomIdentity } from 'd3-zoom';
 import { max as d3_max, extent as d3_extent } from 'd3-array';
 import { timeParse as d3_timeParse } from 'd3-time-format';
 import { select as d3_select, event as d3_event } from 'd3-selection';
+import _ from '../../libraries/lodash';
 import { getScaleLinear, getScaleTime, getScaleBand, setScale } from '../../services/scales';
 import nerve from '../../services/nerve';
 
@@ -18,11 +19,15 @@ import AxisX from '../Axis/AxisX';
 const ZOOM_CLASS = 'zoom';
 const DEFAULT_BASE_CLASS = 'zoom-line-chart';
 
-const STEP = 'step';
-const MONOTONE = 'monotone';
+const curveTypes = {
+    STEP: 'step',
+    MONOTONE: 'monotone',
+};
 
-const BAND = 'band';
-const TIME = 'time';
+const scaleType = {
+    BAND: 'band',
+    TIME: 'time',
+};
 
 /**
  * Zoom line
@@ -103,7 +108,7 @@ export default class ZoomLine extends Component {
     }
 
     zoomHandler() {
-        const { $$height, $$width, connectId } = this.props;
+        const { $$height, connectId } = this.props;
         const t = d3_event.transform;
         this.x.domain(t.rescaleX(this.x).domain());
         if (connectId) {
@@ -177,7 +182,8 @@ export default class ZoomLine extends Component {
 
     render() {
         const { $$height, $$width, $$data } = this.props;
-        const { scale = TIME, className = DEFAULT_BASE_CLASS, curve, area, timeFormat, connectId } = this.props;
+        const { scale = scaleType.TIME, className = DEFAULT_BASE_CLASS } = this.props;
+        const { curve, area, timeFormat, connectId } = this.props;
         const { data = $$data } = this.props;
 
         this.internalData = data.filter((item, index) => index !== 0);
@@ -187,11 +193,11 @@ export default class ZoomLine extends Component {
         }
 
         switch (scale) {
-            case BAND:
+            case scaleType.BAND:
                 this.x = getScaleBand($$width);
                 this.x.domain(this.internalData.map(item => item[0]));
                 break;
-            case TIME:
+            case scaleType.TIME:
             default:
                 const parseTime = timeFormat ? d3_timeParse(timeFormat) : null;
                 this.internalData = this.internalData.map((item) => {
@@ -222,13 +228,13 @@ export default class ZoomLine extends Component {
         }
 
         switch (curve) {
-            case STEP:
+            case curveTypes.STEP:
                 linePathFunc.curve(d3_curveStep);
                 if (area) {
                     areaPathFunc.curve(d3_curveStep);
                 }
                 break;
-            case MONOTONE:
+            case curveTypes.MONOTONE:
                 linePathFunc.curve(d3_curveMonotoneX);
                 if (area) {
                     areaPathFunc.curve(d3_curveMonotoneX);
@@ -291,7 +297,7 @@ ZoomLine.propTypes = {
     /**
      * Axis scale. Determine how to treat components `data`
      */
-    scale: React.PropTypes.oneOf([BAND, TIME]),
+    scale: React.PropTypes.oneOf(_.values(scaleType)),
     /**
      * Time format of axis labels (by default, expected to be Date() object)
      */
@@ -319,6 +325,6 @@ ZoomLine.propTypes = {
     /**
      * Line curve type
      */
-    curve: React.PropTypes.oneOf([STEP, MONOTONE]),
+    curve: React.PropTypes.oneOf(_.values(curveTypes)),
     brush: React.PropTypes.bool,
 };

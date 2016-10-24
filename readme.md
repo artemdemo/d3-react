@@ -38,6 +38,8 @@ const data = [
 * Percentage bar chart
 * Large data charts
 * Chart with dynamically updating data
+* **Tests**
+    * jest snapshots (?) https://facebook.github.io/jest/blog/2016/07/27/jest-14.html
 
 ## D3 examples
 
