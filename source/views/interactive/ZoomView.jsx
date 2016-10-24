@@ -67,11 +67,42 @@ const ZoomView = () => {
 
 
             <p>
-                <strong>Zoom with custom brush</strong>
+                <strong>Zoom with custom brush handle</strong>
             </p>
 
+            <Chart data={chartData}
+                   margin={{
+                       top: 20,
+                       right: 40,
+                       bottom: 50,
+                       left: 40,
+                   }}
+                   className='zoom-view__main-chart'>
+                <ZoomLine className='zoom-view-line'
+                          timeFormat='%b %Y'
+                          connectId='zoom-scale-custom-brush-handle'
+                          area />
+            </Chart>
 
-
+            <Chart data={chartData}
+                   margin={{
+                       top: 20,
+                       right: 40,
+                       bottom: 50,
+                       left: 40,
+                   }}
+                   className='zoom-view__map-chart'>
+                <AxisX className='zoom-view__axis'
+                       scale='time'
+                       timeFormat='%b %Y'
+                       title={chartData[0][0]} />
+                <Line className='zoom-view-line'
+                      timeFormat='%b %Y'
+                      area />
+                <Brush connectId='zoom-scale-custom-brush-handle'>
+                    <circle r='10' className='handle--custom' />
+                </Brush>
+            </Chart>
         </div>
     );
 };
