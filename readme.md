@@ -32,6 +32,8 @@ const data = [
 
 ![alt tag](img/zoom-brush.png)
 
+![alt tag](img/zoom-brush-2.png)
+
 ## ToDo
 
 * Line + Dots chart
