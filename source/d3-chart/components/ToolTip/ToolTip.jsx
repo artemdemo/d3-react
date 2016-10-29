@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
-import { select as d3_select } from 'd3-selection';
-import { timeParse as d3_timeParse } from 'd3-time-format';
-import { extent as d3_extent, max as d3_max } from 'd3-array';
+import d3 from '../../libraries/d3';
 import { getScaleBand, getScaleTime, getScaleLinear } from '../../services/scales';
 import ToolTipLine from './ToolTipLine';
+import _ from '../../libraries/lodash';
 
 const DEFAULT_BASE_CLASS = '__tooltip';
 const DEFAULT_MOUSE_AREA_PERCENT = 0.8;
 const DEFAULT_TOOLTIP_POSITION_DELTA = 5;
-const TIME = 'time';
-const BAND = 'band';
-const DEFAULT_SCALE = BAND;
+const axisTypes = {
+    BAND: 'band',
+    TIME: 'time',
+};
+const DEFAULT_SCALE = axisTypes.BAND;
 
 export default class ToolTip extends Component {
     constructor(props) {
@@ -52,8 +53,8 @@ export default class ToolTip extends Component {
 
         let x;
         switch (scale) {
-            case TIME:
-                const parseTime = timeFormat ? d3_timeParse(timeFormat) : null;
+            case axisTypes.TIME:
+                const parseTime = timeFormat ? d3.timeParse(timeFormat) : null;
                 internalData = internalData.map((item) => {
                     const dateObject = parseTime ? parseTime(item[0]) : item[0];
                     return [
@@ -63,40 +64,43 @@ export default class ToolTip extends Component {
                 });
 
                 x = getScaleTime($$width);
-                x.domain(d3_extent(internalData, item => item[0]));
+                x.domain(d3.extent(internalData, item => item[0]));
                 break;
-            case BAND:
+            case axisTypes.BAND:
             default:
                 x = getScaleBand($$width);
                 x.domain(internalData.map(item => item[0]));
         }
 
         const y = getScaleLinear($$height);
-        y.domain([0, d3_max(internalData, item => d3_max(item.slice(1)))]);
+        y.domain([0, d3.max(internalData, item => d3.max(item.slice(1)))]);
 
-        d3_select(this.columnsGroup).selectAll(`.${className}__column`)
+        d3.select(this.columnsGroup).selectAll(`.${className}__column`)
             .data(internalData)
             .enter().append('rect')
             .attr('class', `${className}__column`)
             .attr('fill', 'transparent')
             .attr('x', (d, index) => {
-                const yPosition = d3_max(d.slice(1));
+                const yPosition = d3.max(d.slice(1));
                 toolTipLines[index].y = y(yPosition);
                 switch (scale) {
-                    case TIME:
+                    case axisTypes.TIME:
                         toolTipLines[index].x = x(d[0]);
-                        return x(d[0]);
-                    case BAND:
+                        if (index === 0) {
+                            return x(d[0]);
+                        }
+                        return x(d[0]) - (columnWidth / 2);
+                    case axisTypes.BAND:
                     default:
                         toolTipLines[index].x = x(d[0]) + (columnWidth / 2);
-                        return x(d[0]) - columnWidth / 2;
+                        return x(d[0]);
                 }
             })
             .attr('width', (d, index, dataArr) => {
                 switch (scale) {
-                    case TIME:
+                    case axisTypes.TIME:
                         return index === 0 || index === dataArr.length - 1 ? columnWidth / 2 : columnWidth;
-                    case BAND:
+                    case axisTypes.BAND:
                     default:
                         return columnWidth;
                 }
@@ -182,7 +186,7 @@ ToolTip.propTypes = {
     /**
      * Axis scale. Determine how to treat components `data`
      */
-    scale: React.PropTypes.oneOf([BAND, TIME]),
+    scale: React.PropTypes.oneOf(_.values(axisTypes)),
     /**
      * Time format of axis labels (by default, expected to be Date() object)
      */
