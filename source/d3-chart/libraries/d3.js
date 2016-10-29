@@ -13,12 +13,27 @@
 
 import { select } from 'd3-selection';
 import { brushX } from 'd3-brush';
-import { extent } from 'd3-array';
+import { extent, max } from 'd3-array';
 import { timeParse } from 'd3-time-format';
+import { line, area, curveStep, curveMonotoneX } from 'd3-shape';
+import { zoom, zoomIdentity } from 'd3-zoom';
 
 export default {
+    // d3-selection
     select,
+    // d3-brush
     brushX,
+    // d3-array
     extent,
+    max,
+    // d3-time-format
     timeParse,
+    // d3-shape
+    line,
+    area,
+    curveStep,
+    curveMonotoneX,
+    // d3-zoom
+    zoom,
+    zoomIdentity,
 };

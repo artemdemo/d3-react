@@ -1,14 +1,6 @@
 import React, {Component} from 'react';
-import {
-    line as d3_line,
-    area as d3_area,
-    curveStep as d3_curveStep,
-    curveMonotoneX as d3_curveMonotoneX,
-} from 'd3-shape';
-import { zoom as d3_zoom, zoomIdentity as d3_zoomIdentity } from 'd3-zoom';
-import { max as d3_max, extent as d3_extent } from 'd3-array';
-import { timeParse as d3_timeParse } from 'd3-time-format';
-import { select as d3_select, event as d3_event } from 'd3-selection';
+import { event as d3Event } from 'd3-selection';
+import d3 from '../../libraries/d3';
 import _ from '../../libraries/lodash';
 import { getScaleLinear, getScaleTime, getScaleBand, setScale } from '../../services/scales';
 import nerve from '../../services/nerve';
@@ -76,13 +68,13 @@ export default class ZoomLine extends Component {
     }
 
     getLinePathFunction() {
-        return d3_line()
+        return d3.line()
             .x(d => this.x(d[0]))
             .y(d => this.y(d[1]));
     }
 
     getAreaPathFunction(height) {
-        return d3_area()
+        return d3.area()
             .x(d => this.x(d[0]))
             .y0(height)
             .y1(d => this.y(d[1]));
@@ -91,14 +83,14 @@ export default class ZoomLine extends Component {
     applyZoomHandler(props) {
         const { $$height, $$width } = props;
 
-        this.zoom = d3_zoom()
+        this.zoom = d3.zoom()
             .scaleExtent([1, Infinity])
             .translateExtent([[0, 0], [$$width, $$height]])
             .extent([[0, 0], [$$width, $$height]])
             .on('zoom', () => this.zoomHandler());
 
         this.zoomGroup.innerHTML = '';
-        d3_select(this.zoomGroup)
+        d3.select(this.zoomGroup)
             .append('rect')
             .attr('class', `${ZOOM_CLASS}`)
             .attr('style', 'cursor: move; fill: none; pointer-events: all;')
@@ -109,7 +101,7 @@ export default class ZoomLine extends Component {
 
     zoomHandler() {
         const { $$height, connectId } = this.props;
-        const t = d3_event.transform;
+        const t = d3Event.transform;
         this.x.domain(t.rescaleX(this.x).domain());
         if (connectId) {
             nerve.send({
@@ -134,10 +126,11 @@ export default class ZoomLine extends Component {
 
     updateZoom(s) {
         const { $$width } = this.props;
-        d3_select(this.zoomGroup)
+        const divider = s[1] - s[0] === 0 ? 1 : s[1] - s[0];
+        d3.select(this.zoomGroup)
             .select(`.${ZOOM_CLASS}`)
-            .call(this.zoom.transform, d3_zoomIdentity
-                .scale($$width / (s[1] - s[0]))
+            .call(this.zoom.transform, d3.zoomIdentity
+                .scale($$width / divider)
                 .translate(-s[0], 0));
     }
 
@@ -199,7 +192,7 @@ export default class ZoomLine extends Component {
                 break;
             case scaleType.TIME:
             default:
-                const parseTime = timeFormat ? d3_timeParse(timeFormat) : null;
+                const parseTime = timeFormat ? d3.timeParse(timeFormat) : null;
                 this.internalData = this.internalData.map((item) => {
                     const dateObject = parseTime ? parseTime(item[0]) : item[0];
                     return [
@@ -209,14 +202,14 @@ export default class ZoomLine extends Component {
                 });
 
                 this.x = getScaleTime($$width);
-                this.x.domain(d3_extent(this.internalData, item => item[0]));
+                this.x.domain(d3.extent(this.internalData, item => item[0]));
         }
         if (connectId) {
             setScale(this.x, `${connectId}-x`);
         }
 
         this.y = getScaleLinear($$height);
-        const maxY = d3_max(this.internalData, item => Number(item[1]));
+        const maxY = d3.max(this.internalData, item => Number(item[1]));
         this.y.domain([0, maxY]);
 
         const linePathFunc = this.getLinePathFunction();
@@ -229,15 +222,15 @@ export default class ZoomLine extends Component {
 
         switch (curve) {
             case curveTypes.STEP:
-                linePathFunc.curve(d3_curveStep);
+                linePathFunc.curve(d3.curveStep);
                 if (area) {
-                    areaPathFunc.curve(d3_curveStep);
+                    areaPathFunc.curve(d3.curveStep);
                 }
                 break;
             case curveTypes.MONOTONE:
-                linePathFunc.curve(d3_curveMonotoneX);
+                linePathFunc.curve(d3.curveMonotoneX);
                 if (area) {
-                    areaPathFunc.curve(d3_curveMonotoneX);
+                    areaPathFunc.curve(d3.curveMonotoneX);
                 }
                 break;
         }

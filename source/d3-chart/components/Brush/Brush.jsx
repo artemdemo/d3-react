@@ -33,6 +33,7 @@ export default class Brush extends Component {
         };
 
         this.x = null;
+        this.initialX = null;
         this.brush = null;
     }
 
@@ -41,8 +42,10 @@ export default class Brush extends Component {
         if (connectId) {
             const initialScale = getScale(`${connectId}-x`);
             this.x = initialScale || this.createXScale(this.props);
+            this.initialX = initialScale || this.createXScale(this.props);
         } else {
             this.x = this.createXScale(this.props);
+            this.initialX = this.createXScale(this.props);
         }
         this.updateBrushInstance(this.props);
         this.updateBrushElement();
@@ -134,7 +137,7 @@ export default class Brush extends Component {
     }
 
     brushHandler() {
-        const { connectId, $$height, handleYPosition } = this.props;
+        const { connectId, $$height, handleYPosition, onChange, scale = scaleType.TIME } = this.props;
         const s = d3Event.selection || this.x.range();
         if (s && this.handle) {
             const yPosition = handleYPosition ? handleYPosition($$height) : $$height / 2;
@@ -146,6 +149,16 @@ export default class Brush extends Component {
                 handleRight: s[1],
                 handleTop: yPosition,
             });
+            if (onChange) {
+                switch (scale) {
+                    case scaleType.BAND:
+                        onChange(this.initialX(s[0]), this.initialX(s[1]));
+                        break;
+                    case scaleType.TIME:
+                    default:
+                        onChange(this.initialX.invert(s[0]), this.initialX.invert(s[1]));
+                }
+            }
         }
         if (d3Event.sourceEvent && d3Event.sourceEvent.type === 'zoom') return;
         this.x.domain(s.map(this.x.invert, this.x));
@@ -187,7 +200,11 @@ Brush.propTypes = {
      */
     scale: React.PropTypes.oneOf(_.values(scaleType)),
     /**
-     * Callback for y position of handle and line in between
+     * This function should return y position from handle and line in between
      */
     handleYPosition: React.PropTypes.func,
+    /**
+     * Callback on brush change
+     */
+    onChange: React.PropTypes.func,
 };
