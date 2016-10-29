@@ -13,10 +13,11 @@
 
 import { select } from 'd3-selection';
 import { brushX } from 'd3-brush';
-import { extent, max } from 'd3-array';
+import { extent, max, min } from 'd3-array';
 import { timeParse } from 'd3-time-format';
-import { line, area, curveStep, curveMonotoneX } from 'd3-shape';
+import { arc, pie, line, area, curveStep, curveMonotoneX } from 'd3-shape';
 import { zoom, zoomIdentity } from 'd3-zoom';
+import { transition } from 'd3-transition';
 
 export default {
     // d3-selection
@@ -26,9 +27,12 @@ export default {
     // d3-array
     extent,
     max,
+    min,
     // d3-time-format
     timeParse,
     // d3-shape
+    arc,
+    pie,
     line,
     area,
     curveStep,
@@ -36,4 +40,6 @@ export default {
     // d3-zoom
     zoom,
     zoomIdentity,
+    // d3-transition
+    transition,
 };

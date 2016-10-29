@@ -1,24 +1,19 @@
 import React, { Component } from 'react';
-import { arc as d3_arc, pie as d3_pie} from 'd3-shape';
-import { min as d3_min } from 'd3-array';
-import { select as d3_select } from 'd3-selection';
-import { transition as d3_transition } from 'd3-transition';
-import { marginShape } from '../../propTypes';
 import { linefyName } from '../../services/utils';
 import { getClassesScale } from '../../services/scales';
+import _ from '../../libraries/lodash';
+import d3 from '../../libraries/d3';
+
+const DEFAULT_BASE_CLASS = 'pie-chart';
+const mouseDirection = {
+    OVER: 'over',
+    OUT: 'out',
+};
 
 /**
  * Pie chart
- *
- * @tutorial http://cagrimmett.com/til/2016/08/19/d3-pie-chart.html
- *
- * Transition of pie section
- * @tutorial http://stackoverflow.com/questions/30816709/how-to-increase-size-of-pie-segment-on-hover-in-d3
  */
-
-const DEFAULT_BASE_CLASS = 'pie-chart';
-
-export class Pie extends Component {
+export default class Pie extends Component {
     constructor(props) {
         super(props);
 
@@ -27,34 +22,62 @@ export class Pie extends Component {
             marginLeft: 0,
             marginTop: 0,
         };
+
+        this.hoveredSectionId = null;
     }
     componentDidMount() {
         this.createPie(this.props);
     }
 
     componentWillReceiveProps(nextProps) {
-        this.createPie(nextProps);
+        if (nextProps.triggerHoverId !== this.props.triggerHoverId) {
+            if (nextProps.triggerHoverId !== null) {
+                this.hoverSectionHandle(d3.select(
+                    this.sections._groups[0][nextProps.triggerHoverId]),
+                    mouseDirection.OVER
+                );
+                this.hoveredSectionId = nextProps.triggerHoverId;
+            } else {
+                this.hoverSectionHandle(d3.select(
+                    this.sections._groups[0][this.hoveredSectionId]),
+                    mouseDirection.OUT
+                );
+                this.hoveredSectionId = null;
+            }
+        }
+        const dataNext = nextProps.data || nextProps.$$data;
+        const dataCurrent = this.props.data || this.props.$$data;
+        const needRerender = (() => {
+            const widthIsSame = nextProps.$$width === this.props.$$width;
+            const heightIsSame = nextProps.$$height === this.props.$$height;
+            if (!widthIsSame || !heightIsSame) {
+                return true;
+            }
+            const dataIsSame = _.isEqual(dataNext, dataCurrent);
+            return !dataIsSame;
+        })();
+        if (needRerender) {
+            this.createPie(nextProps);
+        }
+    }
+
+    hoverSectionHandle(section, mouse = mouseDirection.OVER) {
+        const selectionInstance = section.transition().duration(100);
+        if (mouse === mouseDirection.OVER) {
+            selectionInstance.attr('d', this.arcHoverData);
+        } else {
+            selectionInstance.attr('d', this.arcData);
+        }
     }
 
     createPie(props) {
-        const {
-            $$width,
-            $$height,
-            $$data,
-            data,
-            outerRadius,
-            innerRadius,
-            labelPadding,
-            margin = {},
-            hoverIndent = 10,
-            className = DEFAULT_BASE_CLASS,
-        } = props;
+        const { $$data, $$width, $$height } = props;
+        const { data = $$data, margin = {}, hoverIndent = 10, className = DEFAULT_BASE_CLASS } = props;
+        const { outerRadius, innerRadius, labelPadding, colors = [] } = props;
 
-        // ToDo: It looks like calculatedOuterRadius can be replaced with outerRadius
-        let calculatedOuterRadius = outerRadius ? outerRadius : d3_min([$$width / 2, $$height / 2]);
+        let calculatedOuterRadius = outerRadius ? outerRadius($$width, $$height) : d3.min([$$width / 2, $$height / 2]);
 
-        const selectedData = data || $$data;
-        const internalData = selectedData.filter((item, index) => index !== 0);
+        const internalData = data.filter((item, index) => index !== 0);
 
         let marginLeft;
         if (margin.right !== undefined) {
@@ -88,26 +111,25 @@ export class Pie extends Component {
             calculatedInnerRadius = innerRadius(calculatedOuterRadius);
         }
 
-        const pieData = d3_pie()
+        const pieData = d3.pie()
             .value(d => d[1])(internalData);
 
-        const arcData = d3_arc()
+        this.arcData = d3.arc()
             .outerRadius(calculatedOuterRadius)
             .innerRadius(calculatedInnerRadius);
 
-        let arcHoverData;
         if (hoverIndent > 0) {
-            arcHoverData = d3_arc()
+            this.arcHoverData = d3.arc()
                 .outerRadius(calculatedOuterRadius + hoverIndent)
                 .innerRadius(calculatedInnerRadius > hoverIndent ?
-                                calculatedInnerRadius - hoverIndent :
-                                calculatedInnerRadius);
+                calculatedInnerRadius - hoverIndent :
+                    calculatedInnerRadius);
         }
 
         let labelArcData;
 
         if (labelPadding < calculatedOuterRadius && labelPadding > calculatedInnerRadius) {
-            labelArcData = d3_arc()
+            labelArcData = d3.arc()
                 .outerRadius(calculatedOuterRadius - labelPadding)
                 .innerRadius(calculatedOuterRadius - labelPadding);
         }
@@ -117,30 +139,37 @@ export class Pie extends Component {
 
         this.pieGroup.innerHTML = '';
 
-        const sectionGroup = d3_select(this.pieGroup)
+        const sectionGroup = d3.select(this.pieGroup)
             .selectAll(`${className}-arc`)
             .data(pieData)
             .enter().append('g')
             .attr('class', `${className}-arc`);
 
-        const sections = sectionGroup
+        this.sections = sectionGroup
             .append('path')
-            .attr('d', arcData)
+            .attr('d', this.arcData)
+            .attr('fill', (d, index) => {
+                if (colors.length > 0) {
+                    return `#${colors[index % colors.length]}`;
+                }
+            })
             .attr('class', d => `${className}__section ${groupClassesScale(d.data[0])}`);
 
-        if (arcHoverData) {
-            sections
-                .on('mouseover', function() {
-                    d3_select(this)
-                        .transition()
-                        .duration(150)
-                        .attr('d', arcHoverData);
+        const { onMouseOver, onMouseOut } = props;
+        if (this.arcHoverData) {
+            const self = this;
+            this.sections
+                .on('mouseover', function(d, i) {
+                    self.hoverSectionHandle(d3.select(this), mouseDirection.OVER);
+                    if (onMouseOver) {
+                        onMouseOver(d, i);
+                    }
                 })
-                .on('mouseout', function() {
-                    d3_select(this)
-                        .transition()
-                        .duration(150)
-                        .attr('d', arcData);
+                .on('mouseout', function(d, i) {
+                    self.hoverSectionHandle(d3.select(this), mouseDirection.OUT);
+                    if (onMouseOut) {
+                        onMouseOut(d, i);
+                    }
                 });
         }
 
@@ -163,12 +192,56 @@ export class Pie extends Component {
 }
 
 Pie.propTypes = {
+    /**
+     * Main data object of the component
+     * See `<Chart />`
+     */
     data: React.PropTypes.array,
+    /**
+     * Component class property for CSS
+     */
     className: React.PropTypes.string,
-    outerRadius: React.PropTypes.number,
+    /**
+     * On mouse over callback
+     */
+    onMouseOver: React.PropTypes.func,
+    /**
+     * On mouse out callback
+     */
+    onMouseOut: React.PropTypes.func,
+    /**
+     * Outer radius of the chart.
+     * (for both `pie` and `donut`)
+     */
+    outerRadius: React.PropTypes.func,
+    /**
+     * Inner radius in case you need donut instead of pie
+     */
     innerRadius: React.PropTypes.func,
+    /**
+     * Label padding in case you want them to appear on the chart
+     */
     labelPadding: React.PropTypes.number,
+    /**
+     * On hover event section can increase it's size
+     */
     hoverIndent: React.PropTypes.number,
-    margin: marginShape,
+    /**
+     * In case you need to simulate hover on one of sections - you will need to pass it's id
+     * (or `null` if you wont to "unhover" the section)
+     */
+    triggerHoverId: React.PropTypes.number,
+    /**
+     * Colors to use for `fill` property of each section
+     */
+    colors: React.PropTypes.arrayOf(React.PropTypes.string),
+    /**
+     * Chart position inside <Chart /> component
+     */
+    margin: React.PropTypes.shape({
+        top: React.PropTypes.number,
+        right: React.PropTypes.number,
+        bottom: React.PropTypes.number,
+        left: React.PropTypes.number,
+    }),
 };
-

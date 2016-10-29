@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import Chart from '../d3-chart/components/Chart/Chart';
-import { Pie } from '../d3-chart/components/Pie/Pie';
+import Pie from '../d3-chart/components/Pie/Pie';
 import { Legend } from '../d3-chart/components/Legend/Legend';
 
 import './PieView.less';
