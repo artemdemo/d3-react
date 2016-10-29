@@ -1,13 +1,11 @@
-import React, {Component} from 'react';
-import { select as d3_select, event as d3_event } from 'd3-selection';
-import { brushX as d3_brushX } from 'd3-brush';
-import { extent as d3_extent } from 'd3-array';
-import { timeParse as d3_timeParse } from 'd3-time-format';
+import React, { Component } from 'react';
+import { event as d3Event } from 'd3-selection';
+import d3 from '../../libraries/d3';
 import _ from '../../libraries/lodash';
 import { getScale, getScaleBand, getScaleTime } from '../../services/scales';
 import nerve from '../../services/nerve';
 
-const BRUSH_CLASS = 'brush';
+const DEFAULT_BASE_CLASS = 'chart-brush';
 const scaleType = {
     BAND: 'band',
     TIME: 'time',
@@ -15,15 +13,6 @@ const scaleType = {
 
 /**
  * Brush
- *
- * Brush & Zoom
- * https://bl.ocks.org/mbostock/34f08d5e11952a80609169b7917d4172
- *
- * Brush & Zoom II
- * https://bl.ocks.org/mbostock/f48fcdb929a620ed97877e4678ab15e6
- *
- * Brush & custom handlers
- * http://bl.ocks.org/mbostock/4349545
  */
 export default class Brush extends Component {
     constructor(props) {
@@ -37,7 +26,14 @@ export default class Brush extends Component {
             });
         }
 
+        this.state = {
+            handleLeft: 0,
+            handleRight: 0,
+            handleTop: 0,
+        };
+
         this.x = null;
+        this.initialX = null;
         this.brush = null;
     }
 
@@ -45,9 +41,11 @@ export default class Brush extends Component {
         const { connectId } = this.props;
         if (connectId) {
             const initialScale = getScale(`${connectId}-x`);
-            this.x = initialScale ? initialScale : this.createXScale(this.props);
+            this.x = initialScale || this.createXScale(this.props);
+            this.initialX = initialScale || this.createXScale(this.props);
         } else {
             this.x = this.createXScale(this.props);
+            this.initialX = this.createXScale(this.props);
         }
         this.updateBrushInstance(this.props);
         this.updateBrushElement();
@@ -57,7 +55,7 @@ export default class Brush extends Component {
         const { connectId } = nextProps;
         if (connectId) {
             const initialScale = getScale(`${connectId}-x`);
-            this.x = initialScale ? initialScale : this.createXScale(this.props);
+            this.x = initialScale || this.createXScale(this.props);
         } else {
             this.x = this.createXScale(nextProps);
         }
@@ -84,7 +82,7 @@ export default class Brush extends Component {
                 break;
             case scaleType.TIME:
             default:
-                const parseTime = timeFormat ? d3_timeParse(timeFormat) : null;
+                const parseTime = timeFormat ? d3.timeParse(timeFormat) : null;
                 internalData = internalData.map((item) => {
                     const dateObject = parseTime ? parseTime(item[0]) : item[0];
                     return [
@@ -94,39 +92,41 @@ export default class Brush extends Component {
                 });
 
                 x = getScaleTime($$width);
-                x.domain(d3_extent(internalData, item => item[0]));
+                x.domain(d3.extent(internalData, item => item[0]));
         }
         return x;
     }
 
     updateScale(data) {
+        const { className = DEFAULT_BASE_CLASS } = this.props;
         this.x = data.x;
-        d3_select(this.brushGroup)
-            .select(`.${BRUSH_CLASS}`)
+        d3.select(this.brushGroup)
+            .select(`.${className}__brush`)
             .call(this.brush.move, this.x.range().map(data.t.invertX, data.t));
     }
 
     updateBrushInstance(props) {
         const { $$width, $$height } = props;
 
-        this.brush = d3_brushX()
+        this.brush = d3.brushX()
             .extent([[0, 0], [$$width, $$height]])
             .on('brush end', () => this.brushHandler());
     }
 
     updateBrushElement() {
+        const { className = DEFAULT_BASE_CLASS } = this.props;
         this.brushGroup.innerHTML = '';
-        const gBrush = d3_select(this.brushGroup)
+        const gBrush = d3.select(this.brushGroup)
             .append('g')
-            .attr('class', `${BRUSH_CLASS}`)
+            .attr('class', `${className}__brush`)
             .call(this.brush);
 
         if (this.childrenGroup.childElementCount > 0) {
             if (this.childrenGroup.firstChild.classList.length === 0) {
-                throw new Error('[Brush] Handle should have className');
+                console.error('[Brush] Handle should have className');
             }
             if (this.childrenGroup.childElementCount > 1) {
-                throw new Error('[Brush] There is more then one child for handle - used first one');
+                console.error('[Brush] There is more then one child for handle - used first one');
             }
             this.handle = gBrush.selectAll(`.${this.childrenGroup.firstChild.classList[0]}`)
                 .data([{type: 'w'}, {type: 'e'}])
@@ -137,12 +137,30 @@ export default class Brush extends Component {
     }
 
     brushHandler() {
-        const { connectId, $$height } = this.props;
-        const s = d3_event.selection || this.x.range();
+        const { connectId, $$height, handleYPosition, onChange, scale = scaleType.TIME } = this.props;
+        const s = d3Event.selection || this.x.range();
         if (s && this.handle) {
-            this.handle.attr('transform', (d, i) => `translate(${s[i]}, ${$$height / 2})`);
+            const yPosition = handleYPosition ? handleYPosition($$height) : $$height / 2;
+            this.handle.attr('transform', (d, i) => {
+                return `translate(${s[i]}, ${yPosition})`;
+            });
+            this.setState({
+                handleLeft: s[0],
+                handleRight: s[1],
+                handleTop: yPosition,
+            });
+            if (onChange) {
+                switch (scale) {
+                    case scaleType.BAND:
+                        onChange(this.initialX(s[0]), this.initialX(s[1]));
+                        break;
+                    case scaleType.TIME:
+                    default:
+                        onChange(this.initialX.invert(s[0]), this.initialX.invert(s[1]));
+                }
+            }
         }
-        if (d3_event.sourceEvent && d3_event.sourceEvent.type === 'zoom') return;
+        if (d3Event.sourceEvent && d3Event.sourceEvent.type === 'zoom') return;
         this.x.domain(s.map(this.x.invert, this.x));
         if (connectId) {
             nerve.send({
@@ -153,8 +171,19 @@ export default class Brush extends Component {
     }
 
     render() {
+        const { className = DEFAULT_BASE_CLASS, $$width } = this.props;
         return (
-            <g>
+            <g className={className}>
+                <line className={`${className}__bottom-line`}
+                      x1={0}
+                      y1={this.state.handleTop}
+                      x2={$$width}
+                      y2={this.state.handleTop} />
+                <line className={`${className}__top-line`}
+                      x1={this.state.handleLeft}
+                      y1={this.state.handleTop}
+                      x2={this.state.handleRight}
+                      y2={this.state.handleTop} />
                 <g ref={el => this.brushGroup = el} />
                 <g style={{display: 'none'}} ref={el => this.childrenGroup = el}>
                     {this.props.children}
@@ -170,4 +199,12 @@ Brush.propTypes = {
      * Axis scale. Determine how to treat components `data`
      */
     scale: React.PropTypes.oneOf(_.values(scaleType)),
+    /**
+     * This function should return y position from handle and line in between
+     */
+    handleYPosition: React.PropTypes.func,
+    /**
+     * Callback on brush change
+     */
+    onChange: React.PropTypes.func,
 };
