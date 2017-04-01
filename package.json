@@ -10,7 +10,7 @@
     "build": "webpack --progress --colors",
     "watch": "webpack --progress --colors --watch",
     "npm-check": "npm-check --skip-unused",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "karma start ./karma.conf.js"
   },
   "author": "Artem Demo",
   "dependencies": {
@@ -37,6 +37,7 @@
     "history": "^4.0.1",
     "html-loader": "^0.4.4",
     "html-webpack-plugin": "^2.22.0",
+    "jasmine-core": "^2.5.2",
     "less": "^2.7.1",
     "less-loader": "^4.0.3",
     "lodash.throttle": "^4.1.1",
@@ -55,11 +56,21 @@
     "webpack": "^2.3.2"
   },
   "devDependencies": {
+    "core-js": "^2.4.1",
+    "enzyme-to-json": "^1.5.0",
     "eslint": "^3.5.0",
     "eslint-config-artem-react": "git+https://github.com/artemdemo/eslint-config-artem-react.git#1.0.0",
     "extract-text-webpack-plugin": "^2.1.0",
+    "karma": "^1.5.0",
+    "karma-cli": "^1.0.1",
+    "karma-jasmine": "^1.1.0",
+    "karma-phantomjs-launcher": "^1.0.4",
+    "karma-sourcemap-loader": "^0.3.7",
+    "karma-webpack": "^2.0.3",
     "lite-server": "^2.2.2",
     "npm-check": "^5.4.0",
+    "phantomjs": "^2.1.7",
+    "react-addons-test-utils": "^15.4.2",
     "webpack-dev-server": "^2.4.2"
   }
 }
