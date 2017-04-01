@@ -1,12 +1,13 @@
-import { syncHistoryWithStore, routerReducer } from 'react-router-redux';
+import { routerReducer } from 'react-router-redux';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
-import { browserHistory } from 'react-router';
-import thunk from 'redux-thunk';
 
-const myLocationsApp = combineReducers({
+import { syncHistoryWithStore } from 'react-router-redux';
+import { browserHistory } from 'react-router';
+
+const reducers = combineReducers({
     routing: routerReducer,
 });
 
-export const store = createStore(myLocationsApp, applyMiddleware(thunk));
+export const store = createStore(reducers, applyMiddleware());
 
 export const history = syncHistoryWithStore(browserHistory, store);
