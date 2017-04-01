@@ -9,7 +9,8 @@
     "lite-server": "lite-server",
     "build": "webpack --progress --colors",
     "watch": "webpack --progress --colors --watch",
-    "pack": "uglifyjs build/js/bundle.js -m --source-map build/js/bundle.js.map -o build/js/bundle.min.js",
+    "npm-check": "npm-check --skip-unused",
+    "npm-check:update": "npm-check --update",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Artem Demo",
@@ -51,16 +52,16 @@
     "redux": "^3.6.0",
     "redux-thunk": "^2.1.0",
     "style-loader": "^0.13.1",
-    "uglify-js": "^2.7.3",
     "underscore": "^1.8.3",
     "url-loader": "^0.5.7",
     "webpack": "^1.13.2"
   },
   "devDependencies": {
-    "lite-server": "^2.2.2",
     "eslint": "^3.5.0",
     "eslint-config-artem-react": "git+https://github.com/artemdemo/eslint-config-artem-react.git#1.0.0",
     "extract-text-webpack-plugin": "^1.0.1",
+    "lite-server": "^2.2.2",
+    "npm-check": "^5.4.0",
     "webpack-dev-server": "^1.15.1"
   }
 }
