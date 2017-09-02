@@ -7,17 +7,17 @@ import './styles/general.less';
 
 import { store, history } from './configs';
 
-import { AppView } from './views/AppView';
-import { MainView } from './views/MainView';
-import { ColumnsView } from './views/ColumnsView';
-import { BarsView } from './views/BarsView';
-import { LinesView } from './views/LinesView';
-import { LegendView } from './views/LegendView';
-import { DotsView } from './views/DotsView';
-import { PieView } from './views/PieView';
-import { TooltipView } from './views/TooltipView';
-import { LinesAreasView } from './views/combined/LinesAreasView';
-import { GradientView } from './views/other/GradientView';
+import AppView from './views/AppView';
+import MainView from './views/MainView';
+import ColumnsView from './views/ColumnsView';
+import BarsView from './views/BarsView';
+import LinesView from './views/LinesView';
+import LegendView from './views/LegendView';
+import DotsView from './views/DotsView';
+import PieView from './views/PieView';
+import TooltipView from './views/TooltipView';
+import LinesAreasView from './views/combined/LinesAreasView';
+import GradientView from './views/other/GradientView';
 import ZoomView from './views/interactive/ZoomView';
 
 

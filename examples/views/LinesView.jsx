@@ -9,7 +9,7 @@ import Line from '../../source/components/Line/Line';
 
 import './LinesView.less';
 
-export class LinesView extends Component {
+class LinesView extends Component {
     render() {
         const line = [
             ['Year', 'Sales'],
@@ -64,3 +64,5 @@ export class LinesView extends Component {
         );
     }
 }
+
+export default LinesView;

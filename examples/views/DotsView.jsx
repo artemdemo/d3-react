@@ -7,7 +7,7 @@ import AxisY from '../../source/components/Axis/AxisY';
 
 import './DotsView.less';
 
-export class DotsView extends Component {
+class DotsView extends Component {
     render() {
         const mainData = [
             ['Date', 'Sales'],
@@ -151,3 +151,5 @@ export class DotsView extends Component {
         );
     }
 }
+
+export default DotsView;

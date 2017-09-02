@@ -12,7 +12,7 @@ import { Legend } from '../../../source/components/Legend/Legend';
 
 import './LinesAreasView.less';
 
-export class LinesAreasView extends Component {
+class LinesAreasView extends Component {
     render() {
         let mainData = [
             ['Year', 'Sales', 'Books', 'Laptops'],
@@ -137,3 +137,5 @@ export class LinesAreasView extends Component {
         );
     }
 }
+
+export default LinesAreasView;

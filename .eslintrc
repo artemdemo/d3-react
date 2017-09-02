@@ -1,6 +1,6 @@
 {
     "extends": "artem-react",
     "rules": {
-        "camelcase": 0,
-    },
+        "camelcase": 0
+    }
 }

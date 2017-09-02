@@ -12,7 +12,7 @@ import ToolTip from '../../source/components/ToolTip/ToolTip';
 
 import './TooltipView.less';
 
-export class TooltipView extends Component {
+class TooltipView extends Component {
     render() {
         const lineData = [
             ['Year', 'Sales'],
@@ -131,3 +131,5 @@ export class TooltipView extends Component {
         );
     }
 }
+
+export default TooltipView;

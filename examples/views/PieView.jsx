@@ -6,7 +6,7 @@ import { Legend } from '../../source/components/Legend/Legend';
 
 import './PieView.less';
 
-export class PieView extends Component {
+class PieView extends Component {
     render() {
         const mainData = [
             ['Product', 'Sales'],
@@ -61,3 +61,5 @@ export class PieView extends Component {
         );
     }
 }
+
+export default PieView;

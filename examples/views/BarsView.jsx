@@ -8,7 +8,7 @@ import { GroupedBars } from '../../source/components/Bars/GroupedBars';
 
 import './BarsView.less';
 
-export class BarsView extends Component {
+class BarsView extends Component {
     render() {
         const bars = [
             ['Year', 'Sales'],
@@ -64,3 +64,5 @@ export class BarsView extends Component {
         );
     }
 }
+
+export default BarsView;

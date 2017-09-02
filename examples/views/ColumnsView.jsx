@@ -11,7 +11,7 @@ import { Legend } from '../../source/components/Legend/Legend';
 
 import './ColumnsView.less';
 
-export class ColumnsView extends Component {
+class ColumnsView extends Component {
     render() {
         const columns = [
             ['Year', 'Sales'],
@@ -99,3 +99,5 @@ export class ColumnsView extends Component {
         );
     }
 }
+
+export default ColumnsView;

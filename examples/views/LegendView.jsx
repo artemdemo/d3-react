@@ -7,7 +7,7 @@ import { Legend } from '../../source/components/Legend/Legend';
 
 import './LegendView.less';
 
-export class LegendView extends Component {
+class LegendView extends Component {
     render() {
         const mainData = [
             ['Year', 'Books', 'Laptops', 'Displays'],
@@ -51,3 +51,5 @@ export class LegendView extends Component {
         );
     }
 }
+
+export default LegendView;

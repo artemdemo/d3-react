@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-export class MainView extends Component {
+class MainView extends Component {
     render() {
         return (
             <div>
@@ -9,3 +9,5 @@ export class MainView extends Component {
         );
     }
 }
+
+export default MainView;

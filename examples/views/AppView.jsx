@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 
 import './AppView.less';
 
-export class AppView extends Component {
+class AppView extends Component {
     render() {
         return (
             <div className='container'>
@@ -55,3 +55,5 @@ export class AppView extends Component {
         );
     }
 }
+
+export default AppView;

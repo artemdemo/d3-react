@@ -11,7 +11,7 @@ import { Legend } from '../../../source/components/Legend/Legend';
 
 import './GradientView.less';
 
-export class GradientView extends Component {
+class GradientView extends Component {
     constructor(props) {
         super(props);
         this.backgroundColor = 'black';
@@ -162,3 +162,5 @@ export class GradientView extends Component {
         );
     }
 }
+
+export default GradientView;
