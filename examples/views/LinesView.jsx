@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 
-import Chart from '../d3-chart/components/Chart/Chart';
-import AxisX from '../d3-chart/components/Axis/AxisX';
-import AxisY from '../d3-chart/components/Axis/AxisY';
-import GridX from '../d3-chart/components/Grid/GridX';
-import GridY from '../d3-chart/components/Grid/GridY';
-import Line from '../d3-chart/components/Line/Line';
+import Chart from '../../source/components/Chart/Chart';
+import AxisX from '../../source/components/Axis/AxisX';
+import AxisY from '../../source/components/Axis/AxisY';
+import GridX from '../../source/components/Grid/GridX';
+import GridY from '../../source/components/Grid/GridY';
+import Line from '../../source/components/Line/Line';
 
 import './LinesView.less';
 

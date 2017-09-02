@@ -1,13 +1,13 @@
 import React from 'react';
 
 import chartData from './Zoom.data';
-import Chart from '../../d3-chart/components/Chart/Chart';
-import AxisX from '../../d3-chart/components/Axis/AxisX';
-import AxisY from '../../d3-chart/components/Axis/AxisY';
-import Line from '../../d3-chart/components/Line/Line';
-import ZoomLine from '../../d3-chart/components/Zoom/ZoomLine';
-import Brush from '../../d3-chart/components/Brush/Brush';
-import Rectangle from '../../d3-chart/components/Rectangle/Rectangle';
+import Chart from '../../../source/components/Chart/Chart';
+import AxisX from '../../../source/components/Axis/AxisX';
+import AxisY from '../../../source/components/Axis/AxisY';
+import Line from '../../../source/components/Line/Line';
+import ZoomLine from '../../../source/components/Zoom/ZoomLine';
+import Brush from '../../../source/components/Brush/Brush';
+import Rectangle from '../../../source/components/Rectangle/Rectangle';
 
 import './ZoomView.less';
 

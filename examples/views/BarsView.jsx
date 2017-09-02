@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 
-import Chart from '../d3-chart/components/Chart/Chart';
-import AxisX from '../d3-chart/components/Axis/AxisX';
-import AxisY from '../d3-chart/components/Axis/AxisY';
-import { Bars } from '../d3-chart/components/Bars/Bars';
-import { GroupedBars } from '../d3-chart/components/Bars/GroupedBars';
+import Chart from '../../source/components/Chart/Chart';
+import AxisX from '../../source/components/Axis/AxisX';
+import AxisY from '../../source/components/Axis/AxisY';
+import { Bars } from '../../source/components/Bars/Bars';
+import { GroupedBars } from '../../source/components/Bars/GroupedBars';
 
 import './BarsView.less';
 

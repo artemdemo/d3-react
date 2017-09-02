@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { sum as d3_sum } from 'd3-array';
 
-import Chart from '../d3-chart/components/Chart/Chart';
-import AxisX from '../d3-chart/components/Axis/AxisX';
-import AxisY from '../d3-chart/components/Axis/AxisY';
-import GridY from '../d3-chart/components/Grid/GridY';
-import Line from '../d3-chart/components/Line/Line';
-import { Columns } from '../d3-chart/components/Columns/Columns';
-import StackedColumns from '../d3-chart/components/Columns/StackedColumns';
-import ToolTip from '../d3-chart/components/ToolTip/ToolTip';
+import Chart from '../../source/components/Chart/Chart';
+import AxisX from '../../source/components/Axis/AxisX';
+import AxisY from '../../source/components/Axis/AxisY';
+import GridY from '../../source/components/Grid/GridY';
+import Line from '../../source/components/Line/Line';
+import { Columns } from '../../source/components/Columns/Columns';
+import StackedColumns from '../../source/components/Columns/StackedColumns';
+import ToolTip from '../../source/components/ToolTip/ToolTip';
 
 import './TooltipView.less';
 

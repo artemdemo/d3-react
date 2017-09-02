@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 
-import Chart from '../d3-chart/components/Chart/Chart';
-import { Dots } from '../d3-chart/components/Dots/Dots';
-import AxisX from '../d3-chart/components/Axis/AxisX';
-import AxisY from '../d3-chart/components/Axis/AxisY';
+import Chart from '../../source/components/Chart/Chart';
+import { Dots } from '../../source/components/Dots/Dots';
+import AxisX from '../../source/components/Axis/AxisX';
+import AxisY from '../../source/components/Axis/AxisY';
 
 import './DotsView.less';
 
