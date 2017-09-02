@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import _ from 'underscore';
+import _ from 'lodash';
 import moment from 'moment';
 
 import Chart from '../../../source/components/Chart/Chart';
