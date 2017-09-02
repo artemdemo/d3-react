@@ -3,7 +3,6 @@ import { axisBottom as d3_axisBottom } from 'd3-axis';
 import { max as d3_max, extent as d3_extent } from 'd3-array';
 import { select as d3_select } from 'd3-selection';
 import { timeParse as d3_timeParse, timeFormat as d3_timeFormat } from 'd3-time-format';
-import _ from '../../libraries/lodash';
 import { getScaleBand, getScaleLinear, getScaleTime } from '../../services/scales';
 
 const DEFAULT_BASE_CLASS = 'chart-axis';
@@ -123,7 +122,7 @@ AxisX.propTypes = {
     /**
      * Axis scale. Determine how to treat components `data`
      */
-    scale: React.PropTypes.oneOf(_.values(axisTypes)),
+    scale: React.PropTypes.oneOf(Object.values(axisTypes)),
     /**
      * Time format of axis labels (by default, expected to be Date() object)
      */

@@ -3,7 +3,6 @@ import { axisLeft as d3_axisLeft, axisRight as d3_axisRight } from 'd3-axis';
 import { max as d3_max } from 'd3-array';
 import { select as d3_select } from 'd3-selection';
 import { format as d3_format } from 'd3-format';
-import _ from '../../libraries/lodash';
 import { getScaleBand, getScaleLinear } from '../../services/scales';
 import { deltaShape } from '../../propTypes';
 
@@ -142,11 +141,11 @@ AxisY.propTypes = {
     /**
      * Axis scale. Determine how to treat components `data`
      */
-    scale: React.PropTypes.oneOf(_.values(axisTypes)),
+    scale: React.PropTypes.oneOf(Object.values(axisTypes)),
     /**
      * Axis position - `left` or `right`.
      */
-    position: React.PropTypes.oneOf(_.values(axisSide)),
+    position: React.PropTypes.oneOf(Object.values(axisSide)),
     /**
      * Axis ticks.
      * Hint to d3 - how many ticks should be generated

@@ -7,7 +7,6 @@ import {
 } from 'd3-shape';
 import { max as d3_max, extent as d3_extent } from 'd3-array';
 import { timeParse as d3_timeParse } from 'd3-time-format';
-import _ from '../../libraries/lodash';
 import { getScaleLinear, getScaleTime, getScaleBand } from '../../services/scales';
 import { deltaShape } from '../../propTypes';
 
@@ -172,7 +171,7 @@ Line.propTypes = {
     /**
      * Axis scale. Determine how to treat components `data`
      */
-    scale: React.PropTypes.oneOf(_.values(axisTypes)),
+    scale: React.PropTypes.oneOf(Object.values(axisTypes)),
     /**
      * Time format of axis labels (by default, expected to be Date() object)
      */
@@ -200,5 +199,5 @@ Line.propTypes = {
     /**
      * Line curve type
      */
-    curve: React.PropTypes.oneOf(_.values(curveTypes)),
+    curve: React.PropTypes.oneOf(Object.values(curveTypes)),
 };

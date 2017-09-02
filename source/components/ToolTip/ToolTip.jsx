@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import d3 from '../../libraries/d3';
 import { getScaleBand, getScaleTime, getScaleLinear } from '../../services/scales';
 import ToolTipLine from './ToolTipLine';
-import _ from '../../libraries/lodash';
 
 const DEFAULT_BASE_CLASS = '__tooltip';
 const DEFAULT_MOUSE_AREA_PERCENT = 0.8;
@@ -186,7 +185,7 @@ ToolTip.propTypes = {
     /**
      * Axis scale. Determine how to treat components `data`
      */
-    scale: React.PropTypes.oneOf(_.values(axisTypes)),
+    scale: React.PropTypes.oneOf(Object.values(axisTypes)),
     /**
      * Time format of axis labels (by default, expected to be Date() object)
      */

@@ -3,7 +3,6 @@ import { stack as d3_stack } from 'd3-shape';
 import { max as d3_max, sum as d3_sum, extent as d3_extent } from 'd3-array';
 import { select as d3_select } from 'd3-selection';
 import { timeParse as d3_timeParse } from 'd3-time-format';
-import _ from '../../libraries/lodash';
 import { linefyName } from '../../services/utils';
 import { getScaleBand, getScaleLinear, getClassesScale, getScaleTime } from '../../services/scales';
 import { deltaShape } from '../../propTypes';
@@ -144,5 +143,5 @@ StackedColumns.propTypes = {
     /**
      * Axis scale. Determine how to treat components `data`
      */
-    scale: React.PropTypes.oneOf(_.values(scaleType)),
+    scale: React.PropTypes.oneOf(Object.values(scaleType)),
 };

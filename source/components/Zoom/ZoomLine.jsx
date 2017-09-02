@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import { event as d3Event } from 'd3-selection';
 import d3 from '../../libraries/d3';
-import _ from '../../libraries/lodash';
 import { getScaleLinear, getScaleTime, getScaleBand, setScale } from '../../services/scales';
 import nerve from '../../services/nerve';
 
@@ -290,7 +289,7 @@ ZoomLine.propTypes = {
     /**
      * Axis scale. Determine how to treat components `data`
      */
-    scale: React.PropTypes.oneOf(_.values(scaleType)),
+    scale: React.PropTypes.oneOf(Object.values(scaleType)),
     /**
      * Time format of axis labels (by default, expected to be Date() object)
      */
@@ -318,6 +317,6 @@ ZoomLine.propTypes = {
     /**
      * Line curve type
      */
-    curve: React.PropTypes.oneOf(_.values(curveTypes)),
+    curve: React.PropTypes.oneOf(Object.values(curveTypes)),
     brush: React.PropTypes.bool,
 };

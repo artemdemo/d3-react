@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
+import _isEqual from 'lodash/isEqual';
 import { linefyName } from '../../services/utils';
 import { getClassesScale } from '../../services/scales';
-import _ from '../../libraries/lodash';
 import d3 from '../../libraries/d3';
 
 const DEFAULT_BASE_CLASS = 'pie-chart';
@@ -53,7 +53,7 @@ export default class Pie extends Component {
             if (!widthIsSame || !heightIsSame) {
                 return true;
             }
-            const dataIsSame = _.isEqual(dataNext, dataCurrent);
+            const dataIsSame = _isEqual(dataNext, dataCurrent);
             return !dataIsSame;
         })();
         if (needRerender) {

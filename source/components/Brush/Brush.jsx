@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { event as d3Event } from 'd3-selection';
 import d3 from '../../libraries/d3';
-import _ from '../../libraries/lodash';
 import { getScale, getScaleBand, getScaleTime } from '../../services/scales';
 import nerve from '../../services/nerve';
 
@@ -22,7 +21,7 @@ export default class Brush extends Component {
         if (connectId) {
             nerve.on({
                 route: `${connectId}/update-scale`,
-                callback: (xScale) => this.updateScale(xScale),
+                callback: xScale => this.updateScale(xScale),
             });
         }
 
@@ -198,7 +197,7 @@ Brush.propTypes = {
     /**
      * Axis scale. Determine how to treat components `data`
      */
-    scale: React.PropTypes.oneOf(_.values(scaleType)),
+    scale: React.PropTypes.oneOf(Object.values(scaleType)),
     /**
      * This function should return y position from handle and line in between
      */
