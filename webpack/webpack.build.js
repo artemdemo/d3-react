@@ -1,4 +1,5 @@
 const DefinePlugin = require('webpack').DefinePlugin;
+const UglifyJsPlugin = require('webpack').optimize.UglifyJsPlugin;
 const webpackCommon = require('./webpack.common');
 
 module.exports = Object.assign(webpackCommon, {
@@ -24,7 +25,15 @@ module.exports = Object.assign(webpackCommon, {
     plugins: webpackCommon.plugins.concat([
         new DefinePlugin({
             'process.env': {
-                NODE_ENV: JSON.stringify('production'),
+                NODE_ENV: '"production"',
+            },
+        }),
+
+        new UglifyJsPlugin({
+            uglifyOptions: {
+                compress: {
+                    warnings: false,
+                },
             },
         }),
     ]),
