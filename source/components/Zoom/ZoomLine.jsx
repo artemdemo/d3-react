@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { event as d3Event } from 'd3-selection';
 import d3 from '../../libraries/d3';
@@ -27,7 +27,7 @@ const scaleType = {
  * Brush & Zoom
  * https://bl.ocks.org/mbostock/34f08d5e11952a80609169b7917d4172
  */
-export default class ZoomLine extends Component {
+export default class ZoomLine extends React.Component {
     constructor(props) {
         super(props);
 

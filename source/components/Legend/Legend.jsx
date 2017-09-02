@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { marginShape } from '../../propTypes';
 import { linefyName } from '../../services/utils';
@@ -6,7 +6,7 @@ import { LegendItem } from './LegendItem';
 
 const DEFAULT_BASE_CLASS = 'chart-legend';
 
-export class Legend extends Component {
+export class Legend extends React.Component {
     constructor(props) {
         super(props);
 

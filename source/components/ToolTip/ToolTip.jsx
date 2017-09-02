@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import d3 from '../../libraries/d3';
 import { getScaleBand, getScaleTime, getScaleLinear } from '../../services/scales';
@@ -13,7 +13,7 @@ const axisTypes = {
 };
 const DEFAULT_SCALE = axisTypes.BAND;
 
-export default class ToolTip extends Component {
+export default class ToolTip extends React.Component {
     constructor(props) {
         super(props);
 

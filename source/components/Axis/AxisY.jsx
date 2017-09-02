@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { axisLeft as d3_axisLeft, axisRight as d3_axisRight } from 'd3-axis';
 import { max as d3_max } from 'd3-array';
@@ -20,7 +20,7 @@ const axisTypes = {
 /**
  * AxisY
  */
-export default class AxisY extends Component {
+export default class AxisY extends React.Component {
     componentDidMount() {
         this.createYAxis(this.props);
     }

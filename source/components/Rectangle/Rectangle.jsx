@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import nerve from '../../services/nerve';
 
-class Rectangle extends Component {
+class Rectangle extends React.Component {
     constructor(props) {
         super(props);
 

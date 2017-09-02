@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import _throttle from 'lodash/throttle';
 import { marginShape, deltaShape } from '../../propTypes';
@@ -6,7 +6,7 @@ import { marginShape, deltaShape } from '../../propTypes';
 /**
  * Parent component for all charts
  */
-export default class Chart extends Component {
+export default class Chart extends React.Component {
     constructor(props) {
         super(props);
 

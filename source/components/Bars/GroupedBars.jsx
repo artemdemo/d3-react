@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { max as d3_max } from 'd3-array';
 import { select as d3_select } from 'd3-selection';
@@ -11,7 +11,7 @@ import { getScaleBand, getScaleLinear, getClassesScale } from '../../services/sc
 
 const DEFAULT_BASE_CLASS = 'bars-chart';
 
-export class GroupedBars extends Component {
+export class GroupedBars extends React.Component {
     componentDidMount() {
         const { $$data, data, $$width, className = DEFAULT_BASE_CLASS } = this.props;
         const selectedData = data || $$data;

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { max as d3_max } from 'd3-array';
 import { select as d3_select } from 'd3-selection';
@@ -12,7 +12,7 @@ import { getScaleBand, getScaleLinear } from '../../services/scales';
 
 const DEFAULT_BASE_CLASS = 'columns-chart';
 
-export class Columns extends Component {
+export class Columns extends React.Component {
     componentDidMount() {
         const { $$data, $$height, className = DEFAULT_BASE_CLASS } = this.props;
 

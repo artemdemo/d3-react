@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import {
     line as d3_line,
@@ -24,7 +24,7 @@ const axisTypes = {
 /**
  * Line chart
  */
-export default class Line extends Component {
+export default class Line extends React.Component {
     constructor(props) {
         super(props);
 

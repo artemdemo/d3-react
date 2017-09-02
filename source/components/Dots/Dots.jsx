@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { max as d3_max, extent as d3_extent } from 'd3-array';
 import { select as d3_select } from 'd3-selection';
@@ -13,7 +13,7 @@ import { getScaleLinear, getScaleTime } from '../../services/scales';
 
 const DEFAULT_BASE_CLASS = 'dots-chart';
 
-export class Dots extends Component {
+export class Dots extends React.Component {
     componentDidMount() {
         this.updateChart(this.props);
     }

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { axisBottom as d3_axisBottom } from 'd3-axis';
 import { max as d3_max, extent as d3_extent } from 'd3-array';
@@ -16,7 +16,7 @@ const BAND = 'band';
  *
  * @tutorial https://bl.ocks.org/d3noob/c506ac45617cf9ed39337f99f8511218
  */
-export default class GridX extends Component {
+export default class GridX extends React.Component {
     componentDidMount() {
         const { $$data, data } = this.props;
         const selectedData = data || $$data;

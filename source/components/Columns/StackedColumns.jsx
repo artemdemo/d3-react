@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { stack as d3_stack } from 'd3-shape';
 import { max as d3_max, sum as d3_sum, extent as d3_extent } from 'd3-array';
@@ -19,7 +19,7 @@ const scaleType = {
  *
  * http://bl.ocks.org/mbostock/3886208
  */
-export default class StackedColumns extends Component {
+export default class StackedColumns extends React.Component {
     componentDidMount() {
         this.updateColumns(this.props);
     }

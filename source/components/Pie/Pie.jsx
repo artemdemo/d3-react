@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import _isEqual from 'lodash/isEqual';
 import { linefyName } from '../../services/utils';
@@ -14,7 +14,7 @@ const mouseDirection = {
 /**
  * Pie chart
  */
-export default class Pie extends Component {
+export default class Pie extends React.Component {
     constructor(props) {
         super(props);
 
