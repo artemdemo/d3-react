@@ -2,11 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { marginShape } from '../../propTypes';
 import { linefyName } from '../../services/utils';
-import { LegendItem } from './LegendItem';
+import LegendItem from './LegendItem';
 
 const DEFAULT_BASE_CLASS = 'chart-legend';
 
-export class Legend extends React.Component {
+class Legend extends React.Component {
     constructor(props) {
         super(props);
 
@@ -75,3 +75,5 @@ Legend.propTypes = {
     className: PropTypes.string,
     orientation: PropTypes.oneOf(['horizontal', 'vertical']),
 };
+
+export default Legend;

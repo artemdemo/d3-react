@@ -17,7 +17,7 @@ const BAND = 'band';
  *
  * @tutorial https://bl.ocks.org/d3noob/c506ac45617cf9ed39337f99f8511218
  */
-export default class GridY extends React.Component {
+class GridY extends React.Component {
     componentDidMount() {
         this.createGrid(this.props);
     }
@@ -104,3 +104,5 @@ GridY.propTypes = {
      */
     timeFormat: PropTypes.string,
 };
+
+export default GridY;

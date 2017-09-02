@@ -14,7 +14,7 @@ const scaleType = {
 /**
  * Brush
  */
-export default class Brush extends React.Component {
+class Brush extends React.Component {
     constructor(props) {
         super(props);
 
@@ -208,3 +208,5 @@ Brush.propTypes = {
      */
     onChange: PropTypes.func,
 };
+
+export default Brush;

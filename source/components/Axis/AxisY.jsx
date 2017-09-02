@@ -20,7 +20,7 @@ const axisTypes = {
 /**
  * AxisY
  */
-export default class AxisY extends React.Component {
+class AxisY extends React.Component {
     componentDidMount() {
         this.createYAxis(this.props);
     }
@@ -159,3 +159,5 @@ AxisY.propTypes = {
      */
     yScale: PropTypes.func,
 };
+
+export default AxisY;

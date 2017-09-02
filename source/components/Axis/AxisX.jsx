@@ -17,7 +17,7 @@ const axisTypes = {
 /**
  * AxisX
  */
-export default class AxisX extends React.Component {
+class AxisX extends React.Component {
     componentDidMount() {
         this.createXAxis(this.props);
     }
@@ -140,3 +140,5 @@ AxisX.propTypes = {
      */
     xScale: PropTypes.func,
 };
+
+export default AxisX;

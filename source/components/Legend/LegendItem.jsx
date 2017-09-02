@@ -4,7 +4,7 @@ import classnames from 'classnames';
 
 const DEFAULT_BASE_CLASS = 'chart-legend-item';
 
-export const LegendItem = function(props) {
+const LegendItem = function(props) {
     const {
         text = '',
         className = DEFAULT_BASE_CLASS,
@@ -38,3 +38,5 @@ LegendItem.propTypes = {
     text: PropTypes.string,
     rectWidth: PropTypes.number,
 };
+
+export default LegendItem;

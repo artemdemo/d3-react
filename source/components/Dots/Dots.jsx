@@ -13,7 +13,7 @@ import { getScaleLinear, getScaleTime } from '../../services/scales';
 
 const DEFAULT_BASE_CLASS = 'dots-chart';
 
-export class Dots extends React.Component {
+class Dots extends React.Component {
     componentDidMount() {
         this.updateChart(this.props);
     }
@@ -60,7 +60,7 @@ export class Dots extends React.Component {
     render() {
         const { className = DEFAULT_BASE_CLASS } = this.props;
         return (
-            <g ref={(el) => this.dotsGroup = el}
+            <g ref={el => this.dotsGroup = el}
                className={className}
                clipPath='url(#clip)' />
         );
@@ -73,3 +73,5 @@ Dots.propTypes = {
     className: PropTypes.string,
     dotRadius: PropTypes.number,
 };
+
+export default Dots;

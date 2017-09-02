@@ -1,13 +1,11 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-class MainView extends Component {
-    render() {
-        return (
-            <div>
-                Graphics
-            </div>
-        );
-    }
-}
+const MainView = () => {
+    return (
+        <div>
+            Graphics
+        </div>
+    );
+};
 
 export default MainView;

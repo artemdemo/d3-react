@@ -6,7 +6,7 @@ import { marginShape, deltaShape } from '../../propTypes';
 /**
  * Parent component for all charts
  */
-export default class Chart extends React.Component {
+class Chart extends React.Component {
     constructor(props) {
         super(props);
 
@@ -122,3 +122,5 @@ Chart.propTypes = {
      */
     onResize: PropTypes.func,
 };
+
+export default Chart;

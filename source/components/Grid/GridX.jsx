@@ -16,7 +16,7 @@ const BAND = 'band';
  *
  * @tutorial https://bl.ocks.org/d3noob/c506ac45617cf9ed39337f99f8511218
  */
-export default class GridX extends React.Component {
+class GridX extends React.Component {
     componentDidMount() {
         const { $$data, data } = this.props;
         const selectedData = data || $$data;
@@ -68,7 +68,7 @@ export default class GridX extends React.Component {
     render() {
         const { $$height, className = DEFAULT_BASE_CLASS } = this.props;
         return (
-            <g ref={(el) => this.gridGroup = el}
+            <g ref={el => this.gridGroup = el}
                transform={`translate(0, ${$$height})`}
                className={className} />
         );
@@ -100,3 +100,5 @@ GridX.propTypes = {
      */
     timeFormat: PropTypes.string,
 };
+
+export default GridX;

@@ -10,7 +10,7 @@ class Rectangle extends React.Component {
         if (connectId) {
             nerve.on({
                 route: `${connectId}/update-brush`,
-                callback: (s) => this.updateRectangle(s),
+                callback: s => this.updateRectangle(s),
             });
         }
 

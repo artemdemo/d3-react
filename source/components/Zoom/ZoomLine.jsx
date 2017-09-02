@@ -27,7 +27,7 @@ const scaleType = {
  * Brush & Zoom
  * https://bl.ocks.org/mbostock/34f08d5e11952a80609169b7917d4172
  */
-export default class ZoomLine extends React.Component {
+class ZoomLine extends React.Component {
     constructor(props) {
         super(props);
 
@@ -321,3 +321,5 @@ ZoomLine.propTypes = {
     curve: PropTypes.oneOf(Object.values(curveTypes)),
     brush: PropTypes.bool,
 };
+
+export default ZoomLine;

@@ -16,7 +16,7 @@ import { getScaleBand, getScaleLinear, getClassesScale } from '../../services/sc
 
 const DEFAULT_BASE_CLASS = 'columns-chart';
 
-export class GroupedColumns extends React.Component {
+class GroupedColumns extends React.Component {
     componentDidMount() {
         const { $$data, data, $$height, className = DEFAULT_BASE_CLASS } = this.props;
         const selectedData = data || $$data;
@@ -110,3 +110,5 @@ GroupedColumns.propTypes = {
     $$height: PropTypes.number,
     $$width: PropTypes.number,
 };
+
+export default GroupedColumns;

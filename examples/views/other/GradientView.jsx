@@ -7,7 +7,7 @@ import AxisY from '../../../source/components/Axis/AxisY';
 import Line from '../../../source/components/Line/Line';
 import GridX from '../../../source/components/Grid/GridX';
 import GridY from '../../../source/components/Grid/GridY';
-import { Legend } from '../../../source/components/Legend/Legend';
+import Legend from '../../../source/components/Legend/Legend';
 
 import './GradientView.less';
 

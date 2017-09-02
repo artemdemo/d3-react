@@ -1,3 +1,4 @@
+const DefinePlugin = require('webpack').DefinePlugin;
 const webpackCommon = require('./webpack.common');
 
 module.exports = Object.assign(webpackCommon, {
@@ -20,4 +21,11 @@ module.exports = Object.assign(webpackCommon, {
         /^babel\/.+$/,
         // /^d3-.+$/,
     ],
+    plugins: webpackCommon.plugins.concat([
+        new DefinePlugin({
+            'process.env': {
+                NODE_ENV: JSON.stringify('production'),
+            },
+        }),
+    ]),
 });

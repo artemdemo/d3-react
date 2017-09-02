@@ -1,5 +1,4 @@
 const IgnorePlugin = require('webpack').IgnorePlugin;
-const DefinePlugin = require('webpack').DefinePlugin;
 const ContextReplacementPlugin = require('webpack').ContextReplacementPlugin;
 
 module.exports = {
@@ -39,11 +38,5 @@ module.exports = {
 
         // Ignoring warnings for following plugins, case they doesn't matter
         new IgnorePlugin(/regenerator|nodent|js-beautify/, /ajv/),
-
-        new DefinePlugin({
-            'process.env': {
-                NODE_ENV: JSON.stringify('production'),
-            },
-        }),
     ],
 };

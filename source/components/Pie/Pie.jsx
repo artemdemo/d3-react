@@ -14,7 +14,7 @@ const mouseDirection = {
 /**
  * Pie chart
  */
-export default class Pie extends React.Component {
+class Pie extends React.Component {
     constructor(props) {
         super(props);
 
@@ -246,3 +246,5 @@ Pie.propTypes = {
         left: PropTypes.number,
     }),
 };
+
+export default Pie;

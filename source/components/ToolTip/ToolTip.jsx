@@ -13,7 +13,7 @@ const axisTypes = {
 };
 const DEFAULT_SCALE = axisTypes.BAND;
 
-export default class ToolTip extends React.Component {
+class ToolTip extends React.Component {
     constructor(props) {
         super(props);
 
@@ -192,3 +192,5 @@ ToolTip.propTypes = {
      */
     timeFormat: PropTypes.string,
 };
+
+export default ToolTip;

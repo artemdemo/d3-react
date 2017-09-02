@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import Chart from '../../source/components/Chart/Chart';
 import AxisX from '../../source/components/Axis/AxisX';
 import AxisY from '../../source/components/Axis/AxisY';
-import { Legend } from '../../source/components/Legend/Legend';
+import Legend from '../../source/components/Legend/Legend';
 
 import './LegendView.less';
 

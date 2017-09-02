@@ -24,7 +24,7 @@ const axisTypes = {
 /**
  * Line chart
  */
-export default class Line extends React.Component {
+class Line extends React.Component {
     constructor(props) {
         super(props);
 
@@ -202,3 +202,5 @@ Line.propTypes = {
      */
     curve: PropTypes.oneOf(Object.values(curveTypes)),
 };
+
+export default Line;

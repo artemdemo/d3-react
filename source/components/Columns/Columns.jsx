@@ -12,7 +12,7 @@ import { getScaleBand, getScaleLinear } from '../../services/scales';
 
 const DEFAULT_BASE_CLASS = 'columns-chart';
 
-export class Columns extends React.Component {
+class Columns extends React.Component {
     componentDidMount() {
         const { $$data, $$height, className = DEFAULT_BASE_CLASS } = this.props;
 
@@ -69,3 +69,5 @@ Columns.propTypes = {
     $$height: PropTypes.number,
     $$width: PropTypes.number,
 };
+
+export default Columns;

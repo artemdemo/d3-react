@@ -19,7 +19,7 @@ const scaleType = {
  *
  * http://bl.ocks.org/mbostock/3886208
  */
-export default class StackedColumns extends React.Component {
+class StackedColumns extends React.Component {
     componentDidMount() {
         this.updateColumns(this.props);
     }
@@ -146,3 +146,5 @@ StackedColumns.propTypes = {
      */
     scale: PropTypes.oneOf(Object.values(scaleType)),
 };
+
+export default StackedColumns;
