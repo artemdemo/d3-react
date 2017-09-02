@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
 const DEFAULT_BASE_CLASS = 'chart-legend-item';
@@ -31,9 +32,9 @@ export const LegendItem = function(props) {
 };
 
 LegendItem.propTypes = {
-    transform: React.PropTypes.string,
-    className: React.PropTypes.string,
-    indexName: React.PropTypes.string,
-    text: React.PropTypes.string,
-    rectWidth: React.PropTypes.number,
+    transform: PropTypes.string,
+    className: PropTypes.string,
+    indexName: PropTypes.string,
+    text: PropTypes.string,
+    rectWidth: PropTypes.number,
 };

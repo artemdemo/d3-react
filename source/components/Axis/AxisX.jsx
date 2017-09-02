@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { axisBottom as d3_axisBottom } from 'd3-axis';
 import { max as d3_max, extent as d3_extent } from 'd3-array';
 import { select as d3_select } from 'd3-selection';
@@ -105,37 +106,37 @@ AxisX.propTypes = {
      * Main data object of the component
      * See `<Chart />`
      */
-    data: React.PropTypes.array,
+    data: PropTypes.array,
     /**
      * Axis title
      */
-    title: React.PropTypes.string,
+    title: PropTypes.string,
     /**
      * Label time formatting
      * @link https://github.com/d3/d3-time-format
      */
-    labelTimeFormat: React.PropTypes.string,
+    labelTimeFormat: PropTypes.string,
     /**
      * Component class property for CSS
      */
-    className: React.PropTypes.string,
+    className: PropTypes.string,
     /**
      * Axis scale. Determine how to treat components `data`
      */
-    scale: React.PropTypes.oneOf(Object.values(axisTypes)),
+    scale: PropTypes.oneOf(Object.values(axisTypes)),
     /**
      * Time format of axis labels (by default, expected to be Date() object)
      */
-    timeFormat: React.PropTypes.string,
+    timeFormat: PropTypes.string,
     /**
      * Axis ticks.
      * Hint to d3 - how many ticks should be generated (default is 10)
      * @link https://github.com/d3/d3-scale/blob/master/README.md#time_ticks
      */
-    axisTicks: React.PropTypes.number,
+    axisTicks: PropTypes.number,
     /**
      * You can provide scale function directly to the component.
      * In this case component wouldn't calculate it.
      */
-    xScale: React.PropTypes.func,
+    xScale: PropTypes.func,
 };

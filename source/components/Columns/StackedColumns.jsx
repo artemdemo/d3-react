@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { stack as d3_stack } from 'd3-shape';
 import { max as d3_max, sum as d3_sum, extent as d3_extent } from 'd3-array';
 import { select as d3_select } from 'd3-selection';
@@ -126,11 +127,11 @@ StackedColumns.propTypes = {
      * Main data object of the component
      * See `<Chart />`
      */
-    data: React.PropTypes.array,
+    data: PropTypes.array,
     /**
      * Time format of axis labels (by default, expected to be Date() object)
      */
-    timeFormat: React.PropTypes.string,
+    timeFormat: PropTypes.string,
     /**
      * Delta change for maximum data value.
      * Value is in percents.
@@ -139,9 +140,9 @@ StackedColumns.propTypes = {
     /**
      * Component class property for CSS
      */
-    className: React.PropTypes.string,
+    className: PropTypes.string,
     /**
      * Axis scale. Determine how to treat components `data`
      */
-    scale: React.PropTypes.oneOf(Object.values(scaleType)),
+    scale: PropTypes.oneOf(Object.values(scaleType)),
 };

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {
     line as d3_line,
     area as d3_area,
@@ -158,7 +159,7 @@ Line.propTypes = {
      * Main data object of the component
      * See `<Chart />`
      */
-    data: React.PropTypes.array,
+    data: PropTypes.array,
     /**
      * Delta change for maximum data value.
      * Value is in percents.
@@ -167,37 +168,37 @@ Line.propTypes = {
     /**
      * Component class property for CSS
      */
-    className: React.PropTypes.string,
+    className: PropTypes.string,
     /**
      * Axis scale. Determine how to treat components `data`
      */
-    scale: React.PropTypes.oneOf(Object.values(axisTypes)),
+    scale: PropTypes.oneOf(Object.values(axisTypes)),
     /**
      * Time format of axis labels (by default, expected to be Date() object)
      */
-    timeFormat: React.PropTypes.string,
+    timeFormat: PropTypes.string,
     /**
      * Will add glow to the path.
      * Essentially it will add path with gaussian blur filter applied to it.
      */
-    glow: React.PropTypes.bool,
+    glow: PropTypes.bool,
     /**
      * Add area path under the graph.
      * In order to use gradient you'll need to specify `gradientId`.
      */
-    area: React.PropTypes.oneOfType([
-        React.PropTypes.bool,
-        React.PropTypes.shape({
-            gradientId: React.PropTypes.string,
+    area: PropTypes.oneOfType([
+        PropTypes.bool,
+        PropTypes.shape({
+            gradientId: PropTypes.string,
         }),
     ]),
     /**
      * Whether add or not line path.
      * You can use only `area`
      */
-    line: React.PropTypes.bool,
+    line: PropTypes.bool,
     /**
      * Line curve type
      */
-    curve: React.PropTypes.oneOf(Object.values(curveTypes)),
+    curve: PropTypes.oneOf(Object.values(curveTypes)),
 };

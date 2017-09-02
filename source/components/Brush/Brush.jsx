@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { event as d3Event } from 'd3-selection';
 import d3 from '../../libraries/d3';
 import { getScale, getScaleBand, getScaleTime } from '../../services/scales';
@@ -193,17 +194,17 @@ export default class Brush extends Component {
 }
 
 Brush.propTypes = {
-    connectId: React.PropTypes.string,
+    connectId: PropTypes.string,
     /**
      * Axis scale. Determine how to treat components `data`
      */
-    scale: React.PropTypes.oneOf(Object.values(scaleType)),
+    scale: PropTypes.oneOf(Object.values(scaleType)),
     /**
      * This function should return y position from handle and line in between
      */
-    handleYPosition: React.PropTypes.func,
+    handleYPosition: PropTypes.func,
     /**
      * Callback on brush change
      */
-    onChange: React.PropTypes.func,
+    onChange: PropTypes.func,
 };

@@ -1,4 +1,5 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { event as d3Event } from 'd3-selection';
 import d3 from '../../libraries/d3';
 import { getScaleLinear, getScaleTime, getScaleBand, setScale } from '../../services/scales';
@@ -281,42 +282,42 @@ ZoomLine.propTypes = {
      * Main data object of the component
      * See `<Chart />`
      */
-    data: React.PropTypes.array,
+    data: PropTypes.array,
     /**
      * Component class property for CSS
      */
-    className: React.PropTypes.string,
+    className: PropTypes.string,
     /**
      * Axis scale. Determine how to treat components `data`
      */
-    scale: React.PropTypes.oneOf(Object.values(scaleType)),
+    scale: PropTypes.oneOf(Object.values(scaleType)),
     /**
      * Time format of axis labels (by default, expected to be Date() object)
      */
-    timeFormat: React.PropTypes.string,
+    timeFormat: PropTypes.string,
     /**
      * Will add glow to the path.
      * Essentially it will add path with gaussian blur filter applied to it.
      */
-    glow: React.PropTypes.bool,
+    glow: PropTypes.bool,
     /**
      * Add area path under the graph.
      * In order to use gradient you'll need to specify `gradientId`.
      */
-    area: React.PropTypes.oneOfType([
-        React.PropTypes.bool,
-        React.PropTypes.shape({
-            gradientId: React.PropTypes.string,
+    area: PropTypes.oneOfType([
+        PropTypes.bool,
+        PropTypes.shape({
+            gradientId: PropTypes.string,
         }),
     ]),
     /**
      * Whether add or not line path.
      * You can use only `area`
      */
-    line: React.PropTypes.bool,
+    line: PropTypes.bool,
     /**
      * Line curve type
      */
-    curve: React.PropTypes.oneOf(Object.values(curveTypes)),
-    brush: React.PropTypes.bool,
+    curve: PropTypes.oneOf(Object.values(curveTypes)),
+    brush: PropTypes.bool,
 };

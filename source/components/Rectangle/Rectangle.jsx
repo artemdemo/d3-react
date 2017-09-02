@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import nerve from '../../services/nerve';
 
 class Rectangle extends Component {
@@ -54,9 +55,9 @@ class Rectangle extends Component {
 }
 
 Rectangle.propTypes = {
-    connectId: React.PropTypes.string,
-    className: React.PropTypes.string,
-    invert: React.PropTypes.bool,
+    connectId: PropTypes.string,
+    className: PropTypes.string,
+    invert: PropTypes.bool,
 };
 
 export default Rectangle;

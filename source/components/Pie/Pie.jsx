@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import _isEqual from 'lodash/isEqual';
 import { linefyName } from '../../services/utils';
 import { getClassesScale } from '../../services/scales';
@@ -196,52 +197,52 @@ Pie.propTypes = {
      * Main data object of the component
      * See `<Chart />`
      */
-    data: React.PropTypes.array,
+    data: PropTypes.array,
     /**
      * Component class property for CSS
      */
-    className: React.PropTypes.string,
+    className: PropTypes.string,
     /**
      * On mouse over callback
      */
-    onMouseOver: React.PropTypes.func,
+    onMouseOver: PropTypes.func,
     /**
      * On mouse out callback
      */
-    onMouseOut: React.PropTypes.func,
+    onMouseOut: PropTypes.func,
     /**
      * Outer radius of the chart.
      * (for both `pie` and `donut`)
      */
-    outerRadius: React.PropTypes.func,
+    outerRadius: PropTypes.func,
     /**
      * Inner radius in case you need donut instead of pie
      */
-    innerRadius: React.PropTypes.func,
+    innerRadius: PropTypes.func,
     /**
      * Label padding in case you want them to appear on the chart
      */
-    labelPadding: React.PropTypes.number,
+    labelPadding: PropTypes.number,
     /**
      * On hover event section can increase it's size
      */
-    hoverIndent: React.PropTypes.number,
+    hoverIndent: PropTypes.number,
     /**
      * In case you need to simulate hover on one of sections - you will need to pass it's id
      * (or `null` if you wont to "unhover" the section)
      */
-    triggerHoverId: React.PropTypes.number,
+    triggerHoverId: PropTypes.number,
     /**
      * Colors to use for `fill` property of each section
      */
-    colors: React.PropTypes.arrayOf(React.PropTypes.string),
+    colors: PropTypes.arrayOf(PropTypes.string),
     /**
      * Chart position inside <Chart /> component
      */
-    margin: React.PropTypes.shape({
-        top: React.PropTypes.number,
-        right: React.PropTypes.number,
-        bottom: React.PropTypes.number,
-        left: React.PropTypes.number,
+    margin: PropTypes.shape({
+        top: PropTypes.number,
+        right: PropTypes.number,
+        bottom: PropTypes.number,
+        left: PropTypes.number,
     }),
 };

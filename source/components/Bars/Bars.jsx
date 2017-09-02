@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { max as d3_max } from 'd3-array';
 import { select as d3_select } from 'd3-selection';
 import { getScaleBand, getScaleLinear } from '../../services/scales';
@@ -62,8 +63,8 @@ export class Bars extends Component {
 }
 
 Bars.propTypes = {
-    data: React.PropTypes.array,
-    className: React.PropTypes.string,
-    $$width: React.PropTypes.number,
-    $$height: React.PropTypes.number,
+    data: PropTypes.array,
+    className: PropTypes.string,
+    $$width: PropTypes.number,
+    $$height: PropTypes.number,
 };

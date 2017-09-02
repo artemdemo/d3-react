@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const ToolTipLine = (props) => {
     const { item, height, className, dotRadius = 3 } = props;
@@ -31,14 +32,14 @@ const ToolTipLine = (props) => {
 };
 
 ToolTipLine.propTypes = {
-    item: React.PropTypes.shape({
-        visible: React.PropTypes.bool,
-        x: React.PropTypes.number,
-        y: React.PropTypes.number,
+    item: PropTypes.shape({
+        visible: PropTypes.bool,
+        x: PropTypes.number,
+        y: PropTypes.number,
     }),
-    className: React.PropTypes.string,
-    height: React.PropTypes.number,
-    dotRadius: React.PropTypes.number,
+    className: PropTypes.string,
+    height: PropTypes.number,
+    dotRadius: PropTypes.number,
 };
 
 export default ToolTipLine;

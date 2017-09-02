@@ -1,13 +1,13 @@
-import React from 'react';
+import PropTypes from 'prop-types';
 
-export const marginShape = React.PropTypes.shape({
-    top: React.PropTypes.number,
-    right: React.PropTypes.number,
-    bottom: React.PropTypes.number,
-    left: React.PropTypes.number,
+export const marginShape = PropTypes.shape({
+    top: PropTypes.number,
+    right: PropTypes.number,
+    bottom: PropTypes.number,
+    left: PropTypes.number,
 });
 
-export const deltaShape = React.PropTypes.shape({
-    x: React.PropTypes.number,
-    y: React.PropTypes.number,
+export const deltaShape = PropTypes.shape({
+    x: PropTypes.number,
+    y: PropTypes.number,
 });

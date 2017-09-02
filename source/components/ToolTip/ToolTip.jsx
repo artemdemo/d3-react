@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import d3 from '../../libraries/d3';
 import { getScaleBand, getScaleTime, getScaleLinear } from '../../services/scales';
 import ToolTipLine from './ToolTipLine';
@@ -167,7 +168,7 @@ ToolTip.propTypes = {
      * Main data object of the component.
      * See `<Chart />`
      */
-    data: React.PropTypes.array,
+    data: PropTypes.array,
     /**
      * Callback function that will be called when tooltip should be rendered.
      * Callback should return SVG tree of the tooltip.
@@ -181,13 +182,13 @@ ToolTip.propTypes = {
      *   };
      * ```
      */
-    renderCallback: React.PropTypes.func,
+    renderCallback: PropTypes.func,
     /**
      * Axis scale. Determine how to treat components `data`
      */
-    scale: React.PropTypes.oneOf(Object.values(axisTypes)),
+    scale: PropTypes.oneOf(Object.values(axisTypes)),
     /**
      * Time format of axis labels (by default, expected to be Date() object)
      */
-    timeFormat: React.PropTypes.string,
+    timeFormat: PropTypes.string,
 };

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { axisLeft as d3_axisLeft, axisRight as d3_axisRight } from 'd3-axis';
 import { max as d3_max } from 'd3-array';
 import { select as d3_select } from 'd3-selection';
@@ -119,15 +120,15 @@ AxisY.propTypes = {
      * Main data object of the component.
      * See `<Chart />`
      */
-    data: React.PropTypes.array,
+    data: PropTypes.array,
     /**
      * Axis title
      */
-    title: React.PropTypes.string,
+    title: PropTypes.string,
     /**
      * Component class property for CSS
      */
-    className: React.PropTypes.string,
+    className: PropTypes.string,
     /**
      * Delta change for maximum data value.
      * Value is in percents.
@@ -137,24 +138,24 @@ AxisY.propTypes = {
      * Number formatting for labels
      * @link https://github.com/d3/d3-format
      */
-    labelNumberFormat: React.PropTypes.string,
+    labelNumberFormat: PropTypes.string,
     /**
      * Axis scale. Determine how to treat components `data`
      */
-    scale: React.PropTypes.oneOf(Object.values(axisTypes)),
+    scale: PropTypes.oneOf(Object.values(axisTypes)),
     /**
      * Axis position - `left` or `right`.
      */
-    position: React.PropTypes.oneOf(Object.values(axisSide)),
+    position: PropTypes.oneOf(Object.values(axisSide)),
     /**
      * Axis ticks.
      * Hint to d3 - how many ticks should be generated
      * @link https://github.com/d3/d3-scale/blob/master/README.md#time_ticks
      */
-    axisTicks: React.PropTypes.number,
+    axisTicks: PropTypes.number,
     /**
      * You can provide scale function directly to the component.
      * In this case component wouldn't calculate it.
      */
-    yScale: React.PropTypes.func,
+    yScale: PropTypes.func,
 };

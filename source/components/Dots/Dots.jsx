@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { max as d3_max, extent as d3_extent } from 'd3-array';
 import { select as d3_select } from 'd3-selection';
 import { timeParse as d3_timeParse } from 'd3-time-format';
@@ -67,8 +68,8 @@ export class Dots extends Component {
 }
 
 Dots.propTypes = {
-    data: React.PropTypes.array,
-    timeFormat: React.PropTypes.string,
-    className: React.PropTypes.string,
-    dotRadius: React.PropTypes.number,
+    data: PropTypes.array,
+    timeFormat: PropTypes.string,
+    className: PropTypes.string,
+    dotRadius: PropTypes.number,
 };

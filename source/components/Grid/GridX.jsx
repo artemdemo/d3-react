@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { axisBottom as d3_axisBottom } from 'd3-axis';
 import { max as d3_max, extent as d3_extent } from 'd3-array';
 import { timeParse as d3_timeParse } from 'd3-time-format';
@@ -79,23 +80,23 @@ GridX.propTypes = {
      * Main data object of the component.
      * See `<Chart />`
      */
-    data: React.PropTypes.array,
+    data: PropTypes.array,
     /**
      * Axis scale. Determine how to treat components `data`
      */
-    scale: React.PropTypes.oneOf([LINEAR, TIME, BAND]),
+    scale: PropTypes.oneOf([LINEAR, TIME, BAND]),
     /**
      * Component class property for CSS
      */
-    className: React.PropTypes.string,
+    className: PropTypes.string,
     /**
      * Axis ticks.
      * Hint to d3 - how many ticks should be generated
      * @link https://github.com/d3/d3-scale/blob/master/README.md#time_ticks
      */
-    ticks: React.PropTypes.number,
+    ticks: PropTypes.number,
     /**
      * Time format of axis labels (by default, expected to be Date() object)
      */
-    timeFormat: React.PropTypes.string,
+    timeFormat: PropTypes.string,
 };

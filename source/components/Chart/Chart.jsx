@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import _throttle from 'lodash/throttle';
 import { marginShape, deltaShape } from '../../propTypes';
 
@@ -95,7 +96,7 @@ Chart.propTypes = {
     /**
      * Main data object of the component
      */
-    data: React.PropTypes.any,
+    data: PropTypes.any,
     /**
      * Delta change for maximum data value.
      * Value is in percents.
@@ -105,7 +106,7 @@ Chart.propTypes = {
      * Minimum width under which component will stop listen to window resize.
      * After that component will be responsive like simple vector image.
      */
-    minResizeWidth: React.PropTypes.number,
+    minResizeWidth: PropTypes.number,
     /**
      * Inner graph margin
      */
@@ -113,11 +114,11 @@ Chart.propTypes = {
     /**
      * Components class property for CSS
      */
-    className: React.PropTypes.string,
+    className: PropTypes.string,
     /**
      * Function will be called on Chart resize.
      * Notice that it will stop called if you use `minResizeWidth`
      * (if width is less then `minResizeWidth`)
      */
-    onResize: React.PropTypes.func,
+    onResize: PropTypes.func,
 };
